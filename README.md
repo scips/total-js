@@ -95,12 +95,12 @@ Renvoie une portion de la chaine (utiliser **slice** de préférence)
     
     // classical
     for(var i=0; i < names.length; i++) {
-
+         // ...
     }
 
     // perf ++
     for(var i = 0, len = names.length; i < len; i++) {
-
+        // ...
     }
 
 
@@ -362,9 +362,155 @@ Paramètre en Tableau => argument dynamique
 
 **bind**
 
+## Heritage prototypal
 
+### call le constructeur parent
 
+Geek enfant de Human
+
+    function Geek(){
+        Person.call(this, arguments);
+        this.super = Person.prototype;
+    }
+
+Proprement en ECMAScript 5 avec Object.create
+
+Geek.prototype = Object.create(Person.prototype, {constructor: {value: Geek}} )
+
+### Faux héritage (cousinage) -> MIXIN
+
+En utilisant extends pour recopier les propriétés et méthodes d'une classe vers l'autre. Ca casse l'héritage prototypal dynamique.
+
+Plus possible de modifier une méthode/propriété de la chaine parent, plus une instance de la classe parent.
+
+## Static 
+
+ClassName.FunctionName est une function statique qui peut être appelée directement sans instanciation de la classe vu que les classe n'existe pas et sont des functions et donc des objets.
+
+Permet de faire le singleton pattern, une liste des instances des objets créé depuis la classe...
 
 # DAY #2
+
+## JSLint deprecated use JSHint
+
+    // Configuration globale au projet de JSHint
+    // =========================================
+    //
+    // (Y compris celui intégré à votre EDI/éditeur, normalement)
+    //
+    // [Liste complète des options possibles](http://www.jshint.com/docs/options/)
+
+    {
+      // Options de restriction
+      // ----------------------
+
+      // Exige les accolades pour les blocs de contrôle
+      "curly": true,
+
+      // Exige des (in)égalités strictes : `===` et `!==`
+      "eqeqeq": true,
+
+      // Exige que les fonctions appelées avec `new` démarrent par une majuscule
+      // (ce qui est traditionnellement le cas pour un constructeur).
+      "newcap": true,
+
+      // Interdit les hacks basés sur `arguments.caller` et `arguments.callee`
+      // (qui sont de toutes façons illégaux en ES5 Strict).
+      "noarg": true,
+
+      // Interdit l'emploi de variables non explicitement déclarées (ou fournies
+      // via la directive de commentaire `global`).  Permet de détecter rapidement
+      // des fautes de frappe dans les identifiants, par exemple, ainsi que des
+      // fuites globales par inadvertance.
+      "undef": true,
+
+      // Avertit de variables ou paramètres non utilisés.  Très pratique pour nettoyer
+      // du code mais aussi pour certains cas de fautes de frappe.
+      "unused": true,
+
+      // Interdit le whitespace en fin de ligne (votre éditeur devrait le nettoyer tout
+      // seul de toutes façons, comme avec l'option `trim_trailing_white_space_on_save`
+      // de Sublime Text par exemple).
+      "trailing": true,
+
+      // Interdit plus de 3 niveaux d'imbrication de blocs
+      "maxdepth": 3,
+
+      // Options de relâchement
+      // ----------------------
+
+      // Ces options assouplissent les restrictions mises en place par JSHint,
+      // qu'elles soient là par défaut ou explicitement au travers d'options.
+
+      // Autorise la présence d'expressions `debugger` dans le code.
+      "debug": true,
+
+      // Autorise les (in)égalités laxistes (`==`et `!=`) si l'opérande est `null`,
+      // afin de gérer d'un coup `null` et `undefined`, ce qui est un cas fréquent.
+      "eqnull": true,
+
+      // Autorise les syntaxes ES6 (`let`, `const`, `yield`, `function*`, `module`…)
+      "esnext": true,
+
+      // Autorise les fonctions dans les boucles ; une [IIFE](http://en.wikipedia.org/wiki/Immediately-invoked_function_expression)
+      // dans une boucle est une solution classique aux
+      // [soucis de closure asynchrone](http://www.jshint.com/docs/options/#loopfunc).
+      "loopfunc": true,
+
+      // Options d’environnement
+      // -----------------------
+
+      // Autorise `console`, `alert`, etc.
+      "devel": true,
+
+      // Indique un contexte potentiel Node, donc ses objets globaux (`process`,
+      // `Buffer`, `global`…) mais aussi le droit à des `'use strict'` globaux aux fichiers
+      // (puisque ce sont forcément des modules).
+      "node": true,
+
+      // Warnings désactivés
+      // -------------------
+
+      // Autoriser les caractères Unicode dans le source
+      "-W100": true,
+
+      // Tuning JS Total
+      // ---------------
+    }
+
+## Chrome: enable experimental developers tools
+
+## Console
+
+dir( object ) // Chrome
+console.dir( object ) // Firefox
+
+console.error() // -> stack trace
+
+### Group
+
+    console.group('Module 1');
+    console.log('test 1');
+    console.log('test 2');
+    console.log('test 3');
+
+    console.groupEnd('Module 1');
+
+    console.groupCollapse('Module 1');
+    
+    console.table(myArray);
+
+    console.time('XHR');
+    // wait
+    console.timeEnd('XHR');
+
+### Debugging
+
+Select an element with the debugger
+
+use $0 in console to access this element
+
+    debugger; // create break point automatically in code
+
 # DAY #3
 # DAY #4

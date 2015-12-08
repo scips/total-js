@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://delicious-insights.com/js-total/jst-day2/#/intro -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>JS Total • 2ème partie, 09/12/2015</title>
+
+    <meta name="author" content="Christophe Porteneuve">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="./JS Total • 2ème partie, 09_12_2015_files/reveal.min.css">
+    <link rel="stylesheet" href="./JS Total • 2ème partie, 09_12_2015_files/js-attitude.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="./JS Total • 2ème partie, 09_12_2015_files/tomorrow.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if (window.location.search.match( /print-pdf/gi))
+        document.write( '<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="all">' );
+      else
+        document.write( '<link rel="stylesheet" href="css/print/paper.css" type="text/css" media="print">' );;
+    </script><link rel="stylesheet" href="./JS Total • 2ème partie, 09_12_2015_files/paper.css" type="text/css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="no-anims">
+
+    <div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides" style="width: 960px; height: 700px; zoom: 1;">
+        <section id="intro" class="present" style="top: -216px; display: block;">
+          <h1>JS Total</h1>
+          <h3 data-marker="intro-date">2ème partie, 09/12/2015</h3>
+          <h4 data-marker="intro-trainers">Jean-Pierre Vincent @ JS Attitude</h4>
+          <script>
+            // Delicously hacky. Look away.
+            if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+          </script>
+          <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>slides sur <a href="http://delicious-insights.com/js-total/jst-day2/">http://delicious-insights.com/js-total/jst-day2/</a></p>
+</aside>
+        </section>
+
+        <section id="overview" class="future" style="top: -201.5px; display: block;" hidden="">
+          <h1>JS Total</h1>
+          <h4 data-marker="overview-dates">4 journées du 8 au 11 décembre</h4>
+
+          <ol>
+            <li><span data-marker="day2">Aujourd’hui</span>&nbsp;: Outils, DevTools, modules et début SPA</li>
+            <li><span data-marker="day3">Demain</span>&nbsp;: développement d’une SPA complète</li>
+            <li><span data-marker="day4">Vendredi</span>&nbsp;: industrialisation et web mobile</li>
+          </ol>
+          <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>slides sur <a href="http://delicious-insights.com/js-total/jst-day2/">http://delicious-insights.com/js-total/jst-day2/</a></p>
+</aside>
+        </section>
+
+        <section id="edit-code" hidden="" class="stack future" style="top: 0px; display: block;" data-previous-indexv="0">
+          <section class="chapter" style="top: -137px; display: block;">
+            <h1>Pondre le code</h1>
+            <h4>Mon éditeur chéri…</h4>
+          </section>
+
+          <section id="jshint" class="future" style="top: -233.5px; display: block;">
+            <h1>JSHint</h1>
+
+            <p>Plus flexible/souple/tolérant</p>
+            <p>A grandi au-delà de ce but originel pour faire de l'analyse statique de code (SCA) et fournir des recos de plus haut niveau aussi (complexité cyclomatique, etc.</p>
+            <p><a href="http://www.jshint.com/">jshint.com</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Installation
+<em> package controler
+</em> SublimeLinter, puis SublimeLinter-jshint
+* ST 3 : npm install -g jshint</p>
+<p>Ce qu'on utilise en pratique.  Linting + infos de complexité.  Le projet <code>spa-basis</code> inclut un <code>.jshintrc</code> très détaillé et commenté, leur refiler expliquer qu'il est pris en compte par JSHint pour tout fichier au même niveau ou dessous ; ils peuvent donc se le coller dans leur <code>HOME</code> en virant peut-être juste certains trucs comme quelques <code>globals</code> et l'environnement Node, par exemple.</p>
+<ul>
+<li>récupérer et éditer jshint-example.js</li>
+<li>récupérer .jshintrc, le dérouler</li>
+</ul>
+<p>Leur faire installer SublimeLinter (surtout pas le JSLint / JSHint de base) dans ST et leur montrer quelques impacts (attention, il faut que le fichier soit sauvé).  Bien insister sur le côté débogage préemptif et donc gros gain de temps, notamment pour les fautes de frappe.</p>
+</aside>
+          </section>
+
+          <section id="beautifiers" class="future" style="top: -238.5px; display: none;">
+            <h1>Beautifiers</h1>
+
+            <p><a href="http://jsbeautifier.org/">JSBeautifier.org</a> et ses plugins (ex. pour <a href="https://github.com/jdc0589/JsFormat">Sublime Text 2</a>)</p>
+            <p><a href="https://github.com/mishoo/UglifyJS2">UglifyJS</a> (Node) fait <i>aussi</i> du <i>beautifying</i>…</p>
+            <p>Vous avez peut-être des fonctions inhérentes dans vos éditeurs ou EDI, etc.</p>
+            <p>Pratique comme filtres automatiques dans un VCS…</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Installation
+<em> JSFormat !
+</em> Jade, CoffeeScript, SASS et Stylus ?
+* JavaScript Next ? (changer les settings Sublimet Linter en rajoutant dans sublimelinter_syntax_map "JavaScriptNext":"javascript" )</p>
+<ul>
+<li>Eclipse, WebStorm/PHPStorm et VS ont des réglages ultra-pointus,</li>
+<li>sur ST le paquet JSFormat est à récupérer (surtout pour mater du JSON), et les DevTools en ont un aussi.</li>
+<li>Si besoin d'un truc ultra-chiadé sur ST par exemple, voir <a href="http://uncrustify.sourceforge.net/">Uncrustify</a> et son wrapper de config OSX <a href="https://github.com/ryanmaxwell/UncrustifyX">UncrustifyX</a>, qui envoient grave du paté !</li>
+</ul>
+</aside>
+          </section>
+        </section>
+
+        <section id="debug-consoles" hidden="" class="stack future" style="top: 0px; display: block;" data-previous-indexv="0">
+          <section class="chapter" style="top: -163.5px; display: block;">
+            <h1>Déboguer le desktop</h1>
+            <h4>Console et panneaux avancés</h4>
+
+            <p>(et aussi&nbsp;: <a href="http://discover-devtools.codeschool.com/">Discover DevTools</a> et <a href="http://www.youtube.com/playlist?list=PLNYkxOF6rcIBQ8j3J_PyM8JLAGKqZRByw">The Breakpoint</a>)</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>configuration de la console</p>
+<p>chrome://flag :</p>
+<ul>
+<li>Activer les expérimentations dans les outils de développement</li>
+<li>relancer chrome</li>
+</ul>
+<p>Cmd Alt J =&gt; ouvrir la console JS</p>
+<p>Cocher dans les outils de dev :</p>
+<ul>
+<li>disable cache</li>
+<li>enable JS source maps</li>
+<li>enable CSS source maps</li>
+<li>log XHR</li>
+<li>show shadow DOM</li>
+</ul>
+<p>Montrer :
+<em> shortcuts
+</em> framework blackboxing
+<em> workspace
+</em> console.log d'un truc privé dans le code =&gt; save as global</p>
+</aside>
+          </section>
+
+          <section id="console" class="future" style="top: -324.5px; display: none;">
+            <h1>La console</h1>
+
+            <p>Bien plus que <code>console.log</code>&nbsp;!</p>
+            <p>Complétion, Cmd+K/Ctrl+L, Shift+Return…</p>
+            <p><a href="http://www.youtube.com/watch?v=4mf_yNLlgic&amp;noredirect=1">Console Power User</a>&nbsp;!</p>
+            <p>time / timeEnd</p>
+            <p>dir, table</p>
+            <p>$_, <em>Save As Global Variable</em>, copy</p>
+            <p>$0 / inspect(el), Force Element State, $$</p>
+            <p>monitorEvents, Break On… (+ Elements &gt; Event Listeners)</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>.log : objets complexes, multi argument, .debug, .info, .warn, .error (stack trace)</p>
+<ul>
+<li>console.groupCollapsed('module 1')</li>
+<li>console.log('init');</li>
+<li>console.log('XHR');</li>
+<li>console.group('sous-module');</li>
+<li>console.log('autre');</li>
+<li>console.groupEnd();</li>
+<li>console.groupEnd();</li>
+</ul>
+<ul>
+<li>console.table( [</li>
+<li>['name', 'age'],</li>
+<li>['chris', 37],</li>
+<li>['JP', 36]</li>
+<li><p>]);</p>
+</li>
+<li><p>changement de contexte de frame</p>
+</li>
+<li>$- : faire un new Date(), puis $-</li>
+<li>force element state : lien "console power user"</li>
+<li>édition de CSS, colorpicker</li>
+<li>monitorEvents( $0 ). $0 à $6</li>
+<li>$$('p')</li>
+<li>keys( document ) + copy( keys(document) )</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="panel-scripts" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Sources</h1>
+
+            <p>Le pas à pas, en détail</p>
+            <p>Des breakpoints sur <strong>tout</strong>&nbsp;!</p>
+            <p>Expressions espions (watches)</p>
+            <p>Pile d'appels (call stack).  Noms de fonctions.</p>
+            <p>Portée</p>
+            <p>Gestion des exceptions</p>
+            <p><i>Beautifying</i>&nbsp;!</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Démo sur la fonction de filtrage d'API de <a href="http://api.prototypejs.org/">l'API Prototype</a>.</p>
+<ul>
+<li>chercher une fonction filter (Ctrl+Shift+F)</li>
+<li>breakpoint, pas à pas IN / OUT / OVER</li>
+<li>breakpoint conditionnel (value.length &gt; 4)</li>
+<li>DOM breakpoint sur ul#search_results =&gt; on retrouve notre fonction filter</li>
+<li>montrer closures (y compris quand elles ne sont pas là faute d'utilisation de la portée englobante)</li>
+</ul>
+<p>Sur Twitter :</p>
+<ul>
+<li>démo break on XHR (sur action reply par ex.)</li>
+<li>beautifying - pretty print</li>
+<li>break on DOM events</li>
+</ul>
+<p>scp closure-debugger-hoisting-exception.html di:public/debug.html</p>
+<p>Sur <a href="http://delicious-insights.com/js-total/debug.html">closure-debugger-hoisting-exception.html</a> :</p>
+<ul>
+<li>mot clé debugger;</li>
+<li>break on error</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="panel-resources" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Resources</h1>
+
+            <p>Tout ce qui est stocké en local&nbsp;:</p>
+
+            <ul>
+              <li>Naviguer dans les sources&nbsp;; iframes&nbsp;; workers&nbsp;!</li>
+              <li>Ressources chargées (catégorisées)</li>
+              <li>Cookies</li>
+              <li>Stockage session et local</li>
+              <li>Bases de données</li>
+              <li>AppCache</li>
+            </ul>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>C'est le meilleur moyen de triturer ses cookies.  Indiquer qu'on utilisera les stockages local et session, ainsi qu'AppCache, le lendemain.</p>
+<p>appui long sur reload pour vider le cache (window only ?)</p>
+</aside>
+          </section>
+
+          <section id="panel-network" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Network</h1>
+
+            <p>Analyse des performances de chargement</p>
+            <p>Distinction latence / chargement</p>
+            <p>Visualisation détaillée (en-têtes, corps, preview…)</p>
+            <p>Mode persistent (record)</p>
+            <p>Toute l'activité : ressources, XHR, WebSockets…</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>PPC + network XHR + JSON + console.table</p>
+<p>Bien montrer les recoins des requêtes, le détail du timing, les previews, la copie cURL, parler des trucs HAR, et le Replay XHR (qui ne reprend pas les handlers, ceci dit ; juste pratique pour vérifier qu'on a débogué la couche serveur quand elle chiait à tort).</p>
+<p>clear cache, clear cookie, replay XHR</p>
+<p>démo HAR : save as HAR with content =&gt; harviewer (software is hard)</p>
+</aside>
+          </section>
+
+          <section id="panel-timeline" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Timeline</h1>
+
+            <p>Analyse des performances d'exécution</p>
+            <p>Chargement / Parsing / Rendering / Painting</p>
+            <p>Groupes asynchrones</p>
+            <p>Monitoring événements, FPS, RAM&nbsp;; GC&nbsp;!</p>
+            <p>Mode persistent, là aussi.</p>
+            <p>Réduction du bruit (&lt; 15ms)</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Très dur à bien mettre en situation, comme Profiles.  Insister à mort sur <a href="http://discover-devtools.codeschool.com/">Discover DevTools</a> pour bien les prendre en main.</p>
+<p>timeline event / frame / memory avec reveal.js</p>
+</aside>
+          </section>
+
+          <section id="panel-profiles" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Profiles et Rendering</h1>
+
+            <p>Préalable <strong>obligatoire</strong> à l'optimisation&nbsp;!</p>
+            <p>Pas seulement JS&nbsp;: sélecteurs CSS et occupation RAM</p>
+            <p>Profils/snapshots nommés + persistence possible</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Très dur à bien mettre en situation, comme Timeline.  Insister à mort sur <a href="http://discover-devtools.codeschool.com/">Discover DevTools</a> pour bien les prendre en main.</p>
+<p>rendering : Esc, avec FPS meter et paint rectangles</p>
+</aside>
+          </section>
+
+          <section id="panel-audits" class="future" style="top: -20px; display: none;">
+            <h1>Le panneau Audits</h1>
+
+            <p>Genre DOM Monster + GTMetrix…</p>
+            <p>Performances <em>loadtime</em> + <em>runtime</em></p>
+            <p>État actuel ou dès chargement</p>
+            <p>Voir aussi <a href="http://javascriptrocks.com/performance/">JS Performance Rocks!</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Montrer vite fait mais préférer PageSpeed Insights (français, plus exhaustif, file les ressources déjà optimisées). JP, tu as peut-être des conseils d'exploit/démo/liaisons ici, sans déborder en temps ?</p>
+</aside>
+
+          </section>
+
+          <section id="panel-emulation" class="future" style="top: -20px; display: none;">
+            <h1>Le tiroir Émulation</h1>
+
+            <p>Émuler le touch, la géoloc, l'accéléromètre</p>
+            <p>CSS print</p>
+            <p>RWD, taille d'écran et densité de pixels</p>
+            <p>Network Throttling (y compris offline)</p>
+            <p>User Agent</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>raccourci Esc de n'importe où</p>
+</aside>
+
+          </section>
+
+        </section>
+
+        <section id="debug-remote" hidden="" class="stack future" style="top: 0px; display: none;" data-previous-indexv="0">
+          <section class="chapter" style="top: -137px; display: none;">
+            <h1>Déboguer à distance</h1>
+            <h4>sur les mobiles</h4>
+          </section>
+
+          <section id="weinre" class="future" style="top: -20px; display: none;">
+            <h1>Weinre</h1>
+            <h4>WEb INspector REmote</h4>
+
+            <p>Le WebInspector de WebKit (Chrome/Saf), connecté à un navigateur mobile via un serveur</p>
+            <p>Fait partie de Apache Cordova (ex Phonegap)</p>
+            <p><a href="http://people.apache.org/~pmuellr/weinre/docs/latest/">Les docs chez Apache</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>En parler parce que c'est la base, mais préciser qu'on utilisera toujours ça intégré à un autre système.</p>
+<ul>
+<li>installation facile via NodeJS</li>
+<li>Lance un serveur</li>
+<li>Injection de script dans la page cible</li>
+<li>affiche la vieille interface des debug tools webkit</li>
+<li>du coup ça marche sur Android 2.3, vieux iOS, windows phone, webViews, TVs …</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="adobe-edge-inspect" class="future" style="top: -20px; display: none;">
+            <h1>Adobe Edge Inspect</h1>
+            <h4>(ex Adobe Shadow)</h4>
+
+            <p>Solution complète incluant Weinre (date un peu)</p>
+            <p>Logiciel desktop + extension Chrome + app mobile</p>
+            <p>Nécessite un compte Adobe Creative Cloud<br>(gratuit pour 1 périphérique)</p>
+            <p>Captures d'écran, etc.</p>
+            <p><a href="http://html.adobe.com/edge/inspect/">Ça se passe ici</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Faire une démo avec soit iPhone soit Android (soit les deux ? Ou une tablette et un téléphone…).  Penser à bien mettre tous les devices sur le réseau du laptop, et à utiliser l'IP du laptop (pas de DNS approprié en local).</p>
+<p>montrer navigator.userAgent, édition de CSS, screenshot, plein écran …</p>
+<p>À noter que si vous avez un besoin récurrent de montrer du mobile en vidéo-projection, <a href="http://www.airsquirrels.com/reflector/">Reflector</a> ne coûte presque rien et déchire.</p>
+</aside>
+          </section>
+
+          <section id="android-specific" class="future" style="top: -20px; display: none;">
+            <h1>Spécifiques Android</h1>
+
+            <p>Chrome&nbsp;: <a href="https://developers.google.com/chrome/mobile/docs/debugging">debugging distant via la version desktop</a> en USB (nécessite toutefois le SDK Android + la config en mode développement du téléphone)</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Android :</p>
+<ul>
+<li>connecter l'USB</li>
+<li>"à propos de l'appareil"</li>
+<li>appuyer 7 fois sur le numéro de version</li>
+<li>menu Options de développement</li>
+<li>activer le debug USB</li>
+<li>chrome://inspect/#devices</li>
+<li>windows : + <a href="http://developer.android.com/tools/extras/oem-usb.html">http://developer.android.com/tools/extras/oem-usb.html</a></li>
+<li>sélection du device (avoir lancé chrome)</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="mobile-safari-specific" class="future" style="top: -20px; display: none;">
+            <h1>iOS / Mobile Safari</h1>
+
+            <p>Sur iOS 5.x, on avait <a href="http://www.iwebinspector.com/">iWebInspector</a></p>
+            <p>Depuis iOS 6 <a href="https://developer.apple.com/library/mac/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html#//apple_ref/doc/uid/TP40007874-CH2-SW2">on peut connecter via USB</a> Safari Desktop</p>
+            <p>On espère pour bientôt : <a href="https://github.com/google/ios-webkit-debug-proxy">iOS WebKit Debug Proxy</a> (Lion+)</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>iWebInspector :</p>
+<ul>
+<li>peut encore être utilisé pour les webview</li>
+<li>MacOS 10.6 et 10.7 (donc pas 10.8 Mountain Lion)</li>
+<li>breakpoints, profiling et le reste</li>
+</ul>
+<p>WebInspector Safari :
+<em> Avoir configuré sur iOS : Réglages &gt; Safari &gt; Avancé &gt; Inspecteur Web. Lancer une page
+</em> Safari 7 &gt; Développement &gt; iPhone de ….</p>
+<p>iOS WebKit Debug Proxy :
+<em> Mac / linux, pas windows
+</em> encore un peu brut, ne marche pas à tous les coups
+* Lion+, Xcode 5</p>
+</aside>
+          </section>
+
+          <section id="mobile-other-specific" class="future" style="top: -20px; display: none;">
+            <h1>Les autres</h1>
+
+            <p>Firefox (Fennec)&nbsp;: depuis la 15, <a href="https://hacks.mozilla.org/2012/08/remote-debugging-on-firefox-for-android/">debugging distant</a> simple à configurer, via TCP/IP (ou ADB forwarding).  Et <strong>aussi via Weinre</strong>.</p>
+
+            <p>Windows Phone : <a href="http://blogs.msdn.com/b/visualstudioalm/archive/2014/04/04/diagnosing-mobile-website-issues-on-windows-phone-8-1-with-visual-studio.aspx">Visual Studio 2013</a>, et encore uniquement pour Windows Phone 8.1… Mais complet.  Et <strong>aussi via Weinre</strong></p>
+
+            <p>Opera Mobile : <a href="http://www.opera.com/dragonfly/documentation/remote/">Dragonfly</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"></aside>
+          </section>
+        </section>
+
+        <section id="preprocessors" hidden="" class="stack future" style="top: -20px; display: none;" data-previous-indexv="0">
+          <section class="chapter" style="top: -20px; display: none;">
+            <h1>Préprocesseurs</h1>
+            <h4>Parce que des fois on en veut plus</h4>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><pre><code class="matlab">        <span class="transposed_variable">L'</span>idée <span class="transposed_variable">d'</span>un pré-proc remonte avant CSS1</code></pre>
+<ul>
+<li><p>notions de variables (constantes), fonctions (mixin), conditions …</p>
+<p>Évoquer Less et Sass (de toute façon dans la démo SourceMaps).</p>
+</li>
+<li><p>Less lent, syntaxe discutable (@ ou . pour un mixin ), pas de gestion d'erreur</p>
+</li>
+<li>Less = bootstrap (un pote) =&gt; connu</li>
+<li>Sass : + de possibilités que Less, code généré efficace. Depuis Sass 3, interprète correctement le .css</li>
+<li>Compass : librairie de mixin pour Sass, mais bugs et parfois très lourd (grille = 1.2Mo). Préférer micro-lib ou bourbon.io (montrer juste la démo en haut de page)</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="stylus" class="future" style="top: -20px; display: none;">
+            <h1>Stylus</h1>
+
+            <p>J'aime ♥ :-)</p>
+            <p>Par les types qui font Socket.IO et plein de trucs Node</p>
+            <p>Syntaxe flexible, adaptable à vos goûts</p>
+            <p>Transparence des mixins/prefixers</p>
+            <p>Petites syntaxes <strong>qui tuent</strong></p>
+            <p><a href="http://learnboost.github.com/stylus/">learnboost.github.com/stylus</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Stylus :</p>
+<ul>
+<li>Par le malade qui fait aussi express, jade (template HTML), mocha, commander…</li>
+<li>syntaxe à la coffee mais configurable</li>
+<li>renvoie des erreurs, réf au parent, images inline</li>
+<li>librairie de mixins Nib : <a href="http://visionmedia.github.io/nib/">http://visionmedia.github.io/nib/</a> (voir les mixins vendor-prefix, clearfix, ellipsis et dégradés )</li>
+<li>commentaires avec // :)</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="stylus-demo" class="future" style="top: -20px; display: none;">
+            <h1>Stylus&nbsp;: exemple</h1>
+
+            <pre><code class="stylus matlab">overflow()
+  <span class="keyword">if</span> arguments<span class="matrix">[<span class="number">0</span>]</span> == ellipsis
+    ellipsis()
+  <span class="keyword">else</span>
+    overflow: arguments
+
+<span class="built_in">size</span>()
+  <span class="keyword">if</span> <span class="built_in">length</span>(arguments) == <span class="number">1</span>
+    width: arguments<span class="matrix">[<span class="number">0</span>]</span>
+    height: arguments<span class="matrix">[<span class="number">0</span>]</span>
+  <span class="keyword">else</span>
+    width: arguments<span class="matrix">[<span class="number">0</span>]</span>
+    height: arguments<span class="matrix">[<span class="number">1</span>]</span>
+
+box-shadow()
+  vendor(<span class="string">'box-shadow'</span>, arguments, only: webkit official)</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>fonction overflow, qui permet de faire overflow: scroll; ou de générer le code pour ellipsis (de nib)</li>
+<li>fonction size permet d'avoir une height === width</li>
+<li>fonction box-shadow, permet d'ajouter les préfixes</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="coffeescript" class="future" style="top: -20px; display: none;">
+            <h1>CoffeeScript</h1>
+
+            <p>Juste une tuerie™</p>
+            <p>Transpiler JavaScript (y'en a plein)</p>
+            <p>Pas <strong>du tout</strong> que pour les n00bs&nbsp;: chouchou des gourous aussi…  Inspire énormément ES.next.</p>
+            <p>Évite les pièges, promeut les bonnes pratiques, améliore les perfs, sauve des chatons.</p>
+            <p>De plus en plus de libs et frameworks majeurs l'utilisent comme langage de dev.</p>
+            <p><a href="http://coffeescript.org/">coffeescript.org</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>4 ans, inspire ES.Next</li>
+<li><p>également backbone, underscore, doco</p>
+</li>
+<li><p>arguments par défaut</p>
+</li>
+<li>classes : constructeur, méthodes</li>
+<li>héritage avec extends</li>
+<li>binding du contexte (@ = this), fat arrow (comme ES6)</li>
+<li>égalité stricte</li>
+<li>array slice</li>
+<li>jamais de variable globale</li>
+<li>plus de variable hiding</li>
+<li>chained comparison</li>
+<li>commentaire dans les RegExp</li>
+<li>tout est expression=&gt; les for peuvent renvoyer des valeurs</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="coffeescript-demo" class="future" style="top: -20px; display: none;">
+            <h1>Coffee&nbsp;: exemple</h1>
+
+            <pre><code class="coffeescript"><span class="function"><span class="title">awardMedals</span> = <span class="params">(first, second, others...)</span> -&gt;</span>
+  gold   = first
+  silver = second
+  rest   = others
+
+math =
+  <span class="attribute">root</span>:   Math.sqrt
+  <span class="attribute">square</span>: square
+  <span class="attribute">cube</span>:   <span class="function"><span class="params">(x)</span> -&gt;</span> x * square x
+
+foods = [<span class="string">'broccoli'</span>, <span class="string">'spinach'</span>, <span class="string">'chocolate'</span>]
+eat food <span class="keyword">for</span> food <span class="keyword">in</span> foods <span class="keyword">when</span> food <span class="keyword">isnt</span> <span class="string">'chocolate'</span>
+
+yearsOld = <span class="attribute">max</span>: <span class="number">10</span>, <span class="attribute">ida</span>: <span class="number">9</span>, <span class="attribute">tim</span>: <span class="number">11</span>
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
+
+letTheWildRumpusBegin() <span class="keyword">unless</span> answer <span class="keyword">is</span> <span class="literal">no</span></code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>splats (range les arguments en trop dans un tableau à part)</li>
+<li>objet literal</li>
+<li>unless (inverse du if)</li>
+<li>templating</li>
+</ul>
+<p>Si on a le temps (on doit boucler la démo avant de partir déjeuner), on peut ici jouer un peu avec la console interactive du site de CoffeeScript.</p>
+</aside>
+          </section>
+
+          <section id="sourcemap-demo" class="future" style="top: -20px; display: none;">
+            <h1>Source Maps</h1>
+            <h2>Comment deboguer du code généré ?</h2>
+            <p>Les pré-proc c'est joli, mais le navigateur ne lit que JS et CSS</p>
+            <p>Idée de base : faire le lien entre le code généré et le code original.</p>
+            <p>Marche aussi pour le code minifié, les concaténations…</p>
+            <p>Comme à la maison : inspection des styles, point d'arrêt …</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>dans demos-day2:</p>
+<ul>
+<li>montrer les sources (index + coffee + scss)</li>
+<li>expliquer le watcher, le lancer, montrer que les fichiers ont été générés</li>
+<li>afficher via localhost ()</li>
+<li>montrer le réseau (.css et .js, puis sourcemap, puis .scss et .coffee)</li>
+<li>inspecter le style du H1, de l'input</li>
+<li>point d'arrêt JS</li>
+</ul>
+</aside>
+          </section>
+        </section>
+
+        <section id="what-can-we-use" hidden="" class="stack future" style="top: -20px; display: none;" data-previous-indexv="0">
+          <section class="chapter" style="top: -20px; display: none;">
+            <h1>À quoi a-t-on droit&nbsp;?</h1>
+            <h4>Et comment compenser ?</h4>
+          </section>
+
+          <section id="refs" class="future" style="top: -20px; display: none;">
+            <h1>Références</h1>
+
+            <p>
+              <a href="http://caniuse.com/">CanIUse</a>
+              <span class="fragment" data-fragment-index="0">+ <a href="http://caniuse.com/#stats_import">Google Analytics</a> = <strong>Awesome</strong>&nbsp;!</span>
+            </p>
+            <p class="fragment" data-fragment-index="1"><a href="http://html5please.com/">HTML5 Please</a>&nbsp;: détails de prise en charge et polyfills</p>
+            <p class="fragment" data-fragment-index="2"><a href="http://html5test.com/">HTML5Test</a>&nbsp;: et ton navigateur, il roxxe&nbsp;?</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Faire une démo avec un de vos sites sur GA.  Penser à purger votre LocalStorage CIU avant, pour ne pas être d'entrée de jeu en mode Custom.  Attention, la beta en cours peut déconner sur le custom…</p>
+</aside>
+          </section>
+
+          <section id="modernizr" class="future" style="top: -20px; display: none;">
+            <h1>Modernizr</h1>
+
+            <p>In-page feature detection</p>
+            <p>Sans doute le seul script forcément à chargement synchrone, et dans le head :-)</p>
+            <p>À peu près tous les aspects de CSS2/3 et «&nbsp;HTML5&nbsp;»</p>
+            <p>Classes positives/négatives sur le document&nbsp;: évite au passage de saloper nos feuilles à coups de hacks CSS</p>
+            <p><a href="http://modernizr.com/">modernizr.com</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>« Le seul script qui devrait être chargé en synchrone depuis le <code>&lt;head&gt;</code> »</p>
+<ul>
+<li>démo du packaging custom</li>
+<li>on peut montrer que ça s'exécute super rapidement (console.time())</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="polyfills" class="future" style="top: -20px; display: none;">
+            <h1>Polyfills</h1>
+
+            <p>Un polyfill est un ersatz, un substitut qui tente de fournir une API identique (ou au moins équivalente) à celle d'une fonction non prise en charge par l'environnement (typiquement le navigateur)</p>
+            <p>Y'en a <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">plein</a>&nbsp;!</p>
+            <p>Les fameux <a href="http://code.google.com/p/ie7-js/">IEx.js</a> de Dean Edwards, <a href="http://raphaeljs.com/">Raphaël</a>, <a href="https://github.com/afarkas/html5shiv">html5shiv</a>, <a href="http://code.google.com/p/explorercanvas/">ExCanvas</a>, <a href="http://sublimevideo.net/">SublimeVideo</a>, <a href="http://socket.io/">Socket.IO</a>, <a href="https://github.com/kriskowal/es5-shim/">es5-shim</a>…</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Faire le distingo entre <em>shim</em> (API identique au natif, même si partielle, ex. ES5-Shim ou ExCanvas) et <em>polyfill</em> (API spécifique car l'identique est infaisable, ex. SVG).</p>
+</aside>
+          </section>
+        </section>
+
+        <section id="codebase" hidden="" class="stack future" style="top: -20px; display: none;" data-previous-indexv="0">
+          <section class="chapter" style="top: -20px; display: none;">
+            <h1>Organiser la codebase</h1>
+          </section>
+
+          <section id="modules" class="future" style="top: -20px; display: none;">
+            <h1>Modules</h1>
+
+            <p><a href="http://requirejs.org/docs/why.html">Pourquoi des modules&nbsp;?</a></p>
+            <p><a href="http://www.commonjs.org/specs/modules/1.0/">CommonJS</a></p>
+            <p><a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a></p>
+            <p><a href="http://wiki.ecmascript.org/doku.php?id=harmony:modules">Harmony</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Introduire la notion avant de parler des formats :</p>
+<ul>
+<li>grosse codebase, diviser pour mieux régner</li>
+<li>réutilisation de code</li>
+<li>gestion des dépendances complexes</li>
+<li>pas de pollution globale</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="commonjs" class="future" style="top: -20px; display: none;">
+            <h1>CommonJS</h1>
+
+            <p>Le format historique, synchrone, popularisé par Node</p>
+            <p>On parle en fait de CommonJS/1.0 (plein d'extensions…)</p>
+            <p>Très facile à comprendre&nbsp;:</p>
+
+            <br>
+            <p class="fragment" data-fragment-index="0"><code>exports.<i>key</i> = <i>value</i></code></p>
+            <p class="fragment" data-fragment-index="1"><code><i>mod</i> = require('<i>pathspec</i>')</code></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>la base de Node.js, Brunch et Browserify (chargeur de fichier concaténés)</li>
+<li>on en fera dans la SPA de demain</li>
+<li>Un fichier = un module</li>
+<li>construit l'arbre des dépendances</li>
+<li>Enrobage automatique donc obligatoire</li>
+<li>toute variable doit être locale</li>
+<li>renvoi de l'API publique avec exports.key ou module.exports</li>
+<li>de l'autre côté : var machin = require('chemin') sans le .js</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="commonjs-2" class="future" style="top: -20px; display: none;">
+            <h1>CommonJS</h1>
+            <p><img src="./JS Total • 2ème partie, 09_12_2015_files/commonjs.png"></p>
+          </section>
+
+          <section id="amd" class="future" style="top: -20px; display: none;">
+            <h1>AMD</h1>
+
+            <p>Mais <a href="http://requirejs.org/docs/whyamd.html">pourquoi&nbsp;?</a></p>
+            <p>Asynchronous Module Definition</p>
+            <p>Conçu notamment pour les browsers</p>
+            <p>Tout module CommonJS peut être «&nbsp;enrobé&nbsp;» en AMD</p>
+            <p>Principal loader&nbsp;: <a href="http://requirejs.org/">RequireJS</a></p>
+            <p>Clé de voute&nbsp;:</p>
+            <br>
+            <p><code>define('<i>name</i>', [<i>path, …</i>], <i>cb</i>(<i>mod, …</i>) {})</code></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>machin = require(truc) pas possible à cause de l'async, d'où callback</li>
+<li>Enrobage manuel donc pas obligatoire…</li>
+<li>grosse mode il y a qlqs années. est resté requireJS (et LabJS, yepnope.js …)</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="amd-2" class="future" style="top: -20px; display: none;">
+            <h1>AMD</h1>
+            <p><img src="./JS Total • 2ème partie, 09_12_2015_files/amd.png"></p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>explicite avec define + return de l'API publique</li>
+<li>nom du module peut être différent du nom du fichier (mais à configurer)</li>
+<li>dépendances listées + référence locale</li>
+<li>tri topologique et décision de téléchargement</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="harmony-modules" class="future" style="top: -20px; display: none;">
+            <h1>Modules Harmony</h1>
+
+            <p><a href="http://jsmodules.io/">ES6 fournit une syntaxe native de modules</a>.</p>
+            <p>Syntaxe souple, inspirée entre autres de Python.  Déjà disponible dans certaines implémentations préalables (Node 0.11, Chrome 35+, Firefox 25+…).</p>
+
+            <p><a href="http://jsmodules.io/cjs.html">Comparez avec CommonJS</a> (mapping facile)</p>
+            <p><a href="https://github.com/systemjs/systemjs">SystemJS</a> est un chargeur universel qui permet, dès maintenant, de faire collaborer les 3 types de modules et les scripts globaux, en cas de besoin.  Pour ES6, il repose sur l'excellent shim <a href="https://github.com/ModuleLoader/es6-module-loader">es6-module-loader</a>.</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>prévu pour 2013, puis début 2014, mi-2014</li>
+<li>marche dans Fx et options avancées de Chrome</li>
+<li>même concepts que CommonJS mais pas compatible.</li>
+<li>mais traducteurs et transpiler existent</li>
+<li><p>concepts : modules synchrone, pré-compilation, résolution de l'arbre au parsing ou à l'exécution</p>
+</li>
+<li><p>3 nouveaux mot clés : module, export, import</p>
+</li>
+<li>montrer la syntaxe sur le site</li>
+<li>exemple jQuery : import $ from jquery</li>
+</ul>
+</aside>
+          </section>
+        </section>
+
+        <section id="frameworks" hidden="" class="stack future" style="top: -20px; display: none;" data-previous-indexv="0">
+          <section class="chapter" style="top: -20px; display: none;">
+            <h1>Frameworks</h1>
+          </section>
+
+          <section id="why-frameworks" class="future" style="top: -20px; display: none;">
+            <h1>Dis papa pourquoi&nbsp;?</h1>
+
+            <p><strong>Parce que&nbsp;!</strong></p>
+            <p>Dès qu'on commence à avoir une masse de code, un formalisme et un socle bien testé et bien maintenu deviennent indispensables.  C'est comme pour le côté serveur&nbsp;!</p>
+
+            <p>On perçoit quelques grandes catégories&nbsp;:</p>
+
+            <p>La base&nbsp;: le squelette de MVC, sans plus</p>
+            <p>Les <i>full clients</i>&nbsp;: la totale… pour le côté client</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>Pour arretter de réinventer la roue</li>
+<li>base MVC : pas de structure ou de syntaxe imposée</li>
+<li>full clients : prends des décisions sur la vue, le templating, le routage, la communication serveur</li>
+<li>full stack : généralement Node, comme Meteor. Dur à aborder</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="frameworks-basic" class="future" style="top: -20px; display: none;">
+            <h1>La base</h1>
+            <h2><a href="http://backbonejs.org/">Backbone</a></h2>
+
+            <p>Comme son nom l’indique, juste l’ossature critique</p>
+            <p><strong>De loin le plus répandu</strong> (même sans marketing)</p>
+            <p>Une couche modèle bien solide, à la base REST+JSON</p>
+            <p>Couche routeur pas mal</p>
+            <p>Couche vue minimaliste mais <strong>riche en BP</strong></p>
+            <p>Énormément de <a href="http://backplug.io/">plugins</a> pour enrichir le tout</p>
+            <p>(notamment <a href="http://marionettejs.com/">Marionette</a> pour ajouter du lourd côté vues)</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>le plus connu (300 fois plus de sites que angular ou ember)</li>
+<li>pérenne, open source, solide, syntaxe compréhensible</li>
+<li>Model : solide, facilite communication serveur</li>
+<li>routage : OK, gère pushState de HTML5</li>
+<li>événements, facilite les bonnes pratiques jQuery</li>
+<li>View (qui est plus un Controler en fait), on y rajoute parfois du Marionette ou du thorax (Handlebars)</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="frameworks-full-client" class="future" style="top: -20px; display: none;">
+            <h1>Full Client</h1>
+
+            <p><a href="http://emberjs.com/">Ember.js</a></p>
+            <p><a href="http://angularjs.org/">Angular.js</a></p>
+            <p>Backbone + <a href="http://marionettejs.com/">Marionette</a></p>
+            <p><a href="https://github.com/chaplinjs/chaplin">Chaplin</a></p>
+            <p><a href="http://walmartlabs.github.com/thorax/">Thorax</a></p>
+            <p>…</p>
+          </section>
+
+          <section id="frameworks-angular" class="future" style="top: -20px; display: none;">
+            <h1>Full Client</h1>
+            <h2><a href="http://angularjs.org/">Angular.js</a></h2>
+
+            <p>Déjà ancien mais Google bombarde en marketing depuis 2010</p>
+            <p>Sur-architecturé&nbsp;; ratio puissance/complexité plutôt bas</p>
+            <p>Soucis récurrents sur les choix de data sources, les scopes…</p>
+            <p>Les directives et le dirty checking sont très lourds en perfs</p>
+            <p>Angular 2, sera nettement mieux mais 10% compatible 1.</p>
+            <p><strong>Beaucoup de bons concepts mais l'exécution est faiblarde.</strong></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Angular :</p>
+<ul>
+<li>pas du vrai open source : pull request ignorées</li>
+<li>Google aime t il JS ? =&gt; dart, GWT</li>
+<li>retour de stagiaires formation Node : marre d'angular, on passe à Ember</li>
+<li>4 types de datasource !</li>
+<li>scope compliqué à comprendre</li>
+<li>directives = webcomponents, top pour la testabilité</li>
+<li>bon écosystème (builder, runner)</li>
+<li>sur-architecturé =&gt; <a href="http://codeofrob.com/entries/you-have-ruined-javascript.html">http://codeofrob.com/entries/you-have-ruined-javascript.html</a></li>
+<li>tu te sens d'attendre IE 13 ?</li>
+<li>tient pas le nombre d'infos à afficher à l'écran</li>
+<li>on aime ou pas les directives dans le DOM</li>
+<li>Polémique Angular 2 : ré-écriture complète</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="frameworks-ember" class="future" style="top: -20px; display: none;">
+            <h1>Full Client</h1>
+            <h2><a href="http://emberjs.com/">Ember.js</a></h2>
+
+            <p>Issu de SproutCore&nbsp;; influencé par Rails</p>
+            <p>Yehuda Katz &amp; Tilde (jQuery, Rails, Handlebars…)</p>
+            <p>Bon ratio puissance/complexité</p>
+            <p>Porte de sortie fréquente des «&nbsp;brûlés par Angular&nbsp;»</p>
+            <p>Désormais 100% ES6 (transpilé), dont modules</p>
+            <p>Data binding plus léger et performant, via HTMLBars</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Ember :</p>
+<ul>
+<li>récent, mais vient de sproutcore, pour l'appli iCloud</li>
+<li>influence Rails</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="frameworks-over-backbone" class="future" style="top: -20px; display: none;">
+            <h1>Full Client</h1>
+            <h2>Solutions basées Backbone</h2>
+
+            <h3><a href="https://github.com/chaplinjs/chaplin">Chaplin</a></h3>
+            <p>Équivalent à Backbone + Marionette + du sucre syntaxique et des conventions de structuration et de nommage&nbsp;; très sympa.</p>
+
+            <h3><a href="http://walmartlabs.github.com/thorax/">Thorax</a></h3>
+            <p>Le plus «&nbsp;battle-tested&nbsp;» au monde&nbsp;: au cœur de Walmart Mobile.  Énormément de services, factories, conventions, etc.  Archi industrielle adaptée aux (très) grosses applis clients.</p>
+          </section>
+          <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>thorax : au niveau de angular si on veut de la grosse architecture</li>
+</ul>
+</aside>
+        </section>
+
+        <section hidden="" class="stack future" style="top: 0px; display: block;" data-previous-indexv="0">
+          <section id="brunch" class="chapter" style="top: -334.5px; display: block;">
+            <h1><a href="http://brunch.io/">Brunch.io</a></h1>
+
+            <p>Tout le monde parle de Grunt, Gulp, Broccoli…  Mais Brunch est là depuis 4 ans et les enterre tous en <strong>application assembly</strong>.</p>
+
+            <p>Pas un exécuteur générique de tâches</p>
+            <p>Une vraie pipeline optimisée pour le <a href="http://brunch.io/compare.html">build d'applis</a></p>
+            <p>Extrêmement <strong>réactif</strong>&nbsp;: entre 60ms et 200ms de la sauvegarde de fichier à la fin des rebuilds appropriés.</p>
+            <p>Énormément de puissance en très (très) peu de config&nbsp;; repose plutôt sur plein de conventions (mais reste configurable)</p>
+            <p>Écosystème très riche de <a href="http://brunch.io/plugins.html">plugins</a></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>grunt
+* travaille au niveau du fichier</p>
+<p>Gulp
+* marche en flux</p>
+<p>Bizarrement, nous on préfère Brunch.  En gros, défonce Yeoman et ses énormes scripts Grunt en perf.  Mais Yeoman fait plein de trucs en plus, Brunch est un <strong>assembleur d'appli</strong> ; en revanche, à ce jeu-là, il enterre tout le monde (Grunt, Gulp, etc.).</p>
+<p>Brunch
+<em> en concurrence avec les nouveaux : gulp, brocoli
+</em> depuis 4 ans
+<em> un vrai builder d'application
+</em> en mode pipeline</p>
+<p>plugins
+<em> templating
+</em> tous les transpilers
+<em> les minifiers, spriter, optimisation d'images
+</em> linters, documentation, autoreload
+* appcache, cache client en refaisant les URLs …</p>
+<p>Ça tombe bien, c'est là qu'on DL <code>spa-basis.zip</code>, qu'on la décompresse, <code>npm install</code> et <code>npm start</code>.  Du coup quand ça marche, on peut faire du Cmd+S et montrer le temps de réaction de Brunch :-)</p>
+<p>Pour les Windowsiens : activer l'option <code>usePolling</code> s'ils loupent des modifs / nouveaux fichiers (ça sera plus lent à réagir mais au moins ça réagira).</p>
+</aside>
+          </section>
+
+          <section id="brunch-config" class="future" style="top: -325.5px; display: block;">
+            <h1>Config basique</h1>
+
+            <p>Fichier <code>brunch-config.coffee</code> (ou <code>.js</code>)</p>
+
+            <pre><code class="coffeescript"><span class="reserved">export</span>s.config =
+  <span class="attribute">files</span>:
+    <span class="attribute">javascripts</span>:
+      <span class="attribute">joinTo</span>: <span class="string">'app.js'</span>
+    <span class="attribute">stylesheets</span>:
+      <span class="attribute">joinTo</span>: <span class="string">'app.css'</span>
+    <span class="attribute">templates</span>:
+      <span class="attribute">joinTo</span>: <span class="string">'app.js'</span></code></pre>
+
+            <p>JS&nbsp;= sources ES3/5/6, TypeScript, CoffeeScript, etc.</p>
+            <p>Styles = sources CSS, SASS, LESS, Stylus, etc.</p>
+            <p>Templates = sources Handlebars, Jade, etc.</p>
+          </section>
+
+          <section id="brunch-output" class="future" style="top: -350px; display: block;">
+            <h1>Ce que ça fait</h1>
+
+            <ol>
+              <li>Transpiling (ES6, CoffeeScript, TypeScript…)</li>
+              <li>Préprocesseurs (LESS, SASS, Stylus…)</li>
+              <li>Précompilation de templates vers JS (Handlebars, Jade…)</li>
+              <li>Enrobage en modules (par défaut CommonJS)</li>
+              <li>Concaténation intelligente</li>
+              <li>Source Maps v3</li>
+              <li>Minification optimale (JS, CSS) si en prod</li>
+            </ol>
+
+            <p>Si le plugin est présent, ses traitements sont automatiques&nbsp;!</p>
+
+            <p>Mais aussi&nbsp;: spriting et optimisation des images, maintenance manifeste AppCache, injection live CSS, reloading si changement JS, etc.</p>
+          </section>
+
+          <section id="brunch-conventions" class="future" style="top: -340px; display: block;">
+            <h1>Conventions Brunch</h1>
+
+            <p>Tout ça est configurable finement, mais par défaut&nbsp;:</p>
+
+            <ul>
+              <li>Les dossiers exploités sont <code>app/</code> et <code>vendor/</code></li>
+              <li>Le dossier cible est <code>public/</code></li>
+              <li>Les fichiers dont le nom démarre par <code>_</code> sont ignorés (on suppose qu'ils seront importés/inclus par d'autres)</li>
+              <li>Le contenu des dossiers <code>assets/</code> est copié verbatim</li>
+              <li>Les scripts dans les dossiers <code>vendor/</code> ne sont pas enrobés en modules, simplement concaténés</li>
+              <li>Les autres scripts sont enrobés en modules CommonJS avec un nom dérivé de leur chemin sous <code>app/</code></li>
+            </ul>
+          </section>
+
+          <section id="brunch-plugins" class="future" style="top: -20px; display: none;">
+            <h1>Plugins Brunch</h1>
+
+            <p>Ce sont des modules Node qu'il suffit d'installer en local pour qu'ils soient pris en compte.</p>
+            <p>Ils s'inscrivent sur un type de fichier (<code>javascript</code>, <code>stylesheets</code> ou <code>templates</code>) et 1+ extension/motif de fichier.</p>
+            <p>Par exemple, <code>jade-brunch</code> s'inscrit sur le type <code>templates</code> pour l'extension <code>.jade</code>.</p>
+            <p>Par défaut, Brunch ne traite aucun type de fichier d'office&nbsp;; il lui faudrait au moins <code>javascript-brunch</code> pour s'occuper des <code>.js</code> et <code>css-brunch</code> pour s'occuper des <code>.css</code>.  Donc très léger&nbsp;!</p>
+
+            <p>Y'en a <a href="http://brunch.io/plugins.html">des tonnes</a> :-)</p>
+          </section>
+
+          <section id="brunch-watch" class="future" style="top: -20px; display: none;">
+            <h1>Watcher Brunch</h1>
+
+            <p>La commande <code>brunch build</code> fait un build one-shot, mais…</p>
+            <p><code>brunch watch</code> poursuit en surveillant les dossiers définis pour mettre à jour, <strong>super vite</strong>, les fichiers cibles nécessaires.</p>
+            <p>Elle peut même fournir un mini-serveur HTTP sur le dossier cible, avec <code>brunch watch --server</code></p>
+          </section>
+
+          <section id="brunch-prod" class="future" style="top: -20px; display: none;">
+            <h1>Brunch pour la prod</h1>
+
+            <p>Par défaut, les fichiers produits sont orientés développement&nbsp;: HTML indenté, JS et CSS non minifiés, etc.</p>
+            <p>Pour une release, on demande à Brunch de produire les versions de production avec <code>brunch build --production</code></p>
+            <p>Si les plugins idoines sont présents (ex. <code>uglify-js-brunch</code> et <code>clean-css-brunch</code>), une minification optimale est effectuée.  On peut aussi optimiser les images, etc.</p>
+          </section>
+        </section>
+
+        <section hidden="" class="stack future" style="top: 0px; display: block;" data-previous-indexv="0">
+          <section id="spa-intro" class="chapter" style="top: -111px; display: block;">
+            <h1>Notre p’tite SPA</h1>
+          </section>
+
+          <section id="what-does-it-do" class="future" style="top: -217px; display: block;">
+            <h1>Que fait-elle&nbsp;?</h1>
+
+            <p>Sorte de µ-Foursquare</p>
+            <p>Regarde où on est, cherche des endroits où manger, check-in&nbsp;!</p>
+            <p>Historise les check-ins</p>
+            <p>Gestion pratique du offline</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>on peut faire une démo en local de spa-final</p>
+</aside>
+          </section>
+
+          <section id="spa-brunch-config" class="future" style="top: -319px; display: block;">
+            <h1>Config Brunch (1/2)</h1>
+
+            <pre><code class="coffeescript"><span class="attribute">files</span>:
+  <span class="attribute">javascripts</span>:
+    <span class="attribute">joinTo</span>: <span class="string">'app.js'</span>
+  <span class="attribute">stylesheets</span>:
+    <span class="attribute">joinTo</span>: <span class="string">'app.css'</span>
+  <span class="attribute">templates</span>:
+    <span class="attribute">joinTo</span>: <span class="string">'app.js'</span>
+
+<span class="attribute">modules</span>:
+  <span class="attribute">nameCleaner</span>: <span class="function"><span class="params">(path)</span> -&gt;</span>
+    path
+      <span class="comment"># Strip app/ and app/externals/ prefixes</span>
+      .replace <span class="regexp">/^app\/(?:externals\/)?/</span>, <span class="string">''</span>
+      <span class="comment"># Allow -x.y[.z…] version suffixes in mantisses</span>
+      .replace <span class="regexp">/-\d+(?:\.\d+)+/</span>, <span class="string">''</span>
+      <span class="comment"># Allow -fr lang suffixes in mantisses</span>
+      .replace <span class="string">'-fr.'</span>, <span class="string">'.'</span>
+</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>nameCleaner : exemple require('moment') ira chercher app/externals/moment-2.2.1-fr.js</p>
+</aside>
+          </section>
+
+          <section id="spa-brunch-config-2" class="future" style="top: -303.5px; display: none;">
+            <h1>Config Brunch (2/2)</h1>
+
+            <pre><code class="coffeescript"><span class="attribute">plugins</span>:
+  <span class="attribute">appcache</span>:
+    <span class="attribute">externalCacheEntries</span>: [
+      <span class="string">'http://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png'</span>
+      <span class="string">'http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png'</span>
+      <span class="string">'http://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png'</span>
+      <span class="string">'http://maps.gstatic.com/mapfiles/place_api/icons/wine-71.png'</span>
+    ]
+    <span class="attribute">network</span>: [<span class="string">'*'</span>, <span class="string">'http://*'</span>, <span class="string">'https://*'</span>]
+
+<span class="attribute">server</span>:
+  <span class="attribute">path</span>: <span class="string">'jst-server.coffee'</span>
+
+<span class="attribute">watcher</span>:
+  <span class="attribute">usePolling</span>: <span class="literal">true</span>
+</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"></aside>
+          </section>
+
+          <section id="stack" class="future" style="top: -20px; display: none;">
+            <h1>La stack</h1>
+
+            <p class="fragment" data-fragment-index="0"><a href="http://learnboost.github.io/stylus/">Stylus</a> et <a href="http://lesscss.org/">LESS</a> (<a href="http://getbootstrap.com/">Bootstrap</a>) pour les CSS</p>
+            <p class="fragment" data-fragment-index="1"><a href="http://jade-lang.com/">Jade</a> pour le templating</p>
+            <p class="fragment" data-fragment-index="2"><a href="http://backbonejs.org/">Backbone</a> pour le MVC côté client</p>
+            <p class="fragment" data-fragment-index="3">W3C / HTML5 pour la <a href="https://developer.mozilla.org/fr/docs/Using_geolocation">géolocalisation</a> et la <a href="https://developer.mozilla.org/fr/docs/%C3%89v%C3%A8nements_online_et_offline">détection offline</a></p>
+            <p class="fragment" data-fragment-index="4"><a href="https://developer.mozilla.org/fr/docs/DOM/Storage">sessionStorage</a> pour du stockage local transient</p>
+            <p class="fragment" data-fragment-index="5"><a href="http://brian.io/lawnchair/">Lawnchair</a> pour l'abstraction de stockage local persistant</p>
+            <p class="fragment" data-fragment-index="6"><a href="https://developers.google.com/maps/">Google Maps</a> pour l'obtention de POI où manger</p>
+            <p class="fragment" data-fragment-index="7"><a href="https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache">ApplicationCache</a> pour le cache offline</p>
+            <p class="fragment" data-fragment-index="8"><a href="http://momentjs.com/">Moment.js</a> pour l'horloge et <a href="http://underscorejs.org/">Underscore.js</a> pour l'algo</p>
+            <p class="fragment" data-fragment-index="9"><a href="http://nodejs.org/">Node</a> et <a href="http://coffeescript.org/">CoffeeScript</a> pour le serveur de démo</p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>Stylus : montrer le style sur l'élément body (sourcemap), less : montrer ce qui vient de bootstratp</li>
+<li>Jade : montrer #checkInUI qui se trouve dans home.jade</li>
+<li><ul>
+<li>définition du block main</li>
+</ul>
+</li>
+<li><ul>
+<li>inclusion de _layout.jade</li>
+</ul>
+</li>
+<li><ul>
+<li>montrer au passage les FIXME dans #onlineMarker et #ticker</li>
+</ul>
+</li>
+<li>Backbone : dans initialize.js , juste montrer le require</li>
+<li>geoloc : montrer sur spa-final</li>
+<li>offline : plus tard</li>
+<li>sessionStorage : sur spa-final, panneau ressources</li>
+<li>lawnchair : site + montrer que externals/lawnchair-dom.js existe</li>
+<li>Gmaps / offline : plus tard</li>
+<li>Moment.js : montrer site</li>
+<li>node et coffee : Montrer jst-server.coffee</li>
+<li><ul>
+<li>npm start =&gt; package.json =&gt; brunch watch =&gt; brunch-config =&gt; node jst-server.coffee</li>
+</ul>
+</li>
+<li><ul>
+<li>get / : public/index.html =&gt; montre le body vide</li>
+</ul>
+</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="spa-boot" class="future" style="top: -20px; display: none;">
+            <h1>«&nbsp;Boot&nbsp;»</h1>
+
+            <p>Bon, pour le moment, je passe sous Keynote…</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>montrer slides-material/spa-boot.pdf</li>
+<li>initialize.js - require('moment') =&gt; expliquer que le chemin a été retravaillé par brunch-config - nameCleaner</li>
+<li>à retenir</li>
+<li><ul>
+<li>on renseignera systématiquement template, afterRender et getRenderData</li>
+</ul>
+</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-steps" class="future" style="top: -20px; display: none;">
+            <h1>Pour aujourd'hui…</h1>
+
+            <ol>
+              <li>Faire tourner</li>
+              <li>Récupérer et retenir le nom</li>
+              <li>L’horloge</li>
+              <li>Vues imbriquées</li>
+              <li>Géolocalisation et Google Maps Places</li>
+              <li>Modèle Backbone d’état UX</li>
+            </ol>
+          </section>
+
+          <section id="spa-runit" class="future" style="top: -20px; display: none;">
+            <h1>Faire tourner</h1>
+            <h3>le socle</h3>
+
+            <pre><code data-trim="" data-noescape="" class="bash">$ <span class="built_in">cd</span> spa-basis
+$ <u>npm install</u>
+…
+$ <u>npm start</u>
+
+&gt; js-total-spa@<span class="number">2.0</span>.<span class="number">0</span> start …/spa-basis
+&gt; <u>brunch watch --server</u>
+
+<span class="number">22</span> Oct <span class="number">16</span>:<span class="number">59</span>:<span class="number">34</span> - info: starting custom server
+Cannot load db.json
+<b class="right">Listening on port <span class="number">3333</span>… WebSockets enabled.</b>
+<span class="number">22</span> Oct <span class="number">16</span>:<span class="number">59</span>:<span class="number">34</span> - info: custom server started, initializing watcher
+<span class="number">22</span> Oct <span class="number">16</span>:<span class="number">59</span>:<span class="number">35</span> - info: compiled <span class="number">37</span> files and <span class="number">1</span> cached into <span class="number">2</span> files, copied…</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>problèmes ?</p>
+<ul>
+<li>tester avec brunch w</li>
+<li>fenêtre &gt; 950px pour voir la 2nde colonne</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-username" class="future" style="top: -20px; display: none;">
+            <h1>Retenir le nom</h1>
+
+            <p>Bon vieux <code>prompt</code> + persistance dans <code><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage#sessionStorage">sessionStorage</a></code></p>
+            <p>Saisies pourries (<code>null</code>, whitespaces…), non persistées&nbsp;: nom l’aléatoire.  Première rencontre avec <a href="http://underscorejs.org/">Underscore</a> :-)</p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/notifications.js"><span class="keyword">var</span> userName = <u>sessionStorage.</u>userName ||
+  $.trim(<u>prompt</u>(<span class="string">"Votre nom d’utilisateur"</span>));</code></pre>
+
+            <p>1er <code>getRenderData()</code> et variable dans un template Jade.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/home_view.js">getRenderData: <span class="function"><span class="keyword">function</span> <span class="title">getHomeRenderData</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> { userName: userName };
+}</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/templates/_layout.jade">span<u>= userName</u></code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>démo de sessionStorage : sessionStorage</li>
+<li>création app/lib/notificationS.js</li>
+<li>var userName, prompt, exports =&gt; reload : toujours rien</li>
+<li>édition home_view : require(notifications).userName, création getRenderData, return userName =&gt; prompt apparaît</li>
+<li>édition _layout.jade : premier FIXME par span= userName. Faire un touch sur home.jade pour aider brunch à reload</li>
+<li>retour notifications.js :</li>
+<li><ul>
+<li>save dans sessionStorage</li>
+</ul>
+</li>
+<li><ul>
+<li>random si userName null =&gt; require underscore</li>
+</ul>
+</li>
+<li><ul>
+<li>$ trim sur le prompt =&gt; require jquery</li>
+</ul>
+</li>
+<li>fermer notifications.js</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="backbone-views" class="future" style="top: -20px; display: none;">
+            <h1>Backbone.View</h1>
+            <h3>Rien que l’essentiel (mais bien choisi)</h3>
+
+            <p><code><a href="http://backbonejs.org/#View">Backbone.View</a></code> ne fournit/impose que peu de chose, mais top</p>
+            <p>Conteneur DOM&nbsp;: <code>el</code>, <code>$el</code></p>
+            <p>Gen du conteneur&nbsp;: <code>tagName</code>, <code>id</code>, <code>className</code>, <code>attributes</code></p>
+            <p>Modèle associé&nbsp;: <code>model</code> / <code>collection</code></p>
+            <p>Lookup jQuery <span lang="en">prescoped</span>&nbsp;: <code>$</code> (on fait <code>this.$(…)</code>)</p>
+            <p>Rendering&nbsp;: <code>render()</code></p>
+            <p>Délégation d’événements&nbsp;: <code>events</code></p>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>View Backbone ressemble plus à un controler : ne suppose rien, plutôt bcp de conventions</li>
+<li>on peut rendre global application.homeView pour l'inspecter (ex, dans router.js)</li>
+<li>application.homeView.$el.jquery =&gt; la version jQuery</li>
+<li>présenter views/view.js</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-clock" class="future" style="top: -20px; display: none;">
+            <h1>L’horloge</h1>
+
+            <p>Injection initiale + mise à jour ultérieure.</p>
+            <p>Le DOM doit être garanti à jour&nbsp;: <code>afterRender</code>.</p>
+            <p>Bon vieux <code>setInterval(…, 1000)</code></p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/home_view.js"><u>afterRender</u>: <span class="function"><span class="keyword">function</span> <span class="title">afterHomeRender</span><span class="params">()</span> {</span>
+  <span class="keyword">this</span>.startClock();
+},
+
+<span class="comment">// …</span>
+
+startClock: <span class="function"><span class="keyword">function</span> <span class="title">startClock</span><span class="params">()</span> {</span>
+  <span class="keyword">this</span>._clock = <span class="keyword">this</span>._clock || <u><span class="keyword">this</span>.$</u>(<span class="string">'#ticker'</span>);
+  <u><span class="keyword">var</span> that = <span class="keyword">this</span>;</u>
+  setInterval(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <u>that</u>._clock.text(<u>that</u>.getRenderData().now);
+  }, <span class="number">1000</span>);
+}</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>édition views/home_view.js : getRenderData, renvoi now : Date.now</li>
+<li>injection initiale de l'heure : layout.jade : span#ticker= now (toucher home.jade pour prise en compte par brunch)</li>
+<li><p>timestamp apparaît ? présentation moment.js + require + format('dddd D MMMM YYYY HH:mm:ss')</p>
+</li>
+<li><p>Mise à jour : exécuter en console application.homeView.render()</p>
+</li>
+<li>création de afterRender() =&gt; this.startClock()</li>
+<li>création de startClock() =&gt; MAJ + setInterval</li>
+<li>ça marche, fermeture de home.jade et layout.jade</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-nested-views" class="future" style="top: -20px; display: none;">
+            <h1>Vues imbriquées</h1>
+
+            <p>Le pavé de gauche contient une vue complexe avec des tas de gestions spécifiques&nbsp;: on va en faire un contrôleur (<code>Backbone.View</code>) dédié, et l'intégrer dans la vue racine.</p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_view.js"><span class="keyword">var</span> View = require(<span class="string">'./view'</span>);
+
+module.exports = View.extend({
+  template: require(<span class="string">'./templates/<u>check_in</u>'</span>)
+});</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/home_view.js"><span class="keyword">var</span> CheckInView = require(<span class="string">'./check_in_view'</span>);
+
+<span class="comment">// …</span>
+
+  afterRender: <span class="function"><span class="keyword">function</span> <span class="title">afterHomeRender</span><span class="params">()</span> {</span>
+    <span class="keyword">this</span>.startClock();
+    <u><span class="keyword">new</span> CheckInView({ el: <span class="keyword">this</span>.$(<span class="string">'#checkInUI'</span>) }).render();</u>
+  },</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>création views/check_in_view.js . Conseiller de copier / coller depuis home_view</li>
+<li>on garde juste require(view), template: templates/check_in</li>
+<li>modif home_view ( require + new  CheckInView().render</li>
+<li>plomberie OK (affichage col gauche), on peut fermer home_view.js</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="spa-geoloc" class="future" style="top: -20px; display: none;">
+            <h1>Géolocalisation</h1>
+
+            <p>On a 2 modules qui nous découplent des technos sous-jacente&nbsp;:</p>
+            <p><code>lib/location</code> par-dessus la <a href="https://developer.mozilla.org/fr/docs/Using_geolocation">géoloc W3C</a></p>
+            <p><code>lib/places</code> par-dessus <a href="https://developers.google.com/places/documentation/?hl=fr">Google Places</a></p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_view.js">afterRender: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">this</span>.fetchPlaces();
+},
+
+fetchPlaces: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <u>locSvc.getCurrentLocation</u>(<span class="function"><span class="keyword">function</span><span class="params">(lat, lng)</span> {</span>
+    console.log(lat, lng);
+    <span class="keyword">if</span> (_.isString(lat)) {
+      <span class="keyword">return</span>;
+    }
+    <u>poiSvc.lookupPlaces</u>(lat, lng, <span class="function"><span class="keyword">function</span><span class="params">(places)</span> {</span>
+      console.log(places);
+    });
+  });
+}</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>retour à check_in_view.js</li>
+<li>création afterRender</li>
+<li>création fetchPlaces avec console</li>
+<li>console s'affiche ?</li>
+</ul>
+<p>Explication des services</p>
+<ul>
+<li>explication HMTL5 geoloc, + démo : navigator.geolocation.getCurrentPosition(function() { console.log( arguments ); }); (permission à accorder à Chrome)</li>
+<li>parler de lib/location</li>
+<li><ul>
+<li>export de getCurrentLocation</li>
+</ul>
+</li>
+<li><ul>
+<li>$FAKE, offline, vieux navigateur : coordonnées en dur, pratique pour dev</li>
+</ul>
+</li>
+<li><ul>
+<li>cache en localStorage</li>
+</ul>
+</li>
+<li><strong>require lib/location</strong>, appel de getCurrentLocation, console</li>
+<li>parler de lib/places</li>
+<li><ul>
+<li>gestion offline, filtres des restaus, stockage local, $FAKE</li>
+</ul>
+</li>
+<li><ul>
+<li>complexité de l'API V3 (pas un vrai Web Service), API super lourde</li>
+</ul>
+</li>
+<li><ul>
+<li>gestion des timeout, et re-essai automatique</li>
+</ul>
+</li>
+<li><ul>
+<li>gestion du double appel (recherche + distance),puis tri</li>
+</ul>
+</li>
+<li><ul>
+<li>au final lookupPlaces(lat, lng, callback)</li>
+</ul>
+</li>
+<li><strong>require lib/places</strong></li>
+<li>dans callback de getCurrentLocation : lookupPlaces() =&gt; console.log(places)</li>
+</ul>
+<p>Affichage :</p>
+<ul>
+<li>montrer check_in.jade, mettre != placeList (pour le HTML non escaped)</li>
+<li>éditer check_in_view, getRenderData, return placeList:'searching…'</li>
+<li>ajout de listTemplate:require places, puis exécution du template dans getRenderData, via View.renderTemplate</li>
+<li>pourquoi le spinner tourne toujours ? &gt; MAJ du DOM à faire. On pourrait faire comme pour l'heure (jQuery direct =&gt; pas descriptif OU that.render() =&gt; boucle infinie ), mais on va plutôt faire du data-binding</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-ux-model" class="future" style="top: -20px; display: none;">
+            <h1>Modèle Backbone</h1>
+            <h3>pour l’état de l’UX</h3>
+
+            <p>Passer par du data-binding pour contrôler proprement l’état de l’UI et l’UX en fonction des éléments de l’état de la vue (latitude, longitude, POIs, sélection, commentaire…).</p>
+
+            <p>Le plugin le plus abouti est actuellement <a href="http://nytimes.github.io/backbone.stickit/">Backbone.StickIt</a></p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_view.js"><u>bindings</u>: {
+  <span class="comment">// sélecteur CSS -&gt; descripteur de binding, +/- avancé</span>
+  <span class="string">'#comment'</span>: <span class="string">'comment'</span>,
+  <span class="string">'#places'</span>: {
+    observe: [<span class="string">'places'</span>, <span class="string">'placeId'</span>],
+    onGet: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> <span class="keyword">return</span> <span class="keyword">this</span>.getRenderData().placeList; },
+    updateMethod: <span class="string">'html'</span>
+  },
+  <span class="comment">// …</span>
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Explication modèle Backbone</p>
+<ul>
+<li>regroupable en Collection avec toutes les méthodes de underscore (add, pick, pop, push, sort, findWhere, comparator …)</li>
+<li>hérite de méthodes undersore : pick, omit</li>
+<li>synchronisation automatique possible avec le serveur (plus tard) (sync, fetch, save)</li>
+<li>events (change, )</li>
+<li>get / set / toJSON</li>
+</ul>
+<ul>
+<li>explication de ce que l'on veut représenter : stocker lat/lng, resto sélectionné, dernière liste des restos, commentaire</li>
+<li>Création models/check_in_ux.js</li>
+<li><ul>
+<li>recopie de models/check_in.js</li>
+</ul>
+</li>
+<li><ul>
+<li>ajout des defaults pour lat, lng, placeId, places, comment</li>
+</ul>
+</li>
+<li>modif check_in_view</li>
+<li><ul>
+<li>création méthode initialize, avec appel du parent et définition du modèle + console.log(this.model.toJSON());</li>
+</ul>
+</li>
+<li><ul>
+<li>dans getCurrentLocation : model.set lat lng</li>
+</ul>
+</li>
+<li><ul>
+<li>dans lookupPlaces : model.set places</li>
+</ul>
+</li>
+<li><ul>
+<li>dans getRenderData : this.model.get('places')</li>
+</ul>
+</li>
+<li><ul>
+<li>tester avec un that.render() pour montrer la MAJ (boucle infinie)</li>
+</ul>
+</li>
+</ul>
+<p>Explication data-binding (moins de manip DOM, pas de markup dans le HTML), des librairies dédiées (knockoutJS, Angular…), puis stickit</p>
+<ul>
+<li>montrer que stickit vient de app/initialize.js : require('backbone-stickit')</li>
+<li>démo avec commentaire mis en dur dans les défauts "bindings"</li>
+<li>version plus compliquée (2 variables à observer, formatage) avec #geoloc. Montrer la doc : <a href="http://nytimes.github.io/backbone.stickit/#bindings/observe">http://nytimes.github.io/backbone.stickit/#bindings/observe</a></li>
+<li>places, avec getRenderData().placeList + updateMethod à html (text par défaut)</li>
+<li>expliquer le template places.jade au passage (each, unless, if ternaire, helper secondsToMinutes défini dans lib/view_helper)</li>
+<li>affichage lat / lng et liste des restaus OK</li>
+</ul>
+</aside>
+          </section>
+
+
+          <section id="spa-backbone-events" class="future" style="top: -20px; display: none;">
+            <h1>Events Backbone</h1>
+
+            <p>Système de convention pour écouter les actions sur l'UX et y lier des méthodes de la View.</p>
+
+            <p>Très efficace : gère la délégation d'événements, le verrouillage du contexte d'exécution (<code>this</code>) et se limite aux enfants de <code>this.$el</code></p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_view.js"><u>events</u>: {
+  <span class="comment">// La clé est composée du nom de l'événement et du sélecteur CSS.</span>
+  <span class="comment">// La valeur est le nom de la méthode du controler</span>
+  <span class="string">'click header button'</span>: <span class="string">'fetchPlaces'</span>,
+  <span class="string">'click #places li'</span>: <span class="string">'selectPlace'</span>,
+  <span class="string">'submit'</span>: <span class="string">'checkIn'</span>
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>explication events View Backbone. Équivalent à $(this.el).on('click', 'header button', \_.bind( this.fetchPlaces, this) ))</li>
+</ul>
+<p>Bouton rechercher qui relance la recherche</p>
+<ul>
+<li>ajout events, avec seulement 'click header button':'fetchPlaces'</li>
+<li>dans fetchPlaces : model set defaults</li>
+</ul>
+<p>sélection du POI</p>
+<ul>
+<li>but : mettre une classe active, extraire le placeId</li>
+<li>events : click #places li': 'selectPlace',</li>
+<li>création selectPlace. Démo du this, e.target et e.currentTarget</li>
+<li>mise à jour du model : placeId</li>
+<li>montrer places.jade : le if sur la classe active. Demander comment on remet à jour ?</li>
+<li>dans bindings, #places, observe : rajout de placeId</li>
+<li>dans getRenderData, rajout de placeId. utiliser model.pick(places, placeId)</li>
+<li>sélection OK, un clic sur le bouton doit aussi marcher (re-fetch et reset)</li>
+</ul>
+<p>détails du submit : ON à la sélection, OFF au submit et pendant la recherche</p>
+<ul>
+<li>bindings de button[type=submit], utilisation de attributes <a href="http://nytimes.github.io/backbone.stickit/#attribute-and-property-bindings/attributes">http://nytimes.github.io/backbone.stickit/#attribute-and-property-bindings/attributes</a></li>
+<li>on tente avec observer : placeId. Pas bon car null = falsy, il nous faut justement le contraire. Équivalent conceptuel des computed de Knockout</li>
+<li>création dans check\_in\_ux de initialize : checkCheckinable, exécution immédiate, écoute du on change du model</li>
+<li>update du observe pour écouter checkInForbidden</li>
+<li>vérifier dans l'interface : OFF par défaut, sélection = ON, recherche = OFF. Click sur bouton = validation du formulaire</li>
+</ul>
+<p>submit : récupération des infos du resto</p>
+<ul>
+<li>ajout dans events submit checkIn, création checkIn</li>
+<li>fonction checkIn : preventDefault</li>
+<li>vérification de checkInForbidden =&gt; return</li>
+<li>récupération des infos : faire trouver _.findWhere(this.model.get('places'), { id: this.model.get('placeId') });</li>
+<li>console.log des infos de checkIn. Rajouter userName (require lib/notifications) et comment (dans le model grâce au binding bi-directionnel sur les éléments de formulaire <a href="http://nytimes.github.io/backbone.stickit/#form-element-bindings-and-contenteditable">http://nytimes.github.io/backbone.stickit/#form-element-bindings-and-contenteditable</a>)</li>
+<li>désélection et suppression du commentaire via modèle (placeId:null et comment:'')</li>
+</ul>
+</aside>
+          </section>
+        </section>
+
+        <section id="next-day" hidden="" class="future" style="top: -310px; display: block;">
+          <h1>À suivre…</h1>
+
+          <h3>Coder la suite de la SPA</h3>
+
+          <ul>
+            <li>Persistence serveur</li>
+            <li>Online/offline</li>
+            <li>Stockage local</li>
+            <li>Web sockets</li>
+            <li>Routes multiples</li>
+            <li>AppCache</li>
+          </ul>
+
+          <h3>À <span data-marker="next-day-name">demain</span>&nbsp;!</h3>
+        </section>
+      </div>
+    <div class="backgrounds"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"></div></div><div class="progress" style="display: block;"><span style="width: 0px;"></span></div><aside class="controls" style="display: block;"><div class="navigate-left"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="state-background"></div><div class="pause-overlay"></div></div>
+
+    <script src="./JS Total • 2ème partie, 09_12_2015_files/head.min.js"></script>
+    <script src="./JS Total • 2ème partie, 09_12_2015_files/reveal.js"></script>
+
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script><script type="text/javascript" src="./JS Total • 2ème partie, 09_12_2015_files/marked.js"></script><script type="text/javascript" src="./JS Total • 2ème partie, 09_12_2015_files/markdown.js"></script>
+  
+
+<script type="text/javascript" src="./JS Total • 2ème partie, 09_12_2015_files/highlight.js"></script><script type="text/javascript" src="./JS Total • 2ème partie, 09_12_2015_files/notes.js"></script></body></html>
