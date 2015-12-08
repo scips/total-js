@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>JS Total • 1ère partie, 08/12/2015</title>
+
+    <meta name="author" content="Christophe Porteneuve">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/reveal.css">
+    <link rel="stylesheet" href="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/js-attitude.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/tomorrow.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if (window.location.search.match( /print-pdf/gi))
+        document.write( '<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="all">' );
+      else
+        document.write( '<link rel="stylesheet" href="css/print/paper.css" type="text/css" media="print">' );;
+    </script><link rel="stylesheet" href="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/paper.css" type="text/css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="no-anims">
+
+    <div data-background-transition="default" data-transition-speed="default" class="reveal default center">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div style="width: 960px; height: 700px; transform: translate(-50%, -50%) scale(1) translate(50%, 50%);" class="slides">
+        <section data-index-h="0" class="past" style="top: -216.5px; display: none;" id="intro" hidden="">
+          <h1>JS Total</h1>
+          <h3 data-marker="intro-date">1ère partie, 08/12/2015</h3>
+          <h4 data-marker="intro-trainers">Jean-Pierre Vincent @ JS Attitude</h4>
+          <script>
+            // Delicously hacky. Look away.
+            if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+          </script>
+        </section>
+
+        <section data-index-h="1" class="past" style="top: -181.5px; display: block;" id="the-guy" hidden="">
+          <h1><span data-marker="trainers-heading">Le type</span>, là, devant</h1>
+
+          <div data-marker="trainers">
+            <h2>Jean-Pierre Vincent</h2>
+            <h4>BrainCracking,  Architecte itinérant, Consultant #webperf, livre HTML, prof</h4>
+          </div>
+        </section>
+
+        <section data-index-h="2" class="past" style="top: -223.5px; display: block;" id="overview" hidden="">
+          <h1>JS Total</h1>
+          <h4 data-marker="overview-dates">4 journées du 8 au 11 décembre</h4>
+
+          <ol>
+            <li>Aujourd’hui&nbsp;: JS, le langage pur</li>
+            <li><span data-marker="day2">Demain</span>&nbsp;: Outils, DevTools, modules et templating</li>
+            <li><span data-marker="day3">Jeudi</span>&nbsp;: développement d’une SPA complète</li>
+            <li><span data-marker="day4">Vendredi</span>&nbsp;: industrialisation et web mobile</li>
+          </ol>
+
+          <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Les journées vont se dérouler à peu près comme suit :</p>
+<ol>
+<li>Petit-dej à 9h15</li>
+<li>On démarre à 9h30 ; pas de pause le matin, 3h c'est un peu court</li>
+<li>Pause-dej de 12h30 à 13h45 environ</li>
+<li>Pause de 15' vers 16h</li>
+<li>On arrête à 18h</li>
+</ol>
+<p>On déjeune dans des restos sympa, en alternant entre bonne brasserie (rotonde) et super petit resto (Amphytrion).</p>
+<p>Les journées alternent la charge cognitive aussi : intense 
+aujourd'hui (beaucoup de conceptuel) et jeudi (beaucoup de code), plus 
+light demain (outils, beaucoup d'exos) et vendredi (surtout 
+l'après-midi, plus relax).</p>
+<p>Brief Wifi, toilettes, on peut se lever, manger</p>
+<p>Reparler des autres formations : JSP, NodeJS, Git</p>
+<p>Mail de debrief (zip, slides) + feedback à chaud + questionnaire de feedback à froid</p>
+<p>slides sur <a href="http://delicious-insights.com/js-total/jst-day1/">http://delicious-insights.com/js-total/jst-day1/</a></p>
+</aside>
+        </section>
+
+        <section data-index-h="3" data-previous-indexv="6" class="stack past" style="top: 0px; display: block;" id="native-types" hidden="">
+          <section data-index-v="0" data-index-h="3" style="top: -198.5px; display: none;" class="chapter past" hidden="">
+            <h1>Apprendre à connaître</h1>
+            <h4>les types JS natifs</h4>
+          </section>
+
+          <section data-index-v="1" data-index-h="3" style="top: -304.5px; display: none;" class="past" id="objects" hidden="">
+            <h1>Objets</h1>
+            <h4>Hashes, maps et dictionaries…</h4>
+
+            <pre><code class="javascript"><span class="keyword">var</span> obj = { first: <span class="string">'Robert'</span>, last: <span class="string">'Smith'</span>, age: <span class="number">36</span> };
+obj.first          <span class="comment">// =&gt; 'Robert'</span>
+obj[<span class="string">'age'</span>]         <span class="comment">// =&gt; 36</span>
+
+obj.first = <span class="string">'Bob'</span>;
+obj[<span class="string">'first'</span>]       <span class="comment">// =&gt; 'Bob'</span>
+
+obj[<span class="number">42</span>] = <span class="string">'yo'</span>;
+obj[<span class="number">42</span>]            <span class="comment">// =&gt; 'yo'</span>
+obj[<span class="string">'42'</span>]          <span class="comment">// =&gt; 'yo'</span>
+obj<span class="number">.42</span>             <span class="comment">// =&gt; SyntaxError</span>
+
+<span class="comment">// Itération : for…in</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>À part <code>null</code> et <code>undefined</code>, tout est un objet en JS.  Même les nombres.  Même les fonctions.  L'opérateur point (<code>.</code>) est dit <em>d'indexation directe</em>, car le code indique en dur le nom de la propriété.</p>
+<p>Les clés sont forcément traitées <strong>en tant que String</strong>.  Du coup quand elles ne constituent pas des identifiants valides, par exemple quand c'est <code>42</code> ou la chaîne vide (<code>''</code>), on passe par l'opérateur <em>d'indexation indirecte</em>, les crochets (on en reparlera plus tard).</p>
+<p>Identifiant valide : tout caractère UTF8 valable</p>
+<p>virgule finale valide (sauf &lt; IE 8)</p>
+<p>ordre pas garanti (généralement l’ordre ajouté)</p>
+<p>C'est pourquoi JS n'a pas de types Hash/Map/Dictionary/etc. : les 
+objets jouent ce rôle.  Mais pour que ça soit utile, il faut de quoi 
+itérer : c'est le sens de <code>for…in</code>.  Il ne sert <strong>pas</strong> à boucler sur un tableau, mais à <strong>itérer sur les propriétés énumérables d'un objet</strong> (démo tableau et ses propriétés énumérables ou non : <code>length</code>, <code>join</code>…).  En ES &lt; 5, toutes nos props perso sont énumérables.</p>
+</aside>
+          </section>
+
+          <section data-index-v="2" data-index-h="3" style="top: -242.5px; display: none;" class="past" id="string" hidden="">
+            <h1>String</h1>
+
+            <pre><code class="javascript"><span class="string">'déjà'</span> &lt; <span class="string">'demain'</span>                 <span class="comment">// =&gt; false</span>
+<span class="string">'déjà'</span>.localeCompare(<span class="string">'demain'</span>)    <span class="comment">// =&gt; -1 ('déjà' avant 'demain' -&gt; YEESSS!)</span>
+
+<span class="string">'déjà&nbsp;!'</span>.toLocaleUpperCase()      <span class="comment">// =&gt; 'DÉJÀ&nbsp;!'</span>
+<span class="string">'ÇA POUTRE'</span>.toLocaleLowerCase()   <span class="comment">// =&gt; 'ça poutre'</span>
+
+<span class="string">'one,two,three'</span>.split(<span class="string">','</span>)        <span class="comment">// =&gt; ['one', 'two', 'three']</span>
+<span class="string">'one,,two,three'</span>.split(<span class="regexp">/\W+/</span>)     <span class="comment">// =&gt; ['one', 'two', 'three']</span>
+
+<span class="string">'hello'</span>.slice(<span class="number">1</span>, -<span class="number">2</span>)              <span class="comment">// =&gt; 'el' -&gt; [1;length-2[</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Les chaînes sont Unicode, spécifiquement stockées en UCS-2 (= UTF-16LE).  Aucun risque de couper un caractère au milieu de son <em>codepoint</em>.</p>
+<p>pas de différence entre '' et "" (sauf JSON)</p>
+<p>Ordre lexicographique (celui de la table de car.), donc ordre naturel (ex. <code>&lt;</code>) mais pas super utile : toujours utiliser <code>localeCompare</code>.</p>
+<p>exemple déjà &lt; demain : le é est loin derrière le e.</p>
+<p>JS Intl en cours</p>
+<p>['Stuart', 'Stéphane', 'Émile'].sort()</p>
+<p>['Stuart', 'Stéphane', 'Émile'].sort( ( function(a,b) { return a.localeCompare(b) } ) )</p>
+<p>var myarray = [80, 9, 34, 23, 5, 1];  myarray.sort(); dans le désordre. myarray.sort(function(a, b) { return a &gt; b; });</p>
+<p><code>split</code> souvent plus utile avec une regex (téléphones, CBs, etc.)
+ex : CB.split(/\W+/) =&gt; tout sauf alphanumérique (et _)</p>
+<p>Oubliez <code>substr</code>(index, longueur) :</p>
+<ul>
+<li><p>légèrement différent sur JScript (IE &lt; 9) =&gt; pas de valeur négative sur l'index</p>
+</li>
+<li><p>comment ne pas confondre avec substr ?</p>
+</li>
+</ul>
+<p>Oubliez <code>substring</code> / substr et préférez <code>slice</code> : index négatifs, pratique pour récupérer les X derniers :</p>
+<ul>
+<li><p>'hello'.substring(-2) =&gt; boum pas d'index négatif</p>
+</li>
+<li><p>'hello'.substring(0, -2) =&gt; boum pas d'index négatif</p>
+</li>
+<li><p>'hello'.substr(0, -2) =&gt; pas d'index négatif sur la longueur</p>
+</li>
+<li><p>"hello".substring("hello".length - 2) =&gt; MOCHE</p>
+</li>
+<li><p>API identique chez les tableaux</p>
+</li>
+</ul>
+<p>'hello'.slice(-2)</p>
+<p>FUN : 'hello'.sup();</p>
+</aside>
+          </section>
+
+          <section data-index-v="3" data-index-h="3" style="top: -313.5px; display: none;" class="past" id="array-basis" hidden="">
+            <h1>Array (la base)</h1>
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> names = [<span data-marker="trainees-list"><span class="string">"Antoine"</span>, <span class="string">"Christophe"</span>, <span class="string">"Cédric"</span>, <span class="string">"Damien"</span>, <span class="string">"Derek"</span>, <span class="string">"Mathieu"</span>,
+  <span class="string">"Michael"</span>, <span class="string">"Sébastien"</span>, <span class="string">"Thibaut"</span>, <span class="string">"Vincent"</span></span>];
+
+names.length
+<span class="comment">// =&gt; <span data-marker"trainees-size"="">10</span>. R/W : permet de réutiliser un tableau super-VITE&nbsp;!</span>
+
+names[<span class="number">0</span>]
+<span class="comment">// =&gt; '<span data-marker="trainees-first">Antoine</span>'</span>
+
+<span class="comment">// SAYMAL™</span>
+<span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>; index &lt; names.length; index++)
+  doSomething(names[index]);
+
+<span class="comment">// SAYMIEU™</span>
+<span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>, len = names.length; index &lt; len; index++)
+  doSomething(names[index]);</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>index numériques : sparse array : names[11] = 'moi' (undefined par défaut)</p>
+<p>boucler proprement sur du sparse array : for(var i = 0; i &lt; names.length; i++){ if(i in names) console.log( names[i]) }</p>
+<p>Insister à mort sur l'importance de mettre la longueur en cache ; fouiller sur JSPerf pour divers exemples si besoin.  OSEF du <code>++</code> préfixe et suffixe, sur les runtimes JS de moins de 10 ans…</p>
+<p>Si la longueur devait changer en cours de boucle, on ne ferait de toutes façons pas de <code>for</code> mais plutôt un <code>while</code> ; ceci dit la tenue en cache de la longueur reste pertinente.</p>
+<p>Rappeler que <code>for…in</code> ne sert pas à ça (dangereux sur certains IE).  Et que les itérateurs natifs (ex. <code>forEach</code>, <code>map</code>) ne sont qu'en ES5+.</p>
+<p>for…in : Ordre non garanti propriétés inattendues (length sur IE). Array.prototype.foo =&gt; foo.</p>
+<p>names.forEach( function(value, index, tableau) { console.log( value, index ) })</p>
+<p>Mais on utilisera jQuery ou Underscore pour tous les cas avancés, et eux font bien sûr l'opti de longueur en cache.</p>
+<p>console.dir(names) =&gt; un tableau est un peu un objet</p>
+<p>names.prof = 'JP' =&gt; toujours pas listable via une boucle for ou même .forEach()</p>
+<p>var myarray = [80, 9, 34, 23, 5, 1];  myarray.sort(); dans le désordre. myarray.sort(function(a, b) { return a &gt; b; });</p>
+</aside>
+          </section>
+
+          <section data-index-v="4" data-index-h="3" style="top: -350px; display: block;" class="past" id="array-derived" hidden="">
+            <h1>Array (extraction)</h1>
+
+            <pre><code class="javascript"><span class="keyword">var</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
+
+<span class="comment">// arr1.concat(arg…) -&gt; arr2 [déroule sur 1 niveau, ni "shallow" ni "deep"]</span>
+data.concat(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)     <span class="comment">// =&gt; [1, 2, 3, 4, 5, 6]</span>
+data.concat([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])   <span class="comment">// =&gt; [1, 2, 3, 4, 5, 6]</span>
+data.concat(<span class="number">4</span>, [<span class="number">5</span>, <span class="number">6</span>])   <span class="comment">// =&gt; [1, 2, 3, 4, 5, 6]</span>
+data.concat([<span class="number">4</span>, [<span class="number">5</span>, <span class="number">6</span>]]) <span class="comment">// =&gt; [1, 2, 3, 4, [5, 6]] -- 2 niveaux&nbsp;!</span>
+data                     <span class="comment">// =&gt; [1, 2, 3] -- intact&nbsp;!</span>
+
+<span class="comment">// arr.join([sep = ',']) -&gt; String</span>
+data.join()   <span class="comment">// =&gt; '1,2,3'</span>
+data.join(<span class="string">''</span>) <span class="comment">// =&gt; '123' -- Fréquent en construisant du HTML</span>
+
+<span class="comment">// arr1.slice(signedBegin[, signedEnd = length]) -&gt; arr2 -- négatif ok partout&nbsp;!</span>
+data.slice(<span class="number">1</span>)      <span class="comment">// =&gt; [2, 3]</span>
+data.slice(<span class="number">1</span>, <span class="number">1</span>)   <span class="comment">// =&gt; []</span>
+data.slice(<span class="number">1</span>, <span class="number">2</span>)   <span class="comment">// =&gt; [2]</span>
+data.slice(<span class="number">1</span>, -<span class="number">1</span>)  <span class="comment">// =&gt; [2]</span>
+data.slice(-<span class="number">2</span>)     <span class="comment">// =&gt; [2, 3]</span>
+data.slice(-<span class="number">2</span>, <span class="number">2</span>)  <span class="comment">// =&gt; [2]</span>
+data.slice(-<span class="number">2</span>, -<span class="number">1</span>) <span class="comment">// =&gt; [2]</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p><code>concat</code>
+ a voulu trop jouer son malin, ça donne un comportement assez bizarre, 
+puisque les 3 premiers appels ont le même résultat !  Bien rappeler 
+qu'il n'est <strong>pas modifiant</strong> (mais qu'on pourra en faire un modifiant plus tard)</p>
+<p><code>join</code> est peut-être le seul (celui de JS) qui utilise un séparateur non vide par défaut (la virgule), ce qui vient sans doute de <code>Array#toString</code>.</p>
+<p>.slice() : index négatif OK, comme les string ! Plus expressif</p>
+<p>1er index inclusif, 2nd index exclusif</p>
+<p>data toujours intact</p>
+</aside>
+          </section>
+
+          <section data-index-v="5" data-index-h="3" style="top: -318.5px; display: block;" class="past" id="array-writing" hidden="">
+            <h1>Array (modifier)</h1>
+
+            <pre><code class="javascript"><span class="keyword">var</span> arr = [<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>];
+arr.push(<span class="string">'four'</span>);                 <span class="comment">// =&gt; 4</span>
+arr.push(<span class="string">'five'</span>, <span class="string">'six'</span>, <span class="string">'seven'</span>); <span class="comment">// =&gt; 7</span>
+arr.pop()                  <span class="comment">// =&gt; 'seven'</span>
+arr                        <span class="comment">// =&gt; ['one', 'two', 'three', 'four', 'five', 'six']</span>
+arr.shift()                <span class="comment">// =&gt; 'one'</span>
+arr                        <span class="comment">// =&gt; ['two', 'three', 'four', 'five', 'six']</span>
+arr.unshift(<span class="string">'zero'</span>, <span class="string">'one'</span>) <span class="comment">// =&gt; 7</span>
+arr                        <span class="comment">// =&gt; ['zero', 'one', 'two', 'three', 'four', 'five', 'six']</span>
+
+<span class="comment">// splice(signedIndex, howManyToRemove[, replacingArg…])</span>
+<span class="comment">// -- pas confondre avec slice&nbsp;!</span>
+arr.splice(<span class="number">0</span>, <span class="number">1</span>)      <span class="comment">// =&gt; ['zero']</span>
+arr.splice(-<span class="number">2</span>, <span class="number">2</span>)     <span class="comment">// =&gt; ['five', 'six']</span>
+arr.splice(<span class="number">0</span>, <span class="number">3</span>, <span class="string">'3'</span>) <span class="comment">// =&gt; ['one', 'two', 'three']</span>
+arr                   <span class="comment">// =&gt; ['3', 'four']</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p><code>push</code> et <code>unshift</code> acceptent autant d'arguments qu'on veut, et renvoient la nouvelle longueur.</p>
+<p><code>push</code> / <code>pop</code> : à la fin. <code>shift</code> / <code>unshift</code> : au début.</p>
+<p><code>pop</code> et <code>shift</code> renvoient la valeur;</p>
+<p><code>splice</code> c'est le couteau suisse pour les tableaux. slice = index début + fin, splice = index + nombre</p>
+<p>on peut prendre les 2 derniers : arr.splice(-2)</p>
+<p>on peut préciser un argument de remplacement, sinon poubelle</p>
+<p>AVANT 11H ? : on pourra facilement faire un <code>multiPop</code> et <code>multiShift</code> sur base de <code>splice</code>.  Pareil pour un <code>deleteAt</code>.  Si on a le temps, le proposer soit comme exo "oral" collaboratif, soit comme exo individuel en éditeur + console.</p>
+<p>Signature (dégages les 3 derniers, modifiant, renvoie les éléments supprimés) : multiPop( arr, 3 )</p>
+<p>function multiPop(arr, nombre) {
+  return arr.splice(nombre * -1);
+}</p>
+<p>Signature (dégage les 3 premiers, modifiant, renvoie les éléments supprimés)</p>
+<p>function multiShift(arr, nombre) {
+  return arr.splice(0, nombre);
+}</p>
+</aside>
+          </section>
+
+          <section data-index-v="6" data-index-h="3" style="top: -298.5px; display: block;" class="" id="dont-use-new">
+            <h1>Je tue le chien si…</h1>
+            <h4>tu utilises bêtement <code>new</code> sur des natifs</h4>
+
+            <pre><code class="javascript" data-noescape=""><b class="wrong"><span class="keyword">new</span> String(…) </b>
+<b class="wrong"><span class="keyword">new</span> Boolean(…)</b>
+<b class="wrong"><span class="keyword">new</span> Number(…) </b>
+
+<span class="keyword">new</span> Array(…)    <span class="comment">// RAREMENT</span>
+<span class="keyword">new</span> Function(…) <span class="comment">// RAREMENT</span>
+<span class="keyword">new</span> RegExp(…)   <span class="comment">// PARFOIS, pour des regex dynamiques</span>
+
+<b class="right"><span class="keyword">new</span> Date(…)</b>
+
+</code></pre>
+
+            <p><a href="http://www.js-attitude.fr/2012/11/22/pourquoi-jamais-new-sur-natifs-en-js/?utm_source=slides&amp;utm_medium=referrals&amp;utm_campaign=jstotal-slides" style="font-size: 50%;">L’article détaillé sur JS Attitude</a></p>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Le principal souci est que ça flingue la <em>truthiness</em> des valeurs, car on a alors des objets traités comme tels, jamais comme primitives (ce qui serait le cas des litéraux <code>String</code>, <code>Number</code> et <code>Boolean</code>).</p>
+<ul>
+<li><p>var chaine = ''; if(!chaine) console.warn('vide')</p>
+</li>
+<li><p>var chaine = new String(''); if(!chaine) console.warn('vide') else console.warn('oops');</p>
+</li>
+<li><p><code>if (new Boolean(false)) console.warn('oops')</code>.</p>
+</li>
+</ul>
+<p><code>new Array</code> n'a qu'un intérêt périphérique pour multiplier une <code>String</code></p>
+<p>new Array(71).join('-')</p>
+<p>et <code>new Function</code> pour <em>sandboxer</em>, mais c'est généralement une de nos libs qui le fera (ex. Ajax jQuery qui récupère du JS).</p>
+<p><code>new Date</code>, <code>new RegExp</code> =&gt; OK</p>
+</aside>
+          </section>
+        </section>
+
+        <section data-previous-indexv="3" data-index-h="4" class="stack present" style="top: 0px; display: block;" id="obscure-stuff">
+          <section data-index-v="0" data-index-h="4" style="top: -111px; display: block;" class="chapter past" hidden="">
+            <h1>Aspects méconnus</h1>
+          </section>
+
+          <section data-index-v="1" data-index-h="4" style="top: -350px; display: block;" class="past" id="strict-equal" hidden="">
+            <h1>== ou === ?!</h1>
+
+            <pre><code class="javascript"><span class="number">42</span> == <span class="string">'42'</span>        <span class="comment">// =&gt; true  -- Argh, ça sent le PHP, là…</span>
+<span class="literal">null</span> == <span class="literal">undefined</span> <span class="comment">// =&gt; true  -- hmmm…</span>
+<span class="literal">null</span> == <span class="number">0</span>         <span class="comment">// =&gt; false -- heureusement&nbsp;!</span>
+<span class="number">0</span> == <span class="literal">undefined</span>    <span class="comment">// =&gt; false -- heureusement&nbsp;!</span>
+<span class="number">0</span> == <span class="literal">false</span>        <span class="comment">// =&gt; true  -- Façon C…</span>
+<span class="number">1</span> == <span class="literal">true</span>         <span class="comment">// =&gt; true  -- Façon C…</span>
+<span class="number">42</span> == <span class="literal">true</span>        <span class="comment">// =&gt; false -- Watcha&nbsp;?! (x == ToNumber(y), ES3 §11.9.3)</span>
+<span class="string">'0'</span> == <span class="literal">false</span>      <span class="comment">// =&gt; true  -- Woah&nbsp;!</span>
+<span class="string">''</span> == <span class="literal">false</span>       <span class="comment">// =&gt; true  -- Yowza&nbsp;! 8-O  On y reviendra…</span>
+<span class="literal">NaN</span> == <span class="literal">NaN</span>        <span class="comment">// =&gt; false -- Bin oué, c’est le principe…</span>
+
+<span class="comment">// avec ===, fini de jouer : vérif valeur ET TYPE&nbsp;!</span>
+
+<span class="number">42</span> === <span class="string">'42'</span>        <span class="comment">// =&gt; false</span>
+<span class="literal">null</span> === <span class="literal">undefined</span> <span class="comment">// =&gt; false</span>
+<span class="literal">null</span> === <span class="number">0</span>         <span class="comment">// =&gt; false</span>
+<span class="number">0</span> === <span class="literal">undefined</span>    <span class="comment">// =&gt; false</span>
+<span class="number">0</span> === <span class="literal">false</span>        <span class="comment">// =&gt; false</span>
+<span class="string">'0'</span> === <span class="literal">false</span>      <span class="comment">// =&gt; false</span>
+<span class="literal">NaN</span> === <span class="literal">NaN</span>        <span class="comment">// =&gt; false -- rien à faire&nbsp;!</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>strict : moins piégeux et <em>plus rapide</em> (court-circuit si pas le même type, opérations de comparaison ultra-rapides : une comparaison de pointeur + un <code>memcmp</code>).</p>
+<p>== null : spécial, mais typeof object</p>
+<p>number vers boolean : tout ce qui n'est pas 1 est false</p>
+<p>Gaffe notamment à la divergence entre <em>truthiness</em> (<code>if (x)</code> par exemple) et les protocoles de conversion implicite (<code>if (x == true)</code>) qui ont lieu sur toute opération binaire (= à deux opérandes).  Pas isos, puisque la promotion ne se fait <em>jamais</em> vers <code>Boolean</code>, toujours vers <code>Number</code> ou <code>String</code>.</p>
+<ul>
+<li>if(42) console.log('true') // true var true = 1</li>
+<li>if(42 == true) console.log('true') // RIEN</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="2" data-index-h="4" style="top: -349.5px; display: block;" class="past" id="brackets" hidden="">
+            <h1>Le capitaine []</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// Équivalence stricte statique / dynamique&nbsp;:</span>
+obj.x === obj[<span class="string">'x'</span>]
+
+<span class="comment">// Trop La Lose</span>
+<span class="keyword">var</span> angle = <span class="number">60</span>, result;
+<span class="keyword">if</span> (useSin)
+  result = Math.sin(angle);
+<span class="keyword">else</span>
+  result = Math.cos(angle);
+
+<span class="fragment visible" data-fragment-index="0"><span class="comment">// Moins La Lose</span>
+<span class="keyword">var</span> angle = <span class="number">60</span>, result = useSin ? Math.sin(angle) : Math.cos(angle);
+</span>
+<span class="fragment visible" data-fragment-index="1"><span class="comment">// Trop La Classe</span>
+<span class="keyword">var</span> angle = <span class="number">60</span>, result = Math[useSin ? <span class="string">'sin'</span> : <span class="string">'cos'</span>](angle);</span>
+
+<span class="fragment visible" data-fragment-index="2"><span class="comment">// Cas classiques&nbsp;:</span>
+element[display ? <span class="string">'show'</span> : <span class="string">'hide'</span>]();
+element[(enable ? <span class="string">'add'</span> : <span class="string">'remove'</span>) + <span class="string">'Class'</span>](<span class="string">'enabled'</span>); <span class="comment">// too much</span></span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>La vraie puissance des <code>[]</code> est évidemment la sélection <em>dynamique</em>
+ d'une propriété, et donc d'une méthode.  Très fréquent dans le code des
+ bonnes libs, on s'en servira nous-même une ou deux fois jeudi.</p>
+<p>Utilisé par jQuery dans jQuery.easing. ex: <a href="http://code.jquery.com/jquery-1.11.0.js">http://code.jquery.com/jquery-1.11.0.js</a> =&gt; chercher jQuery.easing[</p>
+<p>implémenter un système de convention : donne moi un objet qui contient start et stop par exemple</p>
+<p>plus lisible notamment pour</p>
+</aside>
+          </section>
+
+          <section data-index-v="3" data-index-h="4" style="top: -337.5px; display: block;" class="present" id="in-and-delete">
+            <h1>in et delete</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> translator = { name: <span class="string">'Christophe'</span>, langs: [<span class="string">'fr'</span>, <span class="string">'en'</span>] };
+
+<span class="string">'name'</span> <span class="keyword">in</span> translator        <span class="comment">// =&gt; true</span>
+translator.age = <span data-marker="chris-age"><span class="number">38</span></span>;
+<span class="string">'age'</span> <span class="keyword">in</span> translator         <span class="comment">// =&gt; true</span>
+translator.age = <span class="literal">null</span>;
+<span class="string">'age'</span> <span class="keyword">in</span> translator         <span class="comment">// =&gt; true</span>
+<span class="keyword">delete</span> translator.age
+<span class="string">'age'</span> <span class="keyword">in</span> translator         <span class="comment">// =&gt; false</span>
+translator.age              <span class="comment">// =&gt; undefined</span>
+
+<span class="number">0</span> <span class="keyword">in</span> translator.langs       <span class="comment">// =&gt; true</span>
+<span class="string">'0'</span> <span class="keyword">in</span> translator.langs     <span class="comment">// =&gt; true</span>
+translator.langs[<span class="number">3</span>] = <span class="string">'de'</span>;
+<span class="number">2</span> <span class="keyword">in</span> translator.langs       <span class="comment">// =&gt; false</span>
+<span class="number">3</span> <span class="keyword">in</span> translator.langs       <span class="comment">// =&gt; true</span>
+<span class="keyword">delete</span> translator.langs[<span class="number">3</span>]
+translator.langs            <span class="comment">// =&gt; ['fr', 'en', undefined, undefined]</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Point important 1 : c'est une <strong>expression</strong> à gauche de <code>in</code> (comme dans <code>[]</code>). Doit renvoyer une String à la fin.</p>
+<p>Point important 2 : distingo entre <code>expr in obj</code> et <code>obj.hasOwnProperty(expr)</code>.  Illustrer avec un diagramme tableau -&gt; Array -&gt; Object (genre <code>length</code> / 1, <code>slice</code>, <code>toString</code>).</p>
+<p>Point important 3 : seul <code>delete</code> vire la propriété, la remettre à <code>null</code> ou même <code>undefined</code> n'enlève pas la clé.</p>
+<p>translator.age = undefined =&gt; toujours là</p>
+<p>if(window.localStorage == true) { console.log('bon navigateur') } else { console.log('incapable') }</p>
+<p>if('localStorage' in window) { console.log('bon navigateur') } else { console.log('incapable') }</p>
+<p>[].length ne bouge pas avec le delete</p>
+<p>delete translator.langs.length =&gt; false, fo pas déconner non plus</p>
+<p>Point important 4 : <code>delete</code> <em>change le contexte d'évaluation d'une expression</em> : au lieu de lire la valeur, il s'arrête à l'emplacement mémoire.</p>
+</aside>
+          </section>
+
+          <section data-index-v="4" data-index-h="4" style="top: -319.5px; display: block;" class="future" id="has-own-property" hidden="">
+            <h1>hasOwnProperty</h1>
+            <h4>Quand <code>in</code> ne suffit pas</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> translator = { name: <span class="string">'Christophe'</span>, langs: [<span class="string">'fr'</span>, <span class="string">'en'</span>] };
+
+<span class="string">'name'</span> <span class="keyword">in</span> translator                     <span class="comment">// =&gt; true</span>
+<span class="number">0</span> <span class="keyword">in</span> translator.langs                    <span class="comment">// =&gt; true</span>
+
+<span class="string">'toString'</span> <span class="keyword">in</span> translator                 <span class="comment">// =&gt; true</span>
+<span class="string">'join'</span> <span class="keyword">in</span> translator.langs               <span class="comment">// =&gt; true</span>
+
+translator<u>.hasOwnProperty</u>(<span class="string">'toString'</span>)   <span class="comment">// =&gt; false</span>
+translator<u>.hasOwnProperty</u>(<span class="string">'name'</span>)       <span class="comment">// =&gt; true</span>
+translator.langs<u>.hasOwnProperty</u>(<span class="string">'join'</span>) <span class="comment">// =&gt; false</span>
+translator.langs<u>.hasOwnProperty</u>(<span class="number">0</span>)      <span class="comment">// =&gt; true</span></code></pre>
+
+            <p>Utilisez <code>hasOwnProperty</code> pour filtrer vos <code>for…in…</code>&nbsp;!</p>
+          </section>
+
+          <section data-index-v="5" data-index-h="4" style="top: -350px; display: block;" class="future" id="truthy-falsy" hidden="">
+            <h1>Truthy ou falsy?</h1>
+            <h4>Quand est-on dans le vrai&nbsp;?</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// 1. undefined, null, false, 0, '', NaN -&gt; false</span>
+<span class="comment">// 2. N'importe quoi d'autre             -&gt; true</span>
+
+<span class="string">''</span>  || <span class="string">'(empty)'</span> <span class="comment">// =&gt; '(empty)' -- pensez aux valeurs de champs de formulaire…</span>
+
+<span class="function"><span class="keyword">function</span> <span class="title">f</span><span class="params">(times)</span> {</span>
+  times = times || <span class="number">3</span>;
+  <span class="keyword">while</span> (times--) console.log(<span class="string">'yo'</span>);
+}
+<span class="fragment" data-fragment-index="0">f(<span class="number">4</span>) <span class="comment">// 4 fois 'yo' -- l’ataraxie me gagne.</span></span>
+<span class="fragment" data-fragment-index="1">f()  <span class="comment">// 3 fois 'yo' -- j’en suis tout coi de contentement.</span></span>
+<span class="fragment" data-fragment-index="2">f(<span class="number">0</span>) <span class="comment">// 3 fois 'yo' -- ventre saint-gris, je suis fait, vertuchou&nbsp;!</span></span>
+<span class="fragment" data-fragment-index="3">
+<span class="function"><span class="keyword">function</span> <span class="title">f</span><span class="params">(times)</span> {</span>
+  <span class="keyword">if</span> (<span class="literal">undefined</span> === times) times = <span class="number">3</span>; <span class="comment">// 0 est valide…</span>
+  <span class="keyword">while</span> (times--) console.log(<span class="string">'yo'</span>);
+}
+
+<span class="comment">// Ou pourquoi pas&nbsp;:</span>
+<span class="keyword">if</span> (!(+times &gt; <span class="number">0</span>)) times = <span class="number">3</span>; <span class="comment">// Tout NaN ou équivalent-nombre &lt;= 0 est ignoré</span>
+</span></code></pre>
+
+            <p><a href="http://www.js-attitude.fr/2012/09/10/truthy-ou-falsy-en-javascript//?utm_source=slides&amp;utm_medium=referrals&amp;utm_campaign=jstotal-slides" style="font-size: 50%;">L’article détaillé sur JS Attitude</a></p>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>expliquer le <code>||</code> c'est un IF ternaire</p>
+<p>Évidemment pas utilisable pour des <em>falsy values</em> valides…</p>
+<p><code>undefined</code> est la valeur par défaut des arguments manquants</p>
+<p>Insister sur le fait qu'au final, c'est vraiment le contrat / la spec
+ de la fonction qui détermine quel test appliquer.  Si le temps le 
+permet, exo oral collaboratif pour le cas "uniquement les trucs qui, 
+convertis en nombre décimal, sont positifs", en essayant sur la fin de 
+réduire l'expression au minimum (<code>!(+x &lt;= 0)</code>).</p>
+</aside>
+          </section>
+
+          <section data-index-v="6" data-index-h="4" style="top: -307.5px; display: block;" class="future" id="parseint" hidden="">
+            <h1>parseInt, ce farceur</h1>
+<!-- UPDATE ME -->
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> segs = <span class="string">'<span data-marker="parseint-current-formatted">08/12/2015</span>'</span>.split(<span class="string">'/'</span>);
+<span class="keyword">var</span> d = parseInt(segs[<span class="number">0</span>]), m = parseInt(segs[<span class="number">1</span>]) - <span class="number">1</span>, y = parseInt(segs[<span class="number">2</span>]);
+<span class="keyword">new</span> Date(y, m, d).toDateString() <span class="comment">// =&gt; '<span data-marker="parseint-current-output">Tue Dec 8 2015</span>'</span>
+
+<span class="comment">// En environnement non-ES5+ (IE pre-9, Node pre-0.10, etc.)</span>
+segs = <span class="string">'15/09/2015'</span>.split(<span class="string">'/'</span>);
+d = parseInt(segs[<span class="number">0</span>]), m = parseInt(segs[<span class="number">1</span>]) - <span class="number">1</span>, y = parseInt(segs[<span class="number">2</span>]);
+<span class="keyword">new</span> Date(y, m, d).toDateString() <span class="comment">// =&gt; 'Fri Dec 16 2013' -- MÉKÉKIDI&nbsp;!?</span>
+<span class="fragment" data-fragment-index="0">
+parseInt(<span class="string">'09'</span>)     <span class="comment">// =&gt; 0 -- AAARGGGHHHH&nbsp;! (avant ES5)</span>
+parseInt(<span class="string">'09'</span>, <span class="number">10</span>) <span class="comment">// =&gt; 9 -- Ben&nbsp;!?</span>
+</span>
+<span class="fragment" data-fragment-index="1"><span class="comment">// parseInt(str[, radix])&nbsp;!</span></span></code></pre>
+            <p><a href="http://www.js-attitude.fr/2012/12/26/convertir-un-nombre-en-texte-en-javascript/?utm_source=slides&amp;utm_medium=referrals&amp;utm_campaign=jstotal-slides" style="font-size: 50%;">L’article détaillé sur JS Attitude</a></p>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>parseInt(' 22/') =&gt; 22</p>
+<p>parseInt('q22/') =&gt; NaN</p>
+<ul>
+<li>fail1 : ES5 : base 10 par défaut. Avant : il DEVINE la base 
+(commence par 0 = octal, 0x = hexa). Le genre de bug qui se voit en août
+ et septembre …</li>
+<li>fail2 : new Date essaye aussi d'accepter tout et n'importe quoi : -1 = décembre de l'année précédente bien sur</li>
+<li>fail3 : ce foutu - 1 sur le mois qui n'arrange rien</li>
+</ul>
+<p>En gros, si on veut un truc blindé, faut d'abord une conversion <code>Number(x)</code> (ou <code>+x</code>), puis un arrondi dans le bon sens (<code>Math.ceil</code> ou <code>Math.floor</code>).  Quant à <code>parseFloat(x)</code>, sa version "correcte" est finalement <code>Number(x)</code>…</p>
+<p>si un peu de temps on démo les blagues des Date et pointage sur momentJS</p>
+<ul>
+<li>date.getMonth()</li>
+<li>date.getYear VS date.getFullYear</li>
+<li>date.getDay VS date.getDate</li>
+</ul>
+</aside>
+          </section>
+
+        </section>
+
+        <section data-index-h="5" class="stack future" style="top: 0px; display: block;" id="constructors-and-prototypes" hidden="">
+          <section data-index-v="0" data-index-h="5" style="top: -172px; display: block;" class="chapter">
+            <h1>Constructeurs &amp; Prototypes</h1>
+          </section>
+
+          <section data-index-v="1" data-index-h="5" style="top: -219px; display: block;" class="future" id="class-or-not">
+            <h1>Classe / Pas Classe</h1>
+
+            <ul>
+              <li>«&nbsp;Les classes, c’est bourgeois&nbsp;» — @Mitternacht</li>
+              <li>En JS on a que des objets</li>
+              <li>Objet = fatras de propriétés</li>
+              <li>Propriété = paire&nbsp;: nom + valeur</li>
+              <li>Si la valeur est une fonction, on dit «&nbsp;méthode&nbsp;»&nbsp;!</li>
+            </ul>
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>OOP inventé par Xerox (inventé aussi interfaces graphiques, corbeille, souris) et mis d’abord sur SmallTalk</li>
+<li>POO simple/classique : héritage simple / classe vs instance / statique vs instance</li>
+<li>en découle public / privé / protégé</li>
+<li>POO puissante : objets. pour faire un nouvel objet : clonage. D’où l’utilisation de prototypage pour l’héritage. Mixins</li>
+<li>2 seules notions : instance et constructeur, mais qui englobe la POO simple. Fonctionnalités</li>
+</ul>
+<p>Klass, prototype.create, super</p>
+<p>À la base :
+<em> JS ne devait surtout pas avoir les fonctionnalités de Java (extends et le bordel)
+</em> de toute façon Brendan voulait le faire en prototypal</p>
+</aside>
+          </section>
+
+          <section data-index-v="2" data-index-h="5" style="top: -263px; display: block;" class="future" id="constructors-intro">
+            <h1>Constructeurs</h1>
+
+            <ul>
+              <li>Fonctions servant à initialiser un nouvel objet. Le nom du constructeur est un peu comme «&nbsp;le nom de la classe&nbsp;»…</li>
+              <li>Toute fonction peut servir de constructeur&nbsp;: il suffit de l’appeler avec l’opérateur <code>new</code>.</li>
+              <li>Elle dispose alors d’une variable implicite <code>this</code>, qui représente la nouvelle «&nbsp;instance&nbsp;».</li>
+              <li>L’objet créé référence son constructeur&nbsp;: <code>constructor</code>.</li>
+            </ul>
+          </section>
+
+          <section data-index-v="3" data-index-h="5" style="top: -340px; display: none;" class="future" id="constructors-code">
+            <h1>Constructeurs</h1>
+
+            <pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(first, last)</span> {</span>
+  <span class="keyword">this</span>.first = first;
+  <span class="keyword">this</span>.last = last;
+}
+
+<span class="keyword">var</span> roiDeLaClasse = <span class="keyword">new</span> Person(<span class="string">'Georges'</span>, <span class="string">'Abitbol'</span>);
+<span class="keyword">var</span> superActeur = <span class="keyword">new</span> Person(<span class="string">'Clark'</span>, <span class="string">'Gable'</span>);
+roiDeLaClasse.first <span class="comment">// =&gt; 'Georges'</span>
+superActeur.first   <span class="comment">// =&gt; 'Clark'</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>Convention classique : un constructeur commence par une majuscule</li>
+<li>dans la console : plutôt que dire Object, ça dit le nom du constructeur</li>
+<li>typeof indique bien qu'on a un object</li>
+</ul>
+<p>indices classiques : elle va initiliser sur this, elle ne renvoie rien car c'est implicite</p>
+</aside>
+          </section>
+
+          <section data-index-v="4" data-index-h="5" style="top: -340px; display: none;" class="future" id="constructors-schema">
+            <h1>Constructeurs</h1>
+
+            <img src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/constructors.png">
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>propriété constructor : pointeur vers lui même (non énumérable, pas ownProperty)</li>
+<li>instanceof permet de tester si un objet a été créé par une méthode</li>
+</ul>
+</aside>
+
+
+          </section>
+
+          <section data-index-v="5" data-index-h="5" style="top: -340px; display: none;" class="future" id="constructors-shield">
+            <h1>Constructeurs</h1>
+            <h4>Blindage</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> boulet = Person(<span class="string">'Vincent'</span>, <span class="string">'Lagaf'</span>); <span class="fragment" data-fragment-index="0"><span class="comment">// =&gt; undefined</span></span>
+<span class="fragment" data-fragment-index="1">first; <span class="comment">// =&gt; 'Vincent'</span></span>
+<span class="fragment" data-fragment-index="2">last;  <span class="comment">// =&gt; 'Lagaf'</span></span>
+
+<span class="fragment" data-fragment-index="3"><span class="comment">// Solution&nbsp;:</span>
+<span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(first, last)</span> {</span>
+  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> Person))
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Et le new eh patate&nbsp;!'</span>);
+  <span class="comment">// …</span>
+}</span></code></pre>
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>si pas new : silent FAIL, le this représente global (window)</li>
+<li>check avec instanceof, et throw new Error ou return new si t’es gentil …</li>
+</ul>
+<p>function Person(first, last) {
+  if (!(this instanceof Person))
+    return new Person(first, last);
+  this.first = first;
+  this.last = last;
+}</p>
+<p>ou arguments.callee (gaffe au mode strict)</p>
+</aside>
+          </section>
+
+          <section data-index-v="6" data-index-h="5" style="top: -340px; display: none;" class="future" id="prototypes-intro">
+            <h1>Prototypes</h1>
+
+            <ul>
+              <li>Tout constructeur a un <strong>prototype</strong>&nbsp;: un objet qui définit les propriétés (et donc méthodes) partagées par tous les objets que produit ce constructeur.</li>
+              <li>Le prototype est «&nbsp;vivant&nbsp;»&nbsp;: si on le triture après l’appel au constructeur, ça marche quand même&nbsp;!</li>
+              <li>Techniquement, y’a plein d’autres trucs dans un prototype (réf. au constructeur, gestion de propriétés…). Mais bon.</li>
+            </ul>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>démo function foo.prototype</li>
+<li>démo Person.prototype</li>
+<li>démo roiDeLaClasse.constructor.prototype infini</li>
+<li>roiDeLaClasse.<strong>proto</strong> le raccourci magique (&gt; IE 8)</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="7" data-index-h="5" style="top: -340px; display: none;" class="future" id="prototypes-code">
+            <h1>Prototypes</h1>
+
+            <pre><code class="javascript"><span class="comment">// On augmente l'existant…</span>
+Person.prototype.fullName = <span class="function"><span class="keyword">function</span> <span class="title">fullName</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>.first + <span class="string">' '</span> + <span class="keyword">this</span>.last;
+};
+Person.prototype.greet = <span class="function"><span class="keyword">function</span> <span class="title">greet</span><span class="params">()</span> {</span>
+  alert(<span class="string">'Salut je m’appelle '</span> + <span class="keyword">this</span>.first);
+};
+
+<span class="keyword">var</span> luke = <span class="keyword">new</span> Person(<span class="string">'Mark'</span>, <span class="string">'Hamill'</span>);
+luke.fullName(); <span class="comment">// =&gt; 'Mark Hamill'</span>
+
+<span class="comment">// Rétroactif car lookup dynamique&nbsp;!</span>
+roiDeLaClasse.greet(); <span class="comment">// 'Salut je m’appelle Georges'</span></code></pre>
+          </section>
+
+          <section data-index-v="8" data-index-h="5" style="top: -340px; display: none;" class="future" id="prototypes-code2">
+            <h1>Prototypes</h1>
+
+            <pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">extend</span><span class="params">(target, source)</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> source)
+    target[prop] = source[prop];
+  <span class="keyword">return</span> target;
+}
+
+extend(Person.prototype, {
+  fullName: <span class="function"><span class="keyword">function</span> <span class="title">fullName</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> <span class="keyword">this</span>.first + <span class="string">' '</span> + <span class="keyword">this</span>.last;
+  },
+
+  greet: <span class="function"><span class="keyword">function</span> <span class="title">greet</span><span class="params">()</span> {</span>
+    alert(<span class="string">'Salut je m’appelle '</span> + <span class="keyword">this</span>.first);
+  }
+});
+
+<span class="keyword">var</span> john = <span class="keyword">new</span> Person(<span class="string">'John'</span>, <span class="string">'Smith'</span>);
+john.fullName() <span class="comment">// =&gt; 'John Smith'</span>
+john.greet()    <span class="comment">// 'Salut je m’appelle John'</span></code></pre>
+
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>allègement syntaxique : extend pour rajouter au prototype d’un constructeur</li>
+<li>faire remarquer : in, [], this</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="9" data-index-h="5" style="top: -340px; display: none;" class="future" id="prototypes-schema">
+            <h1>Prototypes</h1>
+
+            <img src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/prototypes.png">
+
+          <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>À ce stade, faire le schéma roiDeLaClasse -&gt; Person -&gt; Object, et jouer à surcharger puis virer <code>toString</code> sur les 2 niveaux les plus bas, montrer le résultat, le côté singleton sur <code>roiDeLaClasse</code> (n'impactera pas <code>superActeur</code>), etc.  Pour bien faire entrer le truc.  Insister sur le lookup <em>au moment de l'appel</em>, qu'on soit en indexation directe ou indirecte.</p>
+<ul>
+<li>roiDeLaClasse.toString() : d'où vient toString() ?</li>
+<li>roiDeLaClasse.<strong>proto</strong>.<strong>proto</strong> =&gt; de Person, qui est un objet Function, qui hérite de Object, ou dir( roiDeLaClasse )</li>
+<li>Démo ajout toString() au proto</li>
+<li>Person.prototype.toString = function() { return 'Mon nom est Person'; }</li>
+<li>roiDeLaClasse.toString = function() { return 'je suis le roi'}</li>
+<li>roiDeLaClasse.hasOwnProperty('toString'); // true</li>
+<li>delete roiDeLaClasse.toString //</li>
+<li>roiDeLaClasse.hasOwnProperty('toString'); // false</li>
+<li>'toString' in roiDeLaClasse</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="10" data-index-h="5" style="top: -340px; display: none;" class="future" id="prototypes-lookup-text">
+            <h1>Prototypes</h1>
+            <h4>Chaîne de lookup à l’indexation</h4>
+
+            <p>Pour toute indexation, directe (<code>.…</code>) ou indirecte (<code>[…]</code>), JS évalue l'expression en parcourant la chaîne des prototypes&nbsp;:</p>
+
+            <ol>
+              <li>Si c'est sur l'objet courant (<em>own property</em>), on prend</li>
+              <li>Sinon, on remonte d'un cran, sur le prototype du constructeur (raccourci&nbsp;: <code>__proto__</code>)</li>
+              <li>On recommence jusqu'à trouver ou avoir échoué sur <code>Object.prototype</code></li>
+            </ol>
+          </section>
+
+          <section data-index-v="11" data-index-h="5" style="top: -20px; display: none;" class="future" id="prototypes-lookup-diagram">
+            <h1>Prototypes</h1>
+            <h4>Chaîne de lookup à l’indexation</h4>
+
+            <img src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/member-lookup.png">
+          </section>
+
+          <section data-index-v="12" data-index-h="5" style="top: -20px; display: none;" class="future" id="prototypes-even-more-code">
+            <h1>Prototypes</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// Et bien sûr, ça marche sur les types natifs&nbsp;!</span>
+
+Array.prototype.sum = <span class="function"><span class="keyword">function</span> <span class="title">sum</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> result = <span class="keyword">this</span>[<span class="number">0</span>];
+  <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">1</span>, len = <span class="keyword">this</span>.length; index &lt; len; ++index)
+    result += <span class="keyword">this</span>[index];
+  <span class="keyword">return</span> result;
+};
+[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>].sum() <span class="comment">// =&gt; 55</span>
+<span class="fragment" data-fragment-index="0">
+Number.prototype.minutes = <span class="function"><span class="keyword">function</span> <span class="title">minutes</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="keyword">this</span> * <span class="number">60</span> * <span class="number">1000</span>;
+};</span>
+<span class="fragment" data-fragment-index="1">Number.prototype.ago = <span class="function"><span class="keyword">function</span> <span class="title">ago</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="keyword">new</span> Date(Date.now() - <span class="keyword">this</span>);
+};</span>
+<span class="fragment" data-fragment-index="2"><span class="keyword">new</span> Date()          <span class="comment">// =&gt; <span data-marker="ago-ref">Tue Dec 08 2015 14:12:17 GMT+0100 (CET)</span></span><span data-marker="ago-ref"></span>
+(<span class="number">5</span>).minutes().ago() <span class="comment">// =&gt; <span data-marker="ago-result">Tue Dec 08 2015 14:07:17 GMT+0100 (CET)</span></span><span data-marker="ago-result"></span></span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>[] instanceof Array =&gt; true . Cool, modifions le proto</li>
+<li>Évidemment, dans un cas pareil, l'extension de prototypes natifs est
+ plutôt cool : peu de risque de conflits, gros boost d'expressivité.</li>
+<li>Attention quand même parce qu'un prototype natif, c'est un NS 
+global, donc les risques de conflits avec d'autres libs sur la page 
+existent.  Rester prudent, donc.  Ou passer par des NS/wrappers, un peu 
+comme <a href="http://underscorejs.org/#chaining">Underscore</a>…</li>
+</ul>
+<p>Si le TEMPS : pause QUIZZ</p>
+</aside>
+          </section>
+        </section>
+
+        <section data-index-h="6" class="stack future" style="top: 0px; display: block;" id="functional" hidden="">
+          <section data-index-v="0" data-index-h="6" style="top: -172px; display: block;" class="chapter">
+            <h1>Functional Programming</h1>
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>Fonctions de premier ordre</li>
+<li>Fonctions d'ordre supérieur</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="1" data-index-h="6" style="top: -262.5px; display: block;" class="future" id="fx-vocab">
+            <h1>Vocabulaire</h1>
+
+            <ul>
+              <li>
+                <strong>Fonctions de premier ordre</strong>
+                <ul>
+                  <li>Les fonctions sont des valeurs comme les autres</li>
+                  <li>Ce sont même des <strong>objets</strong> (instances de <code>Function</code>). Donc elles ont des méthodes (?!), des propriétés…</li>
+                </ul>
+              </li>
+              <li data-fragment-index="0" class="fragment">
+                <strong>Fonctions d’ordre supérieur</strong>
+                <ul>
+                  <li>Une fonction peut prendre des fonctions en entrée (arguments) et en sortie (valeur de retour).</li>
+                </ul>
+              </li>
+            </ul>
+
+          <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>1er ordre :</p>
+<ul>
+<li>on peut les mettre en tableau (ex: pile de callbacks), en variables</li>
+<li>référencer sans exécuter</li>
+<li>$.ajax('/', {complete:foo})</li>
+</ul>
+<p>En prog fx pure, on n'aurait pas d'effets de bords…  Mais évidemment,
+ pas top.  Ceci dit, dès qu'on a des fx d'ordre supérieur, on peut 
+composer les fonctions, les enrober, etc.  et ça ouvre la voie à 
+beaucoup d'approches fonctionnelles valables.</p>
+<p>ex du throttling : pas de mélange du code fonctionnel et du code qui gère le temps</p>
+</aside>
+          </section>
+
+          <section data-index-v="2" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-decl-vs-expr">
+            <h1>Bien déclarer</h1>
+            <h4>Déclaration ou expression&nbsp;?</h4>
+
+            <pre><code class="javascript"><span class="comment">// SAYBOF™: Function Expression (fonction anonyme en fait)</span>
+<span class="keyword">var</span> fx = <span class="function"><span class="keyword">function</span><span class="params">(a, b)</span> {</span> <span class="keyword">return</span> a * b; };
+
+<span class="comment">// SAYMIEU™: Function Declaration</span>
+<span class="function"><span class="keyword">function</span> <span class="title">fx</span><span class="params">(a, b)</span> {</span> <span class="keyword">return</span> a * b; }
+
+<span class="comment">// Même si vous l'affectez par ailleurs…</span>
+<span class="keyword">var</span> fx = <span class="function"><span class="keyword">function</span> <span class="title">localFx</span><span class="params">(a, b)</span> {</span> <span class="keyword">return</span> a * b; };
+
+<span class="keyword">var</span> obj = { fx: <span class="function"><span class="keyword">function</span> <span class="title">fx</span><span class="params">(a, b)</span> {</span> <span class="keyword">return</span> a * b; } };
+
+<span class="comment">// -&gt; Named Function Expression (NFE)</span>
+<span class="comment">// -&gt; Micro-bugs dans JScript, Safari 2.x…  Pas gênants en pratique.</span>
+<span class="comment">// -&gt; Le nom de la NFE n'est accessible que dans la fonction (récursion sans</span>
+<span class="comment">//    recourir à des quasi-hacks) et facilite le débogage.</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Comparer le bloc de fonction à droite du <code>fx:</code> en bas et celui sous le <code>// SAYMIEU</code>
+ : ils sont strictement identiques.  Demander pourquoi le 1er est une 
+decl et le second une expr.  Évidemment, question de grammaire JS et 
+donc de contexte, de position dans le code.  Le parser attend une 
+instruction (test de Litmus : « je peux mettre un for ») ou une 
+expression ?</p>
+<p>Ça prépare pour le slide suivant, qui illustre la différence comportementale avec le <em>hoisting</em> (ce slide-ci permet de préciser la capacité d'anonymité et le côté strictement local du nom intrinsèque d'une FE).</p>
+</aside>
+          </section>
+
+          <section data-index-v="3" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-decl-vs-expr-2">
+            <h1>Bien déclarer</h1>
+            <h4>Hoisting des déclarations</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> x = <span class="number">42</span>;
+
+<span class="function"><span class="keyword">function</span> <span class="title">x</span><span class="params">()</span> {</span> console.log(<span class="string">'youpi'</span>); }
+
+x() <span class="fragment" data-fragment-index="0"><span class="comment">// =&gt; TypeError: number is not a function</span></span></code></pre>
+
+            <pre data-fragment-index="1" class="fragment"><code class="javascript" data-noescape=""><span class="comment">// 1: Hoisting des déclarations de fonctions</span>
+<span class="function"><span class="keyword">function</span> <span class="title">x</span><span class="params">()</span> {</span> console.log(<span class="string">'youpi'</span>); }
+<span class="fragment" data-fragment-index="2">
+<span class="comment">// 2: Hoisting des déclarations de variables</span>
+<span class="keyword">var</span> x;</span>
+<span class="fragment" data-fragment-index="3">
+<span class="comment">// 3: Déroulé des lignes de code</span>
+x = <span class="number">42</span>;
+
+x();</span> <span class="fragment" data-fragment-index="4"><span class="comment">// =&gt; ah bah oui, blam, forcément&nbsp;!</span></span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>À quoi sert le hoisting ?
+<em> démo exécuton de la fonction avant sa déclaration.
+y();
+function y() { console.log('youpi'); }
+</em> démo du piège :
+if( 'addEventListener' in window )
+  function on() { console.log('monde W3C') }
+else
+  function on() { console.log('tu as un IE &lt; 9')}</p>
+</aside>
+          </section>
+
+          <section data-index-v="4" data-index-h="6" style="top: -340px; display: none;" class="future" id="decls-vs-exprs-2">
+            <h1>Fonctions</h1>
+            <h4>Déclarations vs. expressions</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> x = <span class="number">42</span>;
+
+x = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> console.log(<span class="string">'youpi'</span>); }
+
+x(); <span class="fragment" data-fragment-index="0"><span class="comment">// =&gt; ça marche</span></span></code></pre>
+          </section>
+
+          <section data-index-v="5" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-scope">
+            <h1>Portée</h1>
+
+            <pre><code class="javascript"><span class="comment">// 1. TU DÉCLARERAS TOUJOURS TES VARIABLES LOCALES AVEC "var"</span>
+
+(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> oops = <span class="number">42</span>; })();
+oops <span class="comment">// =&gt; 42</span>
+
+(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> <span class="keyword">var</span> shy = <span class="number">42</span>; })();
+shy <span class="comment">// =&gt; ReferenceError</span>
+
+<span class="comment">// 2. LA PORTÉE D'UNE VARIABLE EST SA FONCTION ENGLOBANTE.</span>
+
+<span class="function"><span class="keyword">function</span> <span class="title">demo</span><span class="params">()</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>, len = <span class="number">42</span>; index &lt; len; ++index) {
+    <span class="comment">// …</span>
+  }
+  console.log(index, len); <span class="comment">// =&gt; 42, 42</span>
+}
+demo();
+
+<span class="comment">// ES6&nbsp;: "let" au lieu de "var" pour une portée de niveau bloc</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Parler du mode strict =&gt; use-strict.html , puis de JSLint</p>
+<p>Ceci dit <code>let</code> est à mon sens une Fausse Bonne Idée, parce qu'en termes de perfs c'est moins bon qu'un <code>var</code>, assez probablement.  Entre ça et la contrainte ES6+, je conseille de rester avec <code>var</code>.
+  En revanche, ne pas hésiter à en avoir plusieurs, et au plus près de 
+leur utilisation : la runtime / le transpiler / Uglify optimiseront…</p>
+<p>ES 6 const : de vraies constantes, avec portée de bloc</p>
+</aside>
+          </section>
+
+          <section data-index-v="6" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-hiding">
+            <h1>Masquage</h1>
+            <h4><em>variable hiding</em></h4>
+
+            <pre><code class="javascript"><span class="keyword">var</span> outer = <span class="string">'JS Custom'</span>, x = <span class="string">'outer'</span>;
+
+<span class="function"><span class="keyword">function</span> <span class="title">fx</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> x = <span class="string">'inner'</span>;
+  console.log(outer, x);
+};
+fx(); <span class="comment">// =&gt; JS Custom, inner</span>
+
+x <span class="comment">// =&gt; 'outer'</span></code></pre>
+
+            <p>(incidemment, CoffeeScript nous évite cet écueil)</p>
+          </section>
+
+          <section data-index-v="7" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-closures">
+            <h1>Closures</h1>
+            <h4>Fermetures lexicales</h4>
+
+            <pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">publicFx</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> stamp = Date.now();
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    console.log(stamp);
+  };
+}
+
+stamp <span class="comment">// ReferenceError</span>
+
+<span class="keyword">var</span> privilegedFx1 = publicFx();
+<span class="comment">// Attendre un bref instant</span>
+<span class="keyword">var</span> privilegedFx2 = publicFx();
+
+<span class="comment">// privilegedFx(1,2) sont en fait les fonctions internes construites au</span>
+<span class="comment">// sein de publicFx, qui grâce aux règles de portée "voient"</span>
+<span class="comment">// stamp.  Elles sont *closed over* par publicFx, ce qui fait</span>
+<span class="comment">// que les valeurs de stamp au moment où les fonctions ont été</span>
+<span class="comment">// renvoyéees sont préservées en RAM tant qu'une référence (ici</span>
+<span class="comment">// privilegedFx1/2) existe sur une fonction renvoyée.</span>
+
+privilegedFx1(); <span class="comment">// =&gt; affiche le stamp d'alors&nbsp;!</span>
+privilegedFx2(); <span class="comment">// =&gt; affiche le stamp d'après&nbsp;!</span>
+</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Trois conditions pour avoir une fermeture lexicale :</p>
+<ol>
+<li>Une fonction G est imbriquée dans une fonction F</li>
+<li>La fonction G <em>utilise des éléments de la portée locale de F</em></li>
+<li>La fonction G <em>échappe à la portée de F</em> (soit par retour, soit par passage en callback… soit pas affectation globale, berk !)</li>
+</ol>
+<p>Le rôle fondamental reste de persister un état privé à travers des invocations, ou dans l'attente d'une invocation…</p>
+<p>tant que qlq peut utiliser la ref à la fonction, la closure ne dégage pas</p>
+<p>Démo de l'onglet "Scope Variables" avec debugger dans privilegeFx</p>
+</aside>
+          </section>
+
+          <section data-index-v="8" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-closures">
+            <h1>Closures</h1>
+            <h4>Fermetures lexicales</h4>
+
+            <pre><code class="javascript"><span class="keyword">var</span> publicFx = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> callCount = <span class="number">0</span>;
+
+  <span class="function"><span class="keyword">function</span> <span class="title">publicFx</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> stamp = Date.now();
+    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+      console.log(++callCount, stamp);
+    };
+  }
+
+  <span class="keyword">return</span> publicFx;
+})();
+
+<span class="keyword">var</span> privilegedFx1 = publicFx();
+<span class="comment">// Attendre un bref instant</span>
+<span class="keyword">var</span> privilegedFx2 = publicFx();
+
+privilegedFx1(); <span class="comment">// =&gt; affiche 1 et le 1er stamp</span>
+privilegedFx1(); <span class="comment">// =&gt; affiche 2 et le 1er stamp</span>
+privilegedFx2(); <span class="comment">// =&gt; affiche 3 et le 2ème stamp</span>
+<span class="comment">// etc.</span>
+</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>On est là sur un schéma beaucoup plus fréquent en pratique, tout module JS et toute lib étant déjà dans sa closure global (<em>module pattern</em>) en plus des closures plus proches.  Lorsqu'on aura vu le slide des <em>module patterns</em>, on pourra montrer concrètement le source de jQuery, Underscore, etc. pour voir cette encapsulation.</p>
+<p>explication de la closure multiple : IIFE + return function permet 
+d’avoir une variable locale extérieure à la fonction, et donc de 
+partager des variables locales entre plusieurs fonctions
+genre l’incrément partagé entre tout le monde
+démo pas à pas pour comprendre le partage d’incrément
+utilisé pour persistance d’état</p>
+</aside>
+          </section>
+
+          <section data-index-v="9" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-closure-fail">
+            <h1>Souci de closure…</h1>
+
+            <pre><code class="language-javascript"><span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>; index &lt; <span class="number">10</span>; ++index) {
+  setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> console.log(index); }, index * <span class="number">200</span>);
+} <span class="comment">// =&gt; 10 x "10" :-(</span></code></pre>
+            <div data-fragment-index="0" class="fragment">
+            <h3>Solution&nbsp;:</h3>
+
+            <pre><code class="javascript"><span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>; index &lt; <span class="number">10</span>; ++index) {
+  (<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span>
+    setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> console.log(i); }, index * <span class="number">200</span>);
+  })(index);
+} <span class="comment">// =&gt; 0 -&gt; 9 :-D</span></code></pre>
+            </div>
+
+            <div data-fragment-index="1" class="fragment">
+            <h3>Facile en ES6&nbsp;:</h3>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">for</span> (<u><span class="keyword">let</span></u> index = <span class="number">0</span>; index &lt; <span class="number">10</span>; ++index) {
+  setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> console.log(i); }, index * <span class="number">200</span>);
+} <span class="comment">// =&gt; 0 -&gt; 9 :-D</span></code></pre>
+            </div>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Ici en profiter pour re-détailler pourquoi ça déconne, en parlant du cycle d'exécution du navigateur (<a href="http://www.dailymotion.com/video/xp69td_un-navigateur-comment-ca-marche_news">bonne pres d'Anthony Ricaud à PW 2011</a>) :</p>
+<ul>
+<li>JS est single-threaded, donc non-réentrant</li>
+<li>Le navigateur ne prend normalement pas la main tant que la passe JS n'a pas fini</li>
+<li>Après quoi seulement il désérialise le DOM, regarde les I/O (ex. 
+Ajax) et événements (ex. souris, clavier), puis les timers.  Même un <code>setTimeout(…, 0)</code> empile le timer, qui ne sera dépilé que le moment venu.</li>
+</ul>
+<p>Déroulé de la solution : d'abord une decl interne + appel, en montrant pourquoi un <code>var index = index</code>
+ local ne peut pas marcher, par exemple (avant de passer par un 
+paramètre).  Puis transformer un IIFE pour ne pas polluer la portée et 
+compacter le corps de boucle.</p>
+<p>Solution alternative, avec création de fonction :</p>
+<p>for (var index = 0; index &lt; 10; ++index) {
+    setTimeout(
+        (function(index) {
+            return function realOne() {</p>
+<p>  console.log(index);
+            };
+      })(index), 0);
+}</p>
+</aside>
+          </section>
+
+          <section data-index-v="10" data-index-h="6" style="top: -340px; display: none;" class="future" id="fx-varargs">
+            <h1>varargs</h1>
+            <h4>Arguments dynamiques</h4>
+
+            <pre><code class="javascript"><span class="comment">// Les paramètres servent juste à nommer des arguments par position.</span>
+<span class="comment">// Aucune contrainte quant à l'appel réel.</span>
+<span class="function"><span class="keyword">function</span> <span class="title">showArgs</span><span class="params">(a, b, c)</span> {</span> console.log(a, b, c); }
+showArgs();               <span class="comment">// =&gt; undefined, undefined, undefined</span>
+showArgs(<span class="number">1</span>);              <span class="comment">// =&gt; 1, undefined, undefined</span>
+showArgs(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);  <span class="comment">// =&gt; 1, 2, 3</span>
+
+<span class="comment">// Toute fonction a une "variable locale" nommée arguments, qui</span>
+<span class="comment">// est un "tableau générique" (tu te souviens&nbsp;?).</span>
+<span class="function"><span class="keyword">function</span> <span class="title">showArgs</span><span class="params">()</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>, len = arguments.length; index &lt; len; ++index) {
+    console.log(index, <span class="string">" -&gt; "</span>, arguments[index]);
+  }
+}
+showArgs() <span class="comment">// =&gt; Rien</span>
+showArgs(<span class="string">'foo'</span>, <span class="number">42</span>, <span class="literal">false</span>) <span class="comment">// =&gt; 0 -&gt; foo // 1 -&gt; 42 // 2 -&gt; false</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>La phrase choc™ : <em>les paramètres ne contraignent pas les arguments</em>, en intro.  Voir si quelq'un peut expliquer le distingo entre les deux.</p>
+<p>Attention, avant ES6, <code>arguments</code> n'est hélas pas un <code>Array</code> mais un <code>Arguments</code>, ce qui nécessite parfois quelques bidouilles de conversion.</p>
+<p>showArgs.length pour le nombre d'argument déclarés par une fonction</p>
+<p>mauvais exemple de la fonction initMouseEvent du W3C, qui pourrait avoir des arguments par défaut.</p>
+<p>Montrer hash d'options + design d'API et exemple de code sur le Point 7 des 10 bonnes pratiques comme le $.ajax</p>
+</aside>
+          </section>
+
+          <section data-index-v="11" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-module-pattern">
+            <h1>Module Pattern</h1>
+
+            <pre><code class="javascript"><span class="keyword">var</span> publicAPI = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="comment">// Ton code qui va bien ici</span>
+
+  <span class="comment">// Privé pour de vrai&nbsp;!</span>
+  <span class="keyword">var</span> myPrivateStuff;
+
+  <span class="function"><span class="keyword">function</span> <span class="title">insiderCode</span><span class="params">()</span> {</span>
+    <span class="comment">// J'ai accès aux trucs privés&nbsp;: fermeture lexicale&nbsp;!</span>
+  }
+
+  <span class="comment">// On publie en polluant le global…</span>
+  oops = <span class="string">'ah merde&nbsp;!'</span>;
+
+  <span class="comment">// …voire explicitement…</span>
+  window.oops = <span class="string">'j’assume'</span>;
+
+  <span class="comment">// …ou en retournant un truc récupéré par l'appelant</span>
+  <span class="keyword">return</span> { myPublicMethod: insiderCode };
+})();</code></pre>
+            <p><a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth" style="font-size: 50%;"><tt>http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth</tt></a></p>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>But : API claire + variables privées</p>
+<p>expliquer le terme de Immediately Invoked Function Expression (IIFE)</p>
+<p>Inutile de rentrer dans les multiples variations, juste indiquer que c'est là le « service minimum » pour tout fichier JS <em>source</em>
+ (même avant concaténation), comme c'est d'ailleurs le cas avec CommonJS
+ ou en CoffeeScript…  Et rappeler que côté front de nombreux fichiers 
+n'ont pas besoin d'exposer quoi que ce soit : ils sont autonomes et 
+attendent juste le DOM Ready…</p>
+<p>En cas d'interdépendances événementielles, passer par des événements custom déclenchés sur <code>document</code> est souvent plus robuste que d'exposer des APIs publiques spécifiques.</p>
+</aside>
+          </section>
+
+          <section data-index-v="12" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-binding-fail">
+            <h1>Le piège du binding</h1>
+
+            <pre><code class="javascript"><span class="keyword">var</span> name = <span class="string">'X'</span>;
+
+<span class="keyword">var</span> obj = {
+  name: <span class="string">'Robert'</span>,
+  greet: <span class="function"><span class="keyword">function</span> <span class="title">greet</span><span class="params">(whom)</span> {</span>
+    console.log(<span class="keyword">this</span>.name + <span class="string">' salue '</span> + whom);
+  },
+  greetAll: <span class="function"><span class="keyword">function</span> <span class="title">greetAll</span><span class="params">(first, second, last)</span> {</span>
+    [first, second, last].forEach(<span class="keyword">this</span>.greet);
+  }
+};
+
+obj.greet(<span class="string">"l’atelier JS Total&nbsp;!"</span>);
+<span class="comment">// =&gt; 'Robert salue l’atelier JS Total&nbsp;!'</span>
+
+<span class="keyword">var</span> fx = obj.greet;
+fx(<span class="string">"l’atelier"</span>) <span class="comment">// =&gt; 'X salue l’atelier'</span>
+
+obj.greetAll(<span class="string">'Mark'</span>, <span class="string">'Suzy'</span>); <span class="comment">// =&gt; 'X salue Mark', 'X salue Suzy'</span>
+
+<span class="comment">// http://www.alistapart.com/articles/getoutbindingsituations/</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Encore une fois, <strong>un seul cas de figure où le binding implicite est utilisé</strong> : <code>sujet.verbe(…)</code> (ou <code>sujet\['verbe'](…)</code>).
+  Tout référencement sans appel à la volée perd le contexte, car les 
+méthodes ne sont pas intrinsèquement associées à un conteneur.</p>
+<p>À défaut, <code>this</code> sera soit l'objet global (<code>window</code>, ou <code>global</code> en Node), soit <code>undefined</code> (ES5+ Strict Mode), soit le nœud DOM sur lequel l'écouteur a été enregistré (si gestionnaire d'événement DOM).</p>
+<p>la plupart des librairies permettent de modifier le contexte 
+d’exécution, en paramètre supplémentaire (mootool, jQuery, …) mais pas 
+le DOM ou setTimeout</p>
+<p>variante externe du fix : var fx = function( name ) { obj.greet( name ) };
+mais on laisse la responsabilité du contexte à celui qui exécute notre code.</p>
+<p>Au fait, ça n'est pas un bug, c'est pour faire de la composition : var objY = { name: 'YYYY' };</p>
+<p>objY.greet = obj.greet;</p>
+<p>document.onclick = obj.greet;</p>
+<p>document.addEventListener('click', obj.greet);</p>
+</aside>
+          </section>
+
+          <section data-index-v="13" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-binding-closure">
+            <h1>Donc on fait comment&nbsp;?</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// 1ère approche, légère, sympa&nbsp;: tirer parti de</span>
+<span class="comment">// la fermeture lexicale (si on peut)</span>
+
+<span class="keyword">var</span> obj = {
+  <span class="comment">// …</span>
+  greetAll: <span class="function"><span class="keyword">function</span> <span class="title">greetAll</span><span class="params">(first, second, last)</span> {</span>
+    <span class="keyword">var</span> <u>that = <span class="keyword">this</span></u>;
+    [first, second, last].forEach(<span class="function"><span class="keyword">function</span><span class="params">(name)</span> {</span>
+      <u>that</u>.greet(name);
+    });
+  }
+}</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>C'est
+ la solution la plus élégante quand l'appel ne permet pas de préciser le
+ binding (ce qui n'est pas le cas ici, cf. slide suivant) mais que 
+polluer la portée ne gêne pas.  On s'en servira beaucoup jeudi.  
+Indispensable notamment quand on doit préserver le <code>this</code> actif dans un <strong>callback anonyme</strong> plutôt que dans une méthode passée en callback.</p>
+<p>On n'a fixé que l'appel à obj.greetAll('Marc', 'Sophie', 'les autres');</p>
+</aside>
+          </section>
+
+          <section data-index-v="14" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-binding-closure-es5">
+            <h1>Donc on fait comment&nbsp;?</h1>
+            <h4>Incidemment, en ES5/jQuery/Prototype…</h4>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> obj = {
+  <span class="comment">// …</span>
+  greetAll: <span class="function"><span class="keyword">function</span> <span class="title">greetAll</span><span class="params">(first, second, last)</span> {</span>
+    [first, second, last].forEach(<span class="keyword">this</span>.greet<u>, <span class="keyword">this</span></u>);
+  }
+}</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Évidemment
+ quand on peut, ça c'est plus classe.  Possible pour tous les itérateurs
+ ES5, jQuery, Underscore, Prototype, etc.  Mais pas pour <code>setTimeout</code> et consorts, par exemple…</p>
+</aside>
+          </section>
+
+          <section data-index-v="15" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-apply-call">
+            <h1>apply &amp; call</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// fx.call(ctx[, arg1[, arg2…]])</span>
+
+<span class="keyword">var</span> fx = obj.greet;
+fx.call(obj, <span class="string">'l’atelier'</span>) <span class="comment">// =&gt; 'Robert salue l’atelier'</span>
+
+<span class="keyword">var</span> x = { <span class="number">0</span>: <span class="string">'Zero'</span>, <span class="number">1</span>: <span class="string">'One'</span>, length: <span class="number">2</span> };
+Array.prototype.join.<u>call</u>(x, <span class="string">'-'</span>) <span class="comment">// 'Zero-One'</span>
+
+<span class="comment">// fx.apply(ctx[, argArray]) -- Gros potentiel d’astuces&nbsp;!</span>
+
+fx.apply(obj, [<span class="string">'l’atelier'</span>]) <span class="comment">// =&gt; 'Robert salue l’atelier'</span>
+Array.prototype.push.<u>apply</u>(x, [<span class="string">'Two'</span>, <span class="string">'Three'</span>, <span class="string">'Four'</span>]) <span class="comment">// =&gt; 5</span>
+x <span class="comment">// =&gt; { 0: 'Zero', 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', length: 5 }</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Insister sur le fait que les deux <em>rendent le même service</em>, c'est juste une question d'appel : <code>call</code> si on sait exactement quels arguments on a, <code>apply</code> si on est plus génériques.  Peut prendre un tableau <em>ou un <code>Arguments</code></em>, ce qui est bien pratique pour les <em>forwarders</em>.</p>
+<p>On a donc deux intérêts majeurs :</p>
+<ol>
+<li>Exiger un <code>this</code> spécifique</li>
+<li>Déstructurer un tableau d'arguments en arguments individuels (<em>spread</em>)</li>
+</ol>
+<p>Si le temps le permet, faire une démo de « <code>concat</code> modifiant » avec <code>push</code> et <code>apply</code>, et/ou montrer les transpilings <em>spread</em> et <em>rest</em> de <code>...</code> en CoffeeScript dans la démo interactive de son site.</p>
+<p>concat modifiant : Array.prototype.push
+push() prenant plusieurs arguments, on peut utiliser .apply pour lui donner.</p>
+</aside>
+          </section>
+
+          <section data-index-v="16" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-bound">
+            <h1>Garantir le binding</h1>
+
+            <pre><code class="javascript">Function.prototype.bind = <span class="function"><span class="keyword">function</span> <span class="title">bind</span><span class="params">(context)</span> {</span>
+  <span class="keyword">var</span> f = <span class="keyword">this</span>;
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> f.apply(context, arguments);
+  };
+};
+
+<span class="keyword">var</span> fx = obj.greet.bind(obj);
+fx(<span class="string">"l’atelier"</span>) <span class="comment">// =&gt; 'Robert salue l’atelier'</span></code></pre>
+          </section>
+
+          <section data-index-v="17" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-bound-details">
+            <h1>Garantir le binding</h1>
+
+            <style>
+            .reveal .fragment-images { position: relative; }
+            .reveal .fragment-images > img { position: absolute; top: 0; left: 50%; margin-left: -50%; max-width: none; max-height: none; }
+            </style>
+            <div class="fragment-images" style="width: 820px; height: 711px; margin: 0 auto;">
+              <img src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/Function-Binding-0.png">
+              <img data-fragment-index="0" src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/Function-Binding-1.png" class="fragment">
+              <img data-fragment-index="1" src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/Function-Binding-2.png" class="fragment">
+              <img data-fragment-index="2" src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/Function-Binding-3.png" class="fragment">
+              <img data-fragment-index="3" src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/Function-Binding-4.png" class="fragment">
+            </div>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Si on a du temps à ce moment-là, coller le <em>vrai</em> <code>bind</code> (avec application partielle possible) en exo est intéressant.  Préciser quand même que <code>arguments</code> ne peut pas exploiter <code>concat</code>, qu'il faut convertir les <code>arguments</code> en <code>Array</code>s, et que le bon code pour ça est <code>Array.prototype.slice.call(arguments)</code>.</p>
+</aside>
+          </section>
+
+          <section data-index-v="18" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-throttling">
+            <h1>Throttling</h1>
+
+            <pre data-fragment-index="0" class="fragment"><code class="matlab"><span class="transposed_variable">Function.</span><span class="transposed_variable">prototype.</span>throttle = <span class="function"><span class="keyword">function</span><span class="params">(minInterval)</span> {</span>
+  var fx = this, lastCall = <span class="number">0</span>;
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">if</span> (<span class="transposed_variable">Date.</span>now() - lastCall &lt; minInterval)
+      <span class="keyword">return</span>;
+
+    lastCall = <span class="transposed_variable">Date.</span>now();
+    <span class="keyword">return</span> <span class="transposed_variable">fx.</span>apply(this, arguments);
+  };
+};
+
+<span class="function"><span class="keyword">function</span> <span class="title">sayHi</span><span class="params">()</span> { <span class="title">console</span>.<span class="title">log</span><span class="params">(Date.now()</span>, "<span class="title">Hiiiii</span>…"); }</span>
+
+<span class="transposed_variable">console.</span><span class="built_in">log</span>(<span class="transposed_variable">Date.</span>now());
+hiCoquine = setInterval(<span class="transposed_variable">sayHi.</span>throttle(<span class="number">1000</span>), <span class="number">100</span>);
+
+setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span> { <span class="title">clearInterval</span><span class="params">(hiCoquine)</span>; }, 10000);</span></code></pre>
+
+            <p><a href="https://gist.github.com/tdd/5722940" style="font-size: 50%">Code de départ de l'exercice</a></p>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Ressortir
+ l'histoire d'origine (démo WebSockets + Canvas d'un type qui est devenu
+ #1 sur Reddit/HN et a dû throttler sans toucher le module appelé réseau
+ et en invasion minimale du module appelant souris).</p>
+<p>Bien montrer les points à compléter, indiquer comment lire le 
+protocole de test dans la console, et notamment le piège à éviter qui 
+censure à tort le 1er appel.  Indiquer aussi qu'avec la bonne valeur par
+ défaut, y'aura pas de cas particulier pour le 1er appel.  Et insister 
+sur le fait que le code « fonctionnel » est déjà écrit, que leur code à 
+rajouter est <strong>simple</strong> et ne joue qu'avec <code>Date.now()</code> et une condition bateau…</p>
+<p>But : créer une méthode throttle, qui crée une fonction qui ne sera pas exécutée plus de 1 fois par seconde</p>
+<p>étapes :</p>
+<ul>
+<li>paramètre intervalle mini</li>
+<li>empêcher l'exécution</li>
+<li>check de la date</li>
+</ul>
+<p>faire remarquer que sans la closure, on n'aurait pas pu séparer le code qui gère le temps et le code qui implémente</p>
+</aside>
+          </section>
+
+          <section data-index-v="19" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-strtofx-1">
+            <h1>String#toFx</h1>
+            <h4>Ruby Envy</h4>
+
+            <pre><code class="javascript" data-noescape="">String.prototype.toFx = <span class="function"><span class="keyword">function</span> <span class="title">toFx</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> fxName = <span class="keyword">this</span>;
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(self)</span> {</span> <span class="keyword">return</span> self[fxName](); };
+};
+
+<span class="comment">// Avant&nbsp;:</span>
+
+<span class="string">'hello'</span>.replace(<span class="regexp">/[aeiou]+/g</span>, <span class="function"><span class="keyword">function</span><span class="params">(vowels)</span> {</span>
+  <span class="keyword">return</span> vowels.<u>toUpperCase()</u>;
+})
+
+<span class="comment">// Après&nbsp;:</span>
+<span class="string">'hello'</span>.replace(<span class="regexp">/[aeiou]+/g</span>, <u><span class="string">'toUpperCase'</span>.toFx()</u>)</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Pour ceux qui sont assez à l'aise en Ruby, une démo dans <code>irb</code> de la même idée peut cadrer l'objectif (genre <code>words = %w(hello world this is nice)</code> suivi de <code>words.map { |w| w.size }</code> et sa version courte <code>words.map &amp;:size</code>).</p>
+<p>Objectif :</p>
+<ul>
+<li>ne mettre que les voyelles en majuscules</li>
+<li>le faire façon ruby, sans la fonction anonyme, juste en nommant la fonction</li>
+</ul>
+<p>Explication :</p>
+<ul>
+<li>String.replace() prend également les fonctions de callback</li>
+<li>faire remarquer l'option /g sur l'expression régulière</li>
+<li>exécuter "Avant" avec un console pour montrer que oui ça marche</li>
+<li>ruby est plus joli =&gt; nommage de la fonction dans l'obje direct</li>
+</ul>
+<p>dans toFx :</p>
+<ul>
+<li>this contient la chaîne, donc la fonction qu'on demande</li>
+<li>self contiendra en l'occurrence la voyelle</li>
+<li>[] =&gt; propriété, fxName =&gt; closure, () =&gt; exécution</li>
+</ul>
+<p>Faire remarquer qu'on n'a pas à écrire une vraie fonction toUpperCase(). Ex avec
+'HELLO'.replace(/[aeiou]+/gi, 'toLowerCase'.toFx())</p>
+</aside>
+          </section>
+
+          <section data-index-v="20" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-strtofx-2">
+            <h1>String#toFx</h1>
+            <h4>Ruby Beat</h4>
+
+            <pre><code class="javascript" data-noescape="">String.prototype.toFx = <span class="function"><span class="keyword">function</span> <span class="title">toFx</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> fxName = <span class="keyword">this</span>, args = arguments;
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(self)</span> {</span> <span class="keyword">return</span> self[fxName].apply(self, args); };
+};
+
+<span class="comment">// Avant&nbsp;:</span>
+
+<span class="string">'hello world this is nice'</span>.replace(<span class="regexp">/\w+/g</span>, <span class="function"><span class="keyword">function</span><span class="params">(word)</span> {</span>
+  <span class="keyword">return</span> word.<u>slice(<span class="number">1</span>, -<span class="number">1</span>)</u>;
+})
+
+<span class="comment">// Après&nbsp;:</span>
+<span class="string">'hello world this is nice'</span>.replace(<span class="regexp">/\w+/g</span>, <u><span class="string">'slice'</span>.toFx(<span class="number">1</span>, -<span class="number">1</span>)</u>)</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Un truc que ruby ne sait pas faire : verrouiller des arguments.</p>
+<p>Comment supprimer la première et la dernière lettre de chaque mot ?</p>
+<p>Notes :
+* on a rajouté apply au lieu de l'appel direct de tout à l'heure</p>
+</aside>
+          </section>
+
+          <section data-index-v="21" data-index-h="6" style="top: -20px; display: none;" class="future" id="fx-not-all-prototypes">
+            <h1>Pas sur prototype&nbsp;?</h1>
+            <h4>Une question d’esthétique</h4>
+
+            <pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">strToFx</span><span class="params">(fxName)</span> {</span>
+  <span class="keyword">var</span> args = Array.prototype.slice.call(arguments, <span class="number">1</span>);
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(self)</span> {</span> <span class="keyword">return</span> self[fxName].apply(self, args); };
+};
+
+<span class="string">'hello world this is nice'</span>.replace(<span class="regexp">/\w+/g</span>, strToFx(<span class="string">'substring'</span>, <span class="number">1</span>, <span class="number">3</span>))</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Là
+ aussi, on peut reparler de la double approche d'Underscore, qui 
+accomode les syntaxes façon OOP en plus de l’impérative façon NS.</p>
+</aside>
+          </section>
+        </section>
+
+        <section data-index-h="7" class="stack future" style="top: 0px; display: block;" id="inheritance" hidden="">
+          <section data-index-v="0" data-index-h="7" style="top: -111px; display: block;" class="chapter">
+            <h1>Héritage prototypal</h1>
+          </section>
+
+          <section data-index-v="1" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-code-1">
+            <h1>Héritage prototypal</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">()</span> {</span> <span class="keyword">this</span>.race = <span class="string">'human'</span>; }
+<span class="function"><span class="keyword">function</span> <span class="title">Geek</span><span class="params">()</span>   {</span> <span class="keyword">this</span>.language = <span class="string">'js'</span>; }
+
+<span class="comment">// Héritage prototypal «&nbsp;académique&nbsp;»</span>
+<b class="wrong">Geek.prototype = <span class="keyword">new</span> Person();</b>
+
+<span class="fragment" data-fragment-index="0">
+<span class="comment">// Beaucoup mieux&nbsp;; l'option préférée par les frameworks</span>
+<span class="function"><span class="keyword">function</span> <span class="title">inherit</span><span class="params">(Child, Parent)</span> {</span>
+  <span class="keyword">var</span> Inter = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>};
+  Inter.prototype = Parent.prototype;
+  Child.prototype = <span class="keyword">new</span> Inter();
+  Child.prototype.constructor = Child;
+}
+<b class="right">inherit(Geek, Person); </b></span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Version académique :</p>
+<ul>
+<li>myGeek = new Geek()</li>
+<li>console.log( myGeek ) =&gt; Geek {language: "JS", race: "human"}</li>
+<li>on a exécuté le constructeur parent =&gt; potentiellement dangereux</li>
+</ul>
+<p>Ce qu'on veut, c'est un prototype</p>
+<p>Bien dérouler le schéma (qui sera au slide suivant) au tableau est 
+critique ici, et il faut aussi bien insister sur l'ordre des opérations :
+ par exemple, il est impératif que le constructeur synthétique soit 
+connecté au bon prototype <em>avant</em> qu'on l'instancie.</p>
+<p>Bien faire rentrer que le cœur de la difficulté, par rapport au code 
+KO, c'est qu'on doit instancier un constructeur dont le prototype est 
+celui du parent, <em>sans pour autant instancier le constructeur parent</em>, dont on ne connait rien.</p>
+<p>Conséquences cool :</p>
+<ul>
+<li>myGeek instanceof Geek : true</li>
+<li><p>myGeek instanceof Person : true</p>
+</li>
+<li><p>console.log( myGeek ) =&gt; Geek {language: "JS"} . Pourquoi race
+ n'apparaît pas ? on a fait exprès d'éviter d'appeler le constructeur 
+parent.</p>
+</li>
+</ul>
+<p>2 options :</p>
+<ul>
+<li>race est plutôt statique, on le rajoute sur le prototype de Person : Person.prototype.race = 'human'</li>
+<li>race est dynamique, on peut rappeler le constructeur parent (ou 
+mieux, une méthode getter sur le prototype) : function Geek(first, last,
+ language) { Person.call(this, first, last); this.language = language; }</li>
+<li>enfin on peut toujours accéder aux méthodes du parent : this.<strong>super</strong> = Person.prototype;</li>
+</ul>
+<p>Seul drawback en pre-ES5 : la propriété <code>constructor</code> devient énumérable, et polluera donc nos <code>for…in</code> (qui devraient de toutes façons être filtrés par <code>.hasOwnProperty</code>) et nos affichages Console DevTools.</p>
+</aside>
+          </section>
+
+          <section data-index-v="2" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-ref-solution-schema">
+            <h1>Héritage prototypal</h1>
+
+            <p><img src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/heritage-prototypal.png"></p>
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>var Inter = function() {};</li>
+<li>Inter.prototype = Parent.prototype;</li>
+<li>Child.prototype = new Inter();</li>
+<li>Child.prototype.constructor = Child;</li>
+</ul>
+</aside>
+          </section>
+
+          <section data-index-v="3" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-modern">
+            <h1>Héritage moderne</h1>
+
+            <p>En ES5</p>
+
+            <pre><code class="javascript" data-trim="">Geek.prototype = Object.create(Person.prototype, {
+  constructor: { value: Geek }
+});</code></pre>
+
+            <p>En ES6, CoffeeScript…</p>
+
+            <pre><code class="es6 scala" data-trim=""><span class="class"><span class="keyword">class</span> <span class="title">Geek</span> <span class="keyword">extends</span> <span class="title">Person</span></span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><ul>
+<li>ES5 : argument 1 = le prototype (un vrai si possible)</li>
+<li>argument 2 (facultatif) = ownproperty.</li>
+<li>Équivalent de
+<strong> Geek.prototype = Object.create(Person.prototype);
+</strong> Geek.prototype.constructor = Geek;</li>
+</ul>
+</aside>
+          </section>
+          
+          <section data-index-v="4" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-extend-inherit">
+            <h1>Faux héritage</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="comment">// Ou alors on confond héritage et recopie…  Où est le piège&nbsp;?</span>
+<span class="function"><span class="keyword">function</span> <span class="title">extend</span><span class="params">(target, source)</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> source)
+    target[prop] = source[prop];
+  <span class="keyword">return</span> target;
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">inherit</span><span class="params">(Child, Parent)</span> {</span>
+  <b class="wrong">extend(Child.prototype, Parent.prototype);</b>
+}
+<span class="comment">// …mais quels seraient les utilisations cool d'extend&nbsp;?</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Façon Crockford. Ça a l'air pratique et rapide mais l'héritage est cassé :</p>
+<ul>
+<li>Person.prototype.toString = function() { return 'Paul'}; myGeek.toString() =&gt; cassé</li>
+<li>myGeek instanceof Person =&gt; false</li>
+<li>myGeek.<strong>proto</strong>.<strong>proto</strong> =&gt; Object au lieu de Person</li>
+</ul>
+<p>function Person() { this.race = 'human'; }
+function Geek()   { this.language = 'js'; }</p>
+</aside>
+          </section>
+
+          <section data-index-v="5" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-mixins">
+            <h1>Mixins</h1>
+
+            <pre><code class="javascript"><span class="keyword">var</span> WebDevSkills = {
+  preferredMarkup:  <span class="string">'HTML5'</span>,
+  preferredStyling: <span class="string">'CSS3'</span>,
+  attendParisWeb: <span class="function"><span class="keyword">function</span> <span class="title">attendParisWeb</span><span class="params">()</span> {</span> <span class="comment">/* … */</span> },
+  slicePSD: <span class="function"><span class="keyword">function</span> <span class="title">slicePSD</span><span class="params">()</span> {</span> <span class="comment">/* … */</span> }
+};
+extend(Geek.prototype, WebDevSkills);
+
+myGeek.slicePSD()      <span class="comment">// =&gt; …</span>
+myGeek.preferredMarkup <span class="comment">// =&gt; 'HTML5'</span></code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Pas un héritage (spécialisation), juste une copie des fonction (partage d'implémentation) :</p>
+<ul>
+<li>WebDevSkills.attendParisWeb = function() { console.log(' before 30 yo ') };</li>
+<li>myGeek.attendParisWeb() =&gt; toujours l'ancien</li>
+</ul>
+<p>Comme les Traits en PHP, les modules de Ruby</p>
+<p>On peut aussi citer l'exemple de <code>Enumerable</code> dans Prototype.js, qui attend juste des prototypes hôtes qu'ils implémentent <code>_each</code>, et fournit à partir de là une quarantaine de méthodes dont le code est ainsi centralisé, mais reporté dans les prototypes de <code>Hash</code>, <code>Array</code>, <code>ObjectRange</code> et d'autres…</p>
+</aside>
+          </section>
+
+          <section data-index-v="6" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-links">
+            <h1>Comprendre autrement</h1>
+
+            <ul>
+              <li><a href="http://www.slideshare.net/Dmitry.Baranovskiy/demystifying-prototypes-6183470">Demistifying prototypes</a></li>
+              <li><a href="http://www.slideshare.net/stoyan/advanced-javascript-presentation">Advanced JavaScript</a></li>
+              <li><a href="http://www.slideshare.net/stoyan/javascript-patterns">Javascript Patterns</a></li>
+              <li><a href="http://dmitrysoshnikov.com/ecmascript/chapter-7-2-oop-ecmascript-implementation/">OOP: ECMAScript Implementation</a></li>
+              <li><a href="http://javascriptweblog.wordpress.com/2010/06/07/understanding-javascript-prototypes/">Understanding JavaScript Prototypes</a></li>
+            </ul>
+          </section>
+
+          <section data-index-v="7" data-index-h="7" style="top: -340px; display: none;" class="future" id="inher-static-instance">
+            <h1>static / instance</h1>
+
+            <ul>
+              <li>Si c’est au niveau du <strong>constructeur</strong>, c’est un membre «&nbsp;statique&nbsp;» ou «&nbsp;de classe&nbsp;»</li>
+              <li>Si c’est au niveau du <strong>prototype</strong> du constructeur, c’est un membre «&nbsp;d’instance&nbsp;» (sensible à l’état de chaque objet)</li>
+            </ul>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Le slide suivant met ça en lumière.</p>
+</aside>
+          </section>
+
+          <section data-index-v="8" data-index-h="7" style="top: -340px; display: none;" class="future" id="static-private">
+            <h1>Privé statique</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> Person = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <b class="hl"><span class="keyword">var</span> instanceCount = <span class="number">0</span>;</b>
+
+  <span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(first, last)</span> {</span>
+    <span class="keyword">this</span>.first = first;
+    <span class="keyword">this</span>.last = last;
+    <b class="hl">++instanceCount;</b>
+  }
+
+  Person.getInstanceCount = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceCount</span><span class="params">()</span> {</span>
+    <b class="hl"><span class="keyword">return</span> instanceCount;</b>
+  }
+
+  <span class="keyword">return</span> Person;
+})();</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>On est dans la <em>best practice</em>
+ pour définir une classe, même si au début y'a pas de privé statique.  
+Illustrer avec le code généré pour une classe toute bête avec 
+constructeur simple en CoffeeScript.</p>
+<ul>
+<li>Person.getInstanceCount()</li>
+<li>var moi = new Person( 'JP', 'V')</li>
+<li>moi.getInstanceCount() =&gt; ben non c'est statique</li>
+</ul>
+<p>rappel sur la fonction visible de l'extérieur qui voit des variables privées (closure)</p>
+</aside>
+          </section>
+
+          <section data-index-v="9" data-index-h="7" style="top: -340px; display: none;" class="future" id="instance-private">
+            <h1>Privé d’instance</h1>
+
+            <pre><code class="javascript" data-noescape=""><span class="keyword">var</span> Person = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <b class="hl"><span class="keyword">var</span> instancePrivs = {};</b>
+
+  <span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(first, last)</span> {</span>
+    <span class="comment">// …</span>
+    <b class="hl"><span class="keyword">this</span>._key = Math.random();</b>
+  }
+
+  Person.prototype.privilegedFx = <span class="function"><span class="keyword">function</span> <span class="title">privilegedFx</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> secret = <b class="hl">getPriv(<span class="keyword">this</span>, <span class="string">'secret'</span>);</b>
+    <span class="comment">// …</span>
+  }
+
+  <span class="function"><span class="keyword">function</span> <span class="title">getPriv</span><span class="params">(obj, key)</span> {</span> <span class="keyword">return</span> (instancePrivs[obj._key] || {})[key]; }
+
+  <span class="function"><span class="keyword">function</span> <span class="title">setPriv</span><span class="params">(obj, key, val)</span> {</span>
+    instancePrivs[obj._key] = instancePrivs[obj._key] || {};
+    <span class="keyword">return</span> instancePrivs[obj._key][key] = val;
+  }
+
+  <span class="keyword">return</span> Person;
+})();</code></pre>
+
+            <aside data-markdown-parsed="true" class="notes" data-markdown=""><p>Poser le problème : voir instance-private.js</p>
+<p>Les méthodes définies ailleurs que dans le constructeur n'accèdent pas aux variables privées : on n'a pas de privée d'instance</p>
+<pre><code class="matlab">          Insister sur le fait que ça <span class="transposed_variable">n'</span>empêchera pas <span class="transposed_variable">quelqu'</span>un qui connaît deux objets de faire que <span class="transposed_variable">l'</span>un passe pour <span class="transposed_variable">l'</span>autre (en réaffectant la clé), sauf si on a pris des précautions ES5 (descripteur <span class="number">100</span><span class="comment">% false sur la propriété).  Même les `Symbol`s de ES6 ne nous aident pas tellement sur ce coup.</span>
+
+          var mec = new Person(<span class="string">'mec'</span>, <span class="string">'ton'</span>);
+
+          on <span class="transposed_variable">n'</span>a accès <span class="transposed_variable">qu'</span>à : <span class="transposed_variable">mec.</span>privilegedFx()
+
+          Mais rappeler que ça reste plus privé que les autres langages (Java, PHP, Ruby, <span class="transposed_variable">etc.</span>) qui permettent **tous** de circonvenir la qualité `private` plus ou moins <span class="transposed_variable">facilement.</span></code></pre>
+</aside>
+          </section>
+        </section>
+
+        <section data-index-h="8" class="future" style="top: -340px; display: none;" id="next-day" hidden="">
+          <h1>À suivre…</h1>
+
+          <h3>Plein de trucs cool</h3>
+
+          <h3>Outillage, méthodologie et écosystème</h3>
+
+          <ul>
+            <li>Éditeurs, JSHint/Lint, beautifiers, préprocesseurs…</li>
+            <li>Débogueurs, consoles et panneaux avancés</li>
+            <li>Déterminer les API exploitables&nbsp;; Modernizr, shims, etc.</li>
+            <li>Organisation en modules&nbsp;; packaging, chargement</li>
+            <li>Frameworks MVC</li>
+            <li>Brunch.io</li>
+            <li>Début de la SPA</li>
+          </ul>
+
+          <h3>À <span data-marker="next-day-name">demain</span>&nbsp;!</h3>
+        </section>
+      </div>
+
+    <div class="backgrounds"><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background present"></div></div><div class="slide-background present"><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background past"></div><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"></div></div><div style="display: block;" class="progress"><span style="width: 402.581px;"></span></div><aside style="display: block;" class="controls"><div class="navigate-left enabled"></div><div class="navigate-right enabled"></div><div class="navigate-up enabled"></div><div class="navigate-down enabled"></div></aside><div class="slide-number"></div><div class="state-background"></div><div class="pause-overlay"></div></div>
+
+    <script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/head.js"></script>
+    <script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/reveal.js"></script>
+
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script><script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/marked.js" type="text/javascript"></script><script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/markdown.js" type="text/javascript"></script>
+  
+
+<script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/highlight.js" type="text/javascript"></script><script src="JS%20Total%20%E2%80%A2%201%C3%A8re%20partie,%2008_12_2015_files/notes.js" type="text/javascript"></script></body></html>
