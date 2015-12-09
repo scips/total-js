@@ -512,5 +512,122 @@ use $0 in console to access this element
 
     debugger; // create break point automatically in code
 
+## Resources
+
+## Preformances
+
+**Queueing**
+**Stalled**
+**Request sent**
+**Time to First Byte (TTFB)** Temps que met le serveur à renvoyer le premier byte
+**Content Download**
+
+## Emulation
+
+**Device**: listes des devices
+**Media**: Test media print, display
+**Sensors**: Touch, accelerometer, Geoloc
+
+## Debugging mobile
+
+**Weinre**: serveur node qui rajoute un script dans la page + App HTML5
+**Browser Sync 2**: [Open source et gratuit|http://www.browsersync.io]
+**Flo**: utilisé par Facebook
+**Valence**: Remote debugging, via WIFI, usb... 
+**Chrome Inspect**: Remote debugging via usb [chrome://inspect/#devices]
+**Safari**: Remote debugging via usb
+**iOS Webkit debug proxy**: lien entre chrome developper tools + iOS
+
+Idéalement faire un serveur wi-fi via proxy avec une latence fixe de 100ms et un débit constant de 10 Mb
+
+## Pre processeurs
+
+**LESS** puis **SASS** (mixin plus lisible en SASS) très interessant depuis SCSS (support des CSS et du SASS mixé)
+**Compass** librairie de mixin assez lourd
+**Bourbon** librairie de mixin plus légère
+**Stylus** souple (supporte le CSS), les mixin ressemble a une fonction, comprends arguments, supporte du coffee script, il y a des libs: **nib**
+**CoffeeScript** Splat (...), Fat arrows (=>)
+
+**Source Maps** permet de mapper un fichier (concaténé, minifié, transpilé) avec d'autres fichiers sources originaux.
+
+## Check supports
+* [canIuse|http://www.caniuse.com]: check against analytics
+* [html5please|http://html5please.com]: check features support and go for use or/and use polyfill or not
+* [html5test|http://www.html5test.com]: check browser support (new devices)
+* [modernizr|https://modernizr.com/]: permet de rajouter des classes CSS et d'offrir les infos de support via JS, les tests sont complet (vérifie les fakes tests)
+
+### Utiliser 
+Si on utilise modernizr, block le rendering, redéfini des css sur le body => repaint
+
+Modernizr à un coup pour les tests, on peut les déclencher nous même le plus tard possible
+
+## Modules
+
+* Permet de ranger dans des unités logiques. 
+* Règle les dépendances.
+* Se débarasser du global.
+
+### CommonJS
+
+Introduit par Node, chauqe fichier physique est un module => module = nom du fichier.
+Les variables dans le module à un scope local.
+On utilise exports pour exporter des éléments du module.
+
+__pathspec.js__
+    exports.key = 'value';
+
+__main.js__
+    mod = require('pathspec');
+
+Ok pour les scripts parce que c'est **synchrone**!
+
+### AMD
+
+**Asynchronous** Module Définition, conçu pour les browsers.
+
+__pathspec.js__
+    function(){return {'myobject':obj}};
+
+__main.js__
+    define(['pathspec']function(PS){PS.myobject});
+
+Fonctionne bien avec quelques fichiers mais si bcp de fichiers ==> il faut maintenir les dépendences, lourd, le js s'éxécute très tard.
+
+Mais solution avec Almondify. Compilation via node.
+
+### Harmony (ES6)
+
+Proche de common js (synchrone), mais utilise une notation python.
+
+SystemJS capable de prendre du AMD, commonJS, ES6 et faire en sorte que ça marche.
+
+**import**, **from**, **export**
+
+### Frameworks
+
+MVC pas toujours nécessaire, parfois jquery suffit.
+Mais Single Page Application ==> Plusieurs modules, routing, state full.
+
+#### Backbone
+
+Naturellement utilisé par la majorité des gens (2x que angular et sans google evangelist)
+
+Gère HTML5 history api, pas grand chose pour les vues => utiliser un moteur de template à part.
+Pas contraignant.
+Bcp de plugins, facile à customiser.
+
+#### Autres
+
+**Ember.js**: + lourd que backbone, contraignant
+**Marionette**: Rajoute des convention de vue/routage à backbone
+**Chaplin**
+**Thorax**
+
+#### AngularJS
+
+Poussé par les evangelists Google, pas fair-play (pas de contrib externe, pas de pull request acceptée), c'est une solution pour éviter le javascript. Ne fonctionne bien qu'avec chrome (pas IE). Lourd. Même idée que DART, GWT, ...
+
+### CommonJS compilé en 1! fichier
+
 # DAY #3
 # DAY #4
