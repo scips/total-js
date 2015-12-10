@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://delicious-insights.com/js-total/jst-day3/#/intro -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>JS Total • 3ème partie, 10/12/2015</title>
+
+    <meta name="author" content="Christophe Porteneuve">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="./JS Total • 3ème partie, 10_12_2015_files/reveal.min.css">
+    <link rel="stylesheet" href="./JS Total • 3ème partie, 10_12_2015_files/js-attitude.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="./JS Total • 3ème partie, 10_12_2015_files/tomorrow.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      if (window.location.search.match( /print-pdf/gi))
+        document.write( '<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="all">' );
+      else
+        document.write( '<link rel="stylesheet" href="css/print/paper.css" type="text/css" media="print">' );;
+    </script><link rel="stylesheet" href="./JS Total • 3ème partie, 10_12_2015_files/paper.css" type="text/css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="no-anims">
+
+    <div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides" style="width: 960px; height: 700px; zoom: 1;">
+        <section id="intro" class="present" style="top: -216px; display: block;">
+          <h1>JS Total</h1>
+          <h3 data-marker="intro-date">3ème partie, 10/12/2015</h3>
+          <h4 data-marker="intro-trainers">Jean-Pierre Vincent @ JS Attitude</h4>
+          <script>
+            // Delicously hacky. Look away.
+            if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+          </script>
+        </section>
+
+        <section id="overview" hidden="" class="future" style="top: -180px; display: block;">
+          <h1>JS Total</h1>
+          <h4 data-marker="overview-dates">4 journées du 8 au 11 décembre</h4>
+
+          <ol>
+            <li><span data-marker="day3">Aujourd’hui</span>&nbsp;: suite du développement de la SPA</li>
+            <li><span data-marker="day4">Demain</span>&nbsp;: industrialisation et web mobile</li>
+          </ol>
+        </section>
+
+        <section hidden="" class="stack future" style="top: 0px; display: block;">
+          <section id="spa-intro" class="chapter" style="top: -111px; display: block;">
+            <h1>Notre p’tite SPA</h1>
+          </section>
+
+          <section id="spa-steps" class="future" style="top: -326px; display: block;">
+            <h1>Étapes de dev</h1>
+
+            <ol>
+              <li>La persistence, les collections Backbone et la synchro</li>
+              <li>L’historique de check-ins</li>
+              <li>Garder la liste triée&nbsp;: l’ordre naturel</li>
+              <li>Détection online/offline, court-circuit et réconciliation</li>
+              <li>Stockage local</li>
+              <li>WebSockets et diffusion temps réel</li>
+              <li>Routes multiples</li>
+              <li>Exploiter AppCache</li>
+              <li>Améliorer l’UX avec AppCache en proposant le rechargement</li>
+              <li>Source final, bilan et Groc</li>
+            </ol>
+          </section>
+
+          <section id="spa-backbone-model" class="future" style="top: -350px; display: block;">
+            <h1>Backbone.Model</h1>
+
+            <p>On accède par <code>get</code> et <code>set</code> aux attributs</p>
+            <p>Gère les <em>dirties</em> (attributs modifiés), le <code>isNew()</code>, et un minimum de validation (mais plein de plugins), et <code>toJSON()</code></p>
+            <p>Des plugins pour les relations entre modèles, etc.</p>
+            <p>Événements <code>change</code> et <code>change:<em>attribute</em></code>, <code>invalid</code>, <code>request</code>, <code>error</code>, <code>sync</code> et <code>destroy</code>.</p>
+            <p>Pré-intègre plusieurs méthodes cool d’Underscore&nbsp;: <code>pairs()</code>, <code>pick()</code>, <code>omit()</code>, <code>keys()</code>, <code>values()</code> et <code>invert()</code>.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="models/check_in.js">module.exports = <u>Backbone.Model</u>.extend({
+  <span class="comment">// …</span>
+});</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>request, sync, error : lors des synchros serveur</li>
+<li>isNew : pas sauvé sur le serveur (absence de id, qui est le machin renvoyé par le serveur)</li>
+<li>pick et omit : filtres sur des noms de clé</li>
+<li>keys, values, pairs ( [ [key1, value1], [key2, value2] … ] ) , invert : les valeurs deviennent les clés</li>
+<li>montrer models/check_in.js : ooooh, c'est vide. On pourrait y ajouter un validate, un defaults, un initialize, comme dans check_in_ux.js</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-backbone-collection" class="future" style="top: -350px; display: block;">
+            <h1>Backbone.Collection</h1>
+
+            <p>Liste de modèles, souvent de même type indiqué par <code>model</code>.</p>
+            <p>Clé primaire par défaut des modèles&nbsp;: <code>id</code>.</p>
+            <p>Ordre naturel personnalisable.</p>
+            <p>Événements <code>add</code>, <code>remove</code>, <code>sort</code> et <code>reset</code>. Ceux des modèles remontent sur la collection aussi (<em>bubbling</em>).</p>
+            <p>Pré-intègre plein de méthodes cool d’Underscore, dont <code>each</code>, <code>map</code>, <code>find</code>/<code>filter</code>/<code>findWhere</code>/<code>where</code>, <code>all</code>, <code>any</code>, <code>invoke</code>, <code>pluck</code>…</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="models/collection.js">module.exports = <u>Backbone.Collection</u>.extend({
+  model: require(<span class="string">'./check_in'</span>)
+});</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>intérêt de définir un modèle type par collection : un simple hash va convertir dans la bonne instance de modèle</li>
+<li>un changement sur un objet en particulier fait remonter "change" au niveau de la collection</li>
+<li>également .toJSON, get/att, push/pop, unshift/shift</li>
+<li>pluck : réupération d'un attribut en particulier, mis dans un tableau</li>
+<li>juste montrer models/collection.js</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-persistence" class="future" style="top: -20px; display: none;">
+            <h1>La persistance</h1>
+
+            <p>On va se créer une collection de check-ins, et y ajouter nos objets soigneusement définis.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js"><span class="keyword">var</span> CheckInsCollection = require(<span class="string">'models/collection'</span>);
+<span class="keyword">var</span> <u>collection</u> = <span class="keyword">new</span> CheckInsCollection();
+
+<span class="function"><span class="keyword">function</span> <span class="title">addCheckIn</span><span class="params">(checkIn)</span> {</span>
+  checkIn.key = checkIn.key || Date.now();
+  <u>collection.add</u>(checkIn);
+}
+
+<u>exports.addCheckIn</u> = addCheckIn;</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_view.js"><span class="keyword">var</span> <u>store</u> = require(<span class="string">'lib/persistence'</span>);
+<span class="comment">// …</span>
+  checkIn: <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
+    <span class="comment">// …</span>
+    <u>store.addCheckIn</u>({ … });
+  },</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>but sauver notre checking sur le serveur</li>
+<li>création app/lib/persistence.js</li>
+<li><ul>
+<li>require backbone, fonction addCheckin avec un console(checkIn), exports</li>
+</ul>
+</li>
+<li><ul>
+<li>check_in_view : store = require lib/persistence, store.addCheckin(checkIn)</li>
+</ul>
+</li>
+<li><ul>
+<li>vérification dans la console, plomberie OK, on ferme check_in_view</li>
+</ul>
+</li>
+<li>require de collection, instanciation, génération de .key, puis collection.add . Montrer que console.log(collection.toJSON()); ajoute bien des models à chaque clic</li>
+<li>OK, mais à chaque reload, on repart de 0</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-rest-json" class="future" style="top: -20px; display: none;">
+            <h1>REST + JSON</h1>
+
+            <p>Le couple gagnant du Web des APIs, et celui que Backbone prend en charge par défaut.</p>
+
+            <table class="table smaller">
+              <thead>
+                <tr>
+                  <th>Méthode</th>
+                  <th>URL</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/checkins</code></td>
+                  <td>List</td>
+                </tr>
+                <tr>
+                  <td><code>POST</code></td>
+                  <td><code>/checkins</code></td>
+                  <td><strong>C</strong>reate</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/checkins/&lt;key&gt;</code></td>
+                  <td><strong>R</strong>ead</td>
+                </tr>
+                <tr>
+                  <td><code>PUT</code>/<code>PATCH</code></td>
+                  <td><code>/checkins/&lt;key&gt;</code></td>
+                  <td><strong>U</strong>pdate</td>
+                </tr>
+                <tr>
+                  <td><code>DELETE</code></td>
+                  <td><code>/checkins/&lt;key&gt;</code></td>
+                  <td><strong>D</strong>estroy</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="models/collection.js">model: require(<span class="string">'./check_in'</span>)<u>,
+  url: <span class="string">'/checkins'</span></u></code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js"><span class="function"><span class="keyword">function</span> <span class="title">addCheckIn</span><span class="params">(checkIn)</span> {</span>
+  collection.<u>create</u>(checkIn); <span class="comment">// add + save</span>
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>ça change de SOAP hein ?</li>
+<li>rappel des codes principaux : 200, 201 created, 301, 302, 304 (not modified), 404, 403/401, 418 (teapot)</li>
+<li>pas tout le monde a implémenté PATCH (qui permettait d'envoyer juste le delta des modifications) donc plutôt PUT qui envoie l'objet complet</li>
+<li>models/collection.js : ajout de url : '/checkins'</li>
+<li>persistence : remplacer .add par .create</li>
+<li>montrer POST + code 201 + contenu id:1</li>
+<li>expliquer l'implémentation REST de jst-server.coffee</li>
+<li><ul>
+<li>le tri sur key (qui est le timestamp)</li>
+</ul>
+</li>
+<li><ul>
+<li>201 + réponse + génération de l'id côté serveur</li>
+</ul>
+</li>
+<li><ul>
+<li>:id en 200 ou 404</li>
+</ul>
+</li>
+<li>création et export de getCheckIns (return collection.toJSON) . test : après ajout exécuter require('lib/persistence').getCheckIns() dans la console (mais pas ceux du serveur)</li>
+<li>création et exécution de syncPending, avec collection.fetch( reset true) , retester dans la console : on a bien a liste des checkins du serveur</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-history-reset" class="future" style="top: -20px; display: none;">
+            <h1>L’historique</h1>
+
+            <p>On décline une nouvelle vue imbriquée sur la droite, comme on l’avait fait pour la zone de check-in sur la gauche.</p>
+
+            <div class="fragment" data-fragment-index="0">
+              <p>Souci potentiel de <em>race condition asynchrone</em>&nbsp;:</p>
+
+              <img src="./JS Total • 3ème partie, 10_12_2015_files/spa-async-race.png" height="400">
+            </div>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>création views/history_view.js. copié / collé depuis une autre vue comme home_view</li>
+<li><ul>
+<li>require(view), exports et extend, template(history) et getRenderData</li>
+</ul>
+</li>
+<li>éditer home_view en prenant modèle sur CheckInView (require + new HistoryView().render ) FIXME:list s'affiche. on peut fermer home_view</li>
+<li>correction du FIXME</li>
+<li>history_view : ajout de listTemplate:'templates/check_ins', le montrer</li>
+<li>édition de getRenderData, dont console de store.getCheckIns</li>
+<li>la vue de l'historique est la plus souvent vide. le console.log montre un tableau vide alors que require('lib/persistence').getCheckIns() montre qu'il y a bien des résultats</li>
+<li>demander comment résoudre. Proposer dans views/view.js setTimeout(this.afterRender.bind(this), 100); à la place du defer</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-history-race-fix" class="future" style="top: -20px; display: none;">
+            <h1>La solution</h1>
+
+            <p>On va découpler tout ça proprement avec <a href="https://github.com/chalbert/Backbone-Mediator">Backbone.Mediator</a>.</p>
+
+            <p>On va ainsi utiliser des <em>événements applicatifs</em> pour notifier du <em>reset</em> de la collection.</p>
+
+            <p>Qui veut écoute… dont la fenêtre d’historique.  Si elle <em>render</em> avant la fin du <em>fetch</em>, elle pourra le refaire au bon moment.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js">collection.<u>on(<span class="string">'reset'</span></u>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  Backbone.Mediator.<u>publish(<span class="string">'checkins:reset'</span>);</u>
+});</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/history_view.js"><u>subscriptions</u>: {
+  <span class="string">'<u>checkins:reset</u>'</span>: <span class="string">'render'</span>
+},</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>explication du pattern pub/sub, et du Hub : pas d'instance = un singleton donc tout le monde publie là dedans</li>
+<li>persistence.js : collection on reset =&gt; mediator publish checkins:reset + require Backbone</li>
+<li>history_view : subscriptions (à copier / coller…) checkins:reset : render</li>
+<li>la colonne est rendue 2 fois mais est constamment à jour</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-history-add" class="future" style="top: -20px; display: none;">
+            <h1>Réagir à l’ajout</h1>
+
+            <p>Quand on ajoute, ce serait bien de le voir tout de suite à droite&nbsp;!</p>
+
+            <p>Même approche&nbsp;: événement applicatif d‘ajout.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js">collection.<u>on(<span class="string">'add'</span></u>, <span class="function"><span class="keyword">function</span><span class="params">(<u>model</u>)</span> {</span>
+  Backbone.Mediator.publish(<span class="string">'<u>checkins:new</u>'</span>, <u>model.toJSON()</u>);
+});</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/history_view.js">subscriptions: {
+  <span class="string">'<u>checkins:new</u>'</span>: <span class="string">'render'</span>,
+  <span class="comment">// …</span>
+},</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>history_view : 'checkins:new':'render'</li>
+<li>persistence : collection on add, mediator public 'checkins:new'</li>
+<li>rappeler qu'ils peuvent supprimer l'historique à la main dans sources &gt; localStorage + rm db.json</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-natural-order" class="future" style="top: -20px; display: none;">
+            <h1>Ordre naturel</h1>
+
+            <p>La collection, par défaut, liste les modèles par ordre d’ajout.  Pas cohérent avec le tri serveur, qui a les plus récents d’abord.</p>
+
+            <p>Pour <strong>garantir</strong> l’ordre, il faut implémenter un <strong>ordre naturel</strong>, afin que la collection soit <strong>toujours</strong> bien ordonnée.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="models/collection.js"><u>comparator</u>: <span class="function"><span class="keyword">function</span><span class="params">(<u>c1, c2</u>)</span> {</span>
+  <span class="keyword">return</span> +c2.get(<span class="string">'key'</span>) - +c1.get(<span class="string">'key'</span>);
+}</code></pre>
+
+            <p>Une fois ceci calé, on modifiera quand même notre réaction à <code>checkins:new</code> pour une UX plus remarquable.</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>models/collection.js : ajout comparator</li>
+</ul>
+<p>Animation à l‘ajout (ZAPPABLE)</p>
+<ul>
+<li>faire remarquer que c'est correment trié mais ça va trop rapidement pour que l'utilisateur comprenne</li>
+<li>démo dans le navigateur de l'ajout de la classe new sur un li + montrer check_ins.jade et history.styl</li>
+<li>modifications pur UX dans history_view :</li>
+<li><ul>
+<li>'checkins:new':'render' devient insertCheckIn</li>
+</ul>
+</li>
+<li><ul>
+<li>création fonction insertCheckIn</li>
+</ul>
+</li>
+<li>on peut fermer collection.js et history_view</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-offline" class="future" style="top: -20px; display: none;">
+            <h1>Online/Offline</h1>
+
+            <p>HTML5 prévoit deux parties, hélas peu cohérentes&nbsp;:</p>
+            <p><code>navigator.onLine</code> (notez cette !@# de L majuscule)</p>
+            <p>Événements <code>online</code> et <code>offline</code> sur <code>window</code></p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/connectivity.js"><span class="keyword">if</span> (<span class="string">'<u>onLine</u>'</span> <span class="keyword">in</span> navigator) {
+  exports.isOnline = <span class="function"><span class="keyword">function</span> <span class="title">isOnline</span><span class="params">()</span> {</span> <span class="keyword">return</span> navigator.onLine; };
+  $(<u>window</u>).on(<span class="string">'<u>online offline</u>'</span>, checkStatus);
+  checkStatus();
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">checkStatus</span><span class="params">()</span> {</span>
+  Backbone.Mediator.publish(exports.isOnline() ? <span class="string">'connectivity:online'</span> :
+    <span class="string">'connectivity:offline'</span>);
+}</code></pre>
+
+            <p>On s’inscrit aux événements applicatifs pour refléter ça sur le picto d’en-tête (<code>HomeView</code>, <code>#onlineMarker</code>)</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>ouvrir lib/connectivity.js</li>
+<li>on garde la ligne exports.isOnline en backup</li>
+<li>exports.isOnline = return navigator.onLine;</li>
+<li>test : require('lib/connectivity').isOnline() depuis la console, en fermant le wifi / cable. Devtools / emulation / offline n'aide pas ici…</li>
+<li>création checkStatus pour publier des events connectivity:online / connectivity:offline dans le bus</li>
+<li>synchro du picto online</li>
+<li><ul>
+<li>dans home_view.js, fonction syncMarker (récupération de l'élément DOM, dont bootstrap tooltip, show/hide en fonction de isOnline ou pas) + require connectivity</li>
+</ul>
+</li>
+<li><ul>
+<li>exécuter syncMarker dans afterRender()</li>
+</ul>
+</li>
+<li><ul>
+<li>l'état est correct au premier rendu de la page</li>
+</ul>
+</li>
+<li><ul>
+<li>ajout des subscriptions (attention à toutes les typos possibles …), l'état se met à jour lorsqu'on coupe le wifi</li>
+</ul>
+</li>
+<li>on peut fermer home_view, connectivity</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-short-circuit" class="future" style="top: -20px; display: none;">
+            <h1>Court-circuits</h1>
+
+            <p>On est hors-ligne&nbsp;? On évite de se tirer dans le pied&nbsp;:</p>
+            <p><strong>Inutile</strong> de recharger la géoloc / les POIs / de l’Ajax</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="models/check_in_ux.js">initialize: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="comment">// …</span>
+  checkFetchable();
+  <span class="comment">// …</span>
+  Backbone.Mediator.subscribe(<span class="string">'connectivity:online'</span>, checkFetchable);
+  Backbone.Mediator.subscribe(<span class="string">'connectivity:offline'</span>, checkFetchable);
+  <span class="comment">// …</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">checkFetchable</span><span class="params">()</span> {</span>
+    that.set(<span class="string">'fetchPlacesForbidden'</span>, !cnxSvc.isOnline());
+  }
+}</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js@syncPending  //  models/check_in.js@sync  //  …"><span class="keyword">if</span> (!cnxSvc.isOnline()) {
+  <span class="keyword">return</span>;
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>Disable du bouton fetch lorsqu'on est offline</p>
+<ul>
+<li>dans check_in_view rappeler ce qu'on avait fait pour le bouton submit, copier / coller le bindings</li>
+<li>changer pour 'header button' =&gt; fetchPlacesForbidden</li>
+<li>dans check_in_ux : fonction checkFetchable, require connectivity</li>
+<li>subscribe aux events connectivity:online / offline</li>
+<li>tester en montrant qu'à la déco le bouton est disabled</li>
+<li>déclencher un fetch lorsqu'on revient online : dans check_in_view : rajouter subscriptions 'connectivity:online': 'fetchPlaces'</li>
+<li>on peut fermer check_in_view et check_in_ux</li>
+</ul>
+<ul>
+<li>mute des requêtes dans :</li>
+<li><ul>
+<li>persistence.js syncPending</li>
+</ul>
+</li>
+<li><ul>
+<li>models/check_in.js : sync</li>
+</ul>
+</li>
+<li>test offline : history doit être vide, un checkin n'envoie pas de XHR</li>
+</ul>
+<p>Pourquoi on a encore des POIs qui apparaissent ? parceque dans lib/places.js on sauve tout dans localStorage. Si on vide localStorage, il reste les données fake :)</p>
+</aside>
+          </section>
+
+          <section id="spa-post-offline" class="future" style="top: -20px; display: none;">
+            <h1>Réconciliation</h1>
+
+            <p>Une fois de retour <em>online</em>, il faut persister ce qui ne l’a pas été.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js (code compressé verticalement pour le slide)"><span class="function"><span class="keyword">function</span> <span class="title">accountForSync</span><span class="params">(model)</span> {</span>
+  pendings = <u>_.without</u>(pendings, model);
+  <span class="keyword">if</span> (pendings.length) <span class="keyword">return</span>;
+
+  collection.off(<span class="string">'sync'</span>, accountForSync);
+  collection.<u>fetch({ reset: <span class="literal">true</span> })</u>;
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">syncPending</span><span class="params">()</span> {</span>
+  <span class="keyword">if</span> (!cnxSvc.isOnline()) <span class="keyword">return</span>;
+
+  collection.off(<span class="string">'sync'</span>, accountForSync);
+  pendings = collection.filter(<span class="function"><span class="keyword">function</span><span class="params">(c)</span> {</span> <span class="keyword">return</span> c.<u>isNew()</u>; });
+  <span class="keyword">if</span> (pendings.length) {
+    collection.on(<span class="string">'<u>sync</u>'</span>, accountForSync);
+    <u>_.invoke</u>(pendings, <span class="string">'<u>save</u>'</span>);
+  } <span class="keyword">else</span>
+    collection.<u>fetch({ reset: <span class="literal">true</span> })</u>;
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><p>démo du problème : un checkin offline n'est pas pris en compte à la reconnexion
+<em> dans persistence.js
+</em> <em> création fonction getPendingCheckIns (utilisation de filter + isNew) + export
+</em> <em> édition fonction syncPending : .save sur tous les pending (+require underscore)
+</em> <em> exécution syncPending quand connectivity:online
+</em> * démo navigateur : la requête part lorsqu'on revient online</p>
+<ul>
+<li>cas tordus (ZAPPABLE) : comment savoir si la requête est réellement arrivée au serveur ?</li>
+<li><ul>
+<li>écoute de l'event 'sync' de la collection dans syncPending</li>
+</ul>
+</li>
+<li><ul>
+<li>création de la fonction accountForSync</li>
+</ul>
+</li>
+<li><ul>
+<li>on dépile pendings, quand il n'y a plus rien à dépiler collection.off('sync') et on relance un fetch</li>
+</ul>
+</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-lawnchair" class="future" style="top: -20px; display: none;">
+            <h1>Offline First</h1>
+
+            <p>Cool, mais si on perd / rafraîchit la page avant de revenir <em>online</em>&nbsp;?</p>
+            <p>Il nous faut un miroir local, persistant, de <code>collection</code>.</p>
+            <p><code>localStorage</code> adapté, mais API trop basique ⇒ <a href="http://brian.io/lawnchair/">Lawnchair</a>.  En plus, on pourrait migrer sur <a href="https://developer.mozilla.org/fr/docs/IndexedDB">IndexedDB</a> sans toucher au code.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js (code compressé verticalement pour ce slide)"><span class="keyword">var</span> <u>localStore = <span class="keyword">new</span> Lawnchair</u>({ <u>name: <span class="string">'checkins'</span></u> }, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>});
+
+<span class="comment">// …</span>
+
+collection.on(<span class="string">'reset'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <u>localStore.nuke</u>(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> <u>localStore.batch</u>(collection.toJSON()); });
+  Backbone.Mediator.publish(<span class="string">'checkins:reset'</span>);
+});
+
+collection.on(<span class="string">'add'</span>, <span class="function"><span class="keyword">function</span><span class="params">(model)</span> {</span>
+  <u>localStore.save</u>(model.toJSON());
+  Backbone.Mediator.publish(<span class="string">'checkins:new'</span>, model.toJSON());
+});</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>montrer localStorage dans le navigateur</li>
+<li>limites des différentes méthodes de stockage : <a href="http://www.html5rocks.com/en/tutorials/offline/quota-research/?redirect_from_locale=fr#toc-overview">http://www.html5rocks.com/en/tutorials/offline/quota-research/?redirect_from_locale=fr#toc-overview</a></li>
+<li>lawnchair</li>
+<li><ul>
+<li>facilitera le meilleur des mondes : switch de localStorage à IndexedDB / WebSQL facile si besoin de plus d'espace</li>
+</ul>
+</li>
+<li><ul>
+<li>full async, adapters, plugins</li>
+</ul>
+</li>
+<li><ul>
+<li>Lawnchair range par attribut 'key' (la date, chez nous)</li>
+</ul>
+</li>
+<li>persistence.js :</li>
+<li><ul>
+<li>require de lawnchair + lawnchair-dom + instanciation</li>
+</ul>
+</li>
+<li><ul>
+<li>à chaque ajout dans la collection =&gt; save : collection.on('add')</li>
+</ul>
+</li>
+<li><ul>
+<li>à chaque resynchro de toute la collection =&gt; nuke, puis sauvegarde de toute la collection</li>
+</ul>
+</li>
+<li>montrer dans le navigateur le contenu de localStorage</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-lawnchair-load" class="future" style="top: -20px; display: none;">
+            <h1>Relire le miroir</h1>
+
+            <p>Avant même de charger par Ajax, on restaure depuis le miroir.</p>
+            <p>Ça permet une UI initiale utile, et de résister au rechargement ou à la fermeture de la page pendant l’<em>offline</em>.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js"><span class="function"><span class="keyword">function</span> <span class="title">initialLoad</span><span class="params">()</span> {</span>
+  <u>localStore.all</u>(<span class="function"><span class="keyword">function</span><span class="params">(checkins)</span> {</span>
+    collection.<u>reset</u>(checkins);
+    syncPending();
+  });
+}
+
+<span class="comment">// …</span>
+
+initialLoad(); <span class="comment">// à la place de syncPending()</span></code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>persistence.js :</li>
+<li><ul>
+<li>récupération depuis localStore des checkins, reset de la collection, avant exécution de syncPending</li>
+</ul>
+</li>
+<li><ul>
+<li>optionellemnt on peut le mettre dans une fonction initialLoad</li>
+</ul>
+</li>
+<li>test 1 : passage offline, la collection s'affiche quand même</li>
+<li>test 2 : checkin pendant offline, passage online : le checkin est toujours présent. Re-reload : toujours là</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="spa-lawnchair-dups" class="future" style="top: -20px; display: none;">
+            <h1>Oops&nbsp;! Doublons…</h1>
+
+            <p>Il reste un cas où la collection bouge et le miroir local ne le voit pas&nbsp;: les événements <code>sync</code> (ex. fourniture de l'ID par le serveur en réponse à la création).</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js">collection.on(<span class="string">'sync'</span>, <span class="function"><span class="keyword">function</span><span class="params">(model)</span> {</span>
+  <span class="keyword">if</span> (!(model <span class="keyword">instanceof</span> collection.model)) {
+    <span class="keyword">return</span>;
+  }
+
+  <u>localStore.save</u>(model.toJSON());
+});</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>cas : un checkIn qui n'a pas été créé en local (la partie websocket arrive)</li>
+<li>écoute de collection.sync, check du type (car sync peut renvoyer la collection entière), sauvegarde en local</li>
+<li>CheckIn = require('models/check_in')</li>
+<li>test : couper le serveur, éditer db.json et rajouter à la main une entrée (changer id, key, placeId et usernName), rallumer : elle doit apparaître dans l'historique et dans localStorage</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="spa-websockets" class="future" style="top: -20px; display: none;">
+            <h1>Web Sockets</h1>
+
+            <p>D’autres gens check-in&nbsp;? On aimerait le voir tout de suite…</p>
+            <p><a href="http://socket.io/">Socket.IO</a> fournit un magnifique enrobage, protocolaire et fonctionnel, au-dessus des Web Sockets et de leurs <em>fallbacks</em>.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/notifications.js"><span class="keyword">var</span> io = require(<span class="string">'socket.io'</span>);
+<span class="keyword">var</span> store = require(<span class="string">'lib/persistence'</span>);
+<span class="comment">// …</span>
+<span class="keyword">var</span> socket = <u>io.connect</u>();
+socket.<u>on(<span class="string">'checkin'</span>, store.addCheckIn)</u>;</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js"><span class="function"><span class="keyword">function</span> <span class="title">addCheckIn</span><span class="params">(checkIn)</span> {</span>
+  <u><span class="keyword">if</span> (collection.findWhere(_.pick(checkIn, <span class="string">'key'</span>, <span class="string">'userName'</span>))) {
+    <span class="keyword">return</span>;
+  }</u>
+
+  checkIn.key = checkIn.key || Date.now();
+  collection[<u><span class="string">'id'</span> <span class="keyword">in</span> checkIn ? <span class="string">'add'</span> : <span class="string">'create'</span></u>](checkIn);
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>c'est quoi websocket</li>
+<li><ul>
+<li>protocole habituel: vérification de qui vient, création de rooms, s'entendre sur le format des messages échangés, déconnexion et reconnexion auto, ping régulier</li>
+</ul>
+</li>
+<li>socket.io</li>
+<li><ul>
+<li>implémentation de tout ça</li>
+</ul>
+</li>
+<li><ul>
+<li>client / serveur, fallbacks</li>
+</ul>
+</li>
+<li><ul>
+<li><a href="http://socket.io/docs/">http://socket.io/docs/</a></li>
+</ul>
+</li>
+<li><ul>
+<li>dialogue via système d'événement client / serveur</li>
+</ul>
+</li>
+<li>montrer jst-server.coffee : require, attachement au serveur et le emit</li>
+<li>edit notifications.js</li>
+<li><ul>
+<li>require socket.io et lib/persistence</li>
+</ul>
+</li>
+<li><ul>
+<li>on 'checkin', store.addCheckIn</li>
+</ul>
+</li>
+<li>edit lib/persistence</li>
+<li><ul>
+<li>blindage de addCheckIn pour éviter les erreurs de PUT</li>
+</ul>
+</li>
+<li>test avec navigation privée (ou mobile) en local</li>
+<li>test de tout le monde sur le serveur projeté</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-details-route" class="future" style="top: -20px; display: none;">
+            <h1>Une route en plus</h1>
+
+            <p>Cliquer sur un élément de l’historique devrait aller sur une «&nbsp;URL de détail&nbsp;» pour ce check-in, qui ouvrirait à un dialogue modal.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/router.js">module.exports = Backbone.Router.extend({
+  routes: {
+    <span class="string">''</span>: <span class="string">'home'</span>,
+    <u><span class="string">'check-in/:id'</span>: <span class="string">'showCheckIn'</span></u>
+  },
+  <span class="comment">// …</span>
+  <u>showCheckIn: <span class="function"><span class="keyword">function</span><span class="params">(id)</span> {</span>
+    <span class="keyword">this</span>.home(<span class="literal">true</span>);
+    console.log(<span class="string">'SHOW CHECK-IN:'</span>, id);
+  }</u>
+});</code></pre>
+
+            <p>Essayez <a href="http://localhost:3333/check-in/1">localhost:3333/check-in/1</a>…</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>explication de History API :</li>
+<li><ul>
+<li>utilisé par google maps ou github</li>
+</ul>
+</li>
+<li><ul>
+<li>à partir de IE10</li>
+</ul>
+</li>
+<li><ul>
+<li>s'émule avec des # (d'ailleurs l'option par défaut de Backbone)</li>
+</ul>
+</li>
+<li>modification de jst-server.coffee pour rajouter la route vers check-in/:id (copier/coller de la route '/')</li>
+<li>dans initialize.js : rajouter pushState:true aux options de history.start</li>
+<li>démo d'un changement complet d'URL à la main</li>
+<li><ul>
+<li>en console : require('backbone').history.navigate('check-in/3', {trigger: true})</li>
+</ul>
+</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-details-click" class="future" style="top: -20px; display: none;">
+            <h1>Déclencher la route</h1>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/history_view.js"><u>events: {
+  <span class="string">'click li[data-id]'</span>: <span class="string">'showCheckInDetails'</span>
+}</u>,
+
+<span class="comment">// …</span>
+
+showCheckInDetails: <span class="function"><span class="keyword">function</span> <span class="title">showCheckInDetails</span><span class="params">(e)</span> {</span>
+  <span class="keyword">var</span> id = <span class="keyword">this</span>.$(e.currentTarget).attr(<span class="string">'data-id'</span>);
+  <span class="keyword">if</span> (!id) {
+    <span class="keyword">return</span>;
+  }
+
+  Backbone.<u>history.navigate</u>(<span class="string">'check-in/'</span> + id, { <u>trigger: <span class="literal">true</span></u> });
+},</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>history_view : events click vers showCheckInDetails</li>
+<li>showCheckInDetails + require backbone</li>
+<li>doit afficher les console.log</li>
+</ul>
+</aside>
+          </section>
+          <section id="spa-details-display" class="future" style="top: -20px; display: none;">
+            <h1>Afficher un check-in</h1>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/check_in_details_view.js"><span class="keyword">var</span> CheckInDetailsView = View.extend({
+  className: <span class="string">'modal fade'</span>,
+  id: <span class="string">'checkInDetails'</span>,
+  <span class="comment">// événement bootstrap</span>
+  events: { <span class="string">'hidden.bs.modal'</span>: <span class="string">'wrapUp'</span> },
+  template: require(<span class="string">'./templates/check_in_details'</span>),
+  wrapUp: <span class="function"><span class="keyword">function</span> <span class="title">wrapUp</span><span class="params">()</span> {</span>
+    <span class="comment">// …</span>
+  }
+}, { <span class="comment">// Méthodes «&nbsp;statiques&nbsp;»</span>
+  cancel: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>}, <span class="comment">// navigation vers '/'</span>
+  display: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="comment">// …</span>
+    singleton.$el.modal(<span class="string">'show'</span>);
+  }
+});</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>création views/check_in_details_view.js . montrer templates/check_in_details.jade</li>
+<li><ul>
+<li>copié / collé depuis une autre view. Garder les require, events et template</li>
+</ul>
+</li>
+<li><ul>
+<li>attention d'exporter CheckInDetailsView plutôt que directement View.extend</li>
+</ul>
+</li>
+<li><ul>
+<li>rajouter la méthode statique .display (cas normal)</li>
+</ul>
+</li>
+<li><ul>
+<li>Singleton et fonction display</li>
+</ul>
+</li>
+<li><ul>
+<li>méthode statique.cancel (utilisée en cas d'erreur)</li>
+</ul>
+</li>
+<li><ul>
+<li>events hidden.bs.modal vient de bootstrap, méthode wrapUp</li>
+</ul>
+</li>
+<li>router a besoin de récupérer un checkIn par ID</li>
+<li><ul>
+<li>création dans lib/persistence de getCheckIn et export</li>
+</ul>
+</li>
+<li><ul>
+<li>synchrone dans un premier temps (return collection.get(id);)</li>
+</ul>
+</li>
+<li><ul>
+<li>dans router : CheckInDetailsView.display( store.getCheckIn(id) );</li>
+</ul>
+</li>
+<li>la modale marche à partir d'un appel URL direct ou à partir du clic</li>
+</ul>
+</aside>
+          </section>
+          <section id="spa-details-new" class="future" style="top: -20px; display: none;">
+            <h1>Nouveau Check-In</h1>
+            <p>Un check-in que l'on vient de rajouter n'a pas encore d'<code>id</code> car il est renvoyé par le serveur. On attend donc l'événement <code>sync</code> pour mettre à jour le DOM</p>
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js">collection.on(<span class="string">'sync'</span>, <span class="function"><span class="keyword">function</span><span class="params">(model)</span> {</span>
+  <span class="comment">// …</span>
+  localStore.save(model.toJSON());
+  <u>Backbone.Mediator.publish(<span class="string">'checkins:saved'</span>, model);</u>
+});</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/history_view.js">subscriptions: {
+  <span class="comment">// …</span>
+  <u><span class="string">'checkins:saved'</span>: <span class="string">'updateId'</span></u>
+},
+<span class="comment">// …</span>
+updateId: <span class="function"><span class="keyword">function</span> <span class="title">updateId</span><span class="params">(checkIn)</span> {</span>
+  <span class="keyword">this</span>.$(<span class="string">'#history li:first-child'</span>).attr(<span class="string">'data-id'</span>, checkIn.id);
+}</code></pre>
+
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>persistence : dans collection:sync, publish checkins:saved</li>
+<li>history_view : subscription checkins:saved et fonction updateId</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-details-cid" class="future" style="top: -20px; display: none;">
+            <h1>Match LI / ID (1/2)</h1>
+
+            <p>Il faut mettre en correspondance un <code>li</code> de l’historique avec un <code>id</code> Backbone…  Pour du pré-chargé, ça va (on a l'info), mais pour un check-in qu'on vient de faire côté client, au moment du <code>add</code> on n’a que son <code>cid</code>&nbsp;: il va falloir recaler ça au <code>sync</code>.</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js"><u><span class="function"><span class="keyword">function</span> <span class="title">modelWithCid</span><span class="params">(model)</span> {</span>
+  <span class="keyword">return</span> _.extend(model.toJSON(), { cid: model.cid });
+}</u>
+<span class="comment">// …</span>
+collection.on(<span class="string">'add'</span>, <span class="function"><span class="keyword">function</span><span class="params">(model)</span> {</span>
+  localStore.save(model.toJSON());
+  Backbone.Mediator.publish(<span class="string">'checkins:new'</span>, <u>modelWithCid(model)</u>);
+});
+
+collection.on(<span class="string">'sync'</span>, <span class="function"><span class="keyword">function</span><span class="params">(model)</span> {</span>
+  <span class="comment">// …</span>
+  localStore.save(model.toJSON());
+  <u>Backbone.Mediator.publish(<span class="string">'checkins:saved'</span>, modelWithCid(model));</u>
+});</code></pre>
+          </section>
+
+          <section id="spa-details-history" class="future" style="top: -20px; display: none;">
+            <h1>Match LI / ID (2/2)</h1>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="views/history_view.js">subscriptions: {
+  <span class="comment">// …</span>
+  <u><span class="string">'checkins:saved'</span>: <span class="string">'updateId'</span></u>
+},
+
+<span class="comment">// …</span>
+
+updateId: <span class="function"><span class="keyword">function</span> <span class="title">updateId</span><span class="params">(checkIn)</span> {</span>
+  <span class="keyword">this</span>.$(<span class="string">'li[<u>data-cid</u>="'</span> + checkIn.cid + <span class="string">'"]'</span>).
+    attr(<span class="string">'<u>data-id</u>'</span>, checkIn.id).removeAttr(<span class="string">'data-cid'</span>);
+}</code></pre>
+
+            <p>Il ne nous reste plus qu’à détecter les clics sur les <code>li</code> équipés d’un <code>data-id=</code> pour déclencher la route approprié.</p>
+          </section>
+
+          <section id="spa-details-get-checkin" class="future" style="top: -20px; display: none;">
+            <h1>URL «&nbsp;ancienne&nbsp;»</h1>
+
+            <p>Si l’URL reçue référence un check-in trop ancien pour être déjà présent dans <code>collection</code>, il faudra le charger d’abord. Méthode garantie asynchrone, avec callback <em>à la Node</em> (erreur d’abord)&nbsp;:</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/persistence.js (code compressé verticalement pour ce slide)">exports.getCheckIn = <span class="function"><span class="keyword">function</span> <span class="title">getCheckIn</span><span class="params">(id, <u>cb</u>)</span> {</span>
+  <span class="keyword">var</span> checkIn = collection.get(id);
+  <span class="keyword">if</span> (checkIn) <span class="keyword">return</span> <u>_.defer</u>(<u>cb</u>, <span class="literal">null</span>, checkIn.toJSON());
+
+  checkIn = <span class="keyword">new</span> collection.model({ id: id });
+  checkIn.<u>urlRoot</u> = collection.<u>url</u>;
+  checkIn.<u>fetch</u>({ success: setupCheckIn, error: reportError });
+
+  <span class="function"><span class="keyword">function</span> <span class="title">setupCheckIn</span><span class="params">()</span> {</span>
+    collection.<u>add</u>(checkIn);
+    <u>cb</u>(<span class="literal">null</span>, checkIn.toJSON());
+  }
+
+  <span class="function"><span class="keyword">function</span> <span class="title">reportError</span><span class="params">()</span> {</span> <u>cb</u>(<span class="number">0xDEAD</span>); }
+}</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>expliquer que l'id n'est pas forcément là (ancien, externe…), donc passage en asynchrone dans persistence</li>
+<li>modifier @getCheckIn, remplacer tout le code par celui de la slide, l'expliquer</li>
+<li>du coup passage en asynchrone aussi dans router.js@showCheckIn + gestion d'erreur</li>
+</ul>
+</aside>
+          </section>
+
+          <section id="spa-appcache" class="future" style="top: -20px; display: none;">
+            <h1>Appcache</h1>
+
+            <p>Avoir déjà utilisé la webapp devrait revenir à <strong>l’avoir installée</strong>.</p>
+
+            <p>On devrait pouvoir la démarrer <strong>même si on n’a plus accès au serveur</strong> (Ajax ne marchera pas, mais pas grave, miroir local).</p>
+
+            <p>Dans l’avenir, on aura <a href="http://jakearchibald.com/2014/using-serviceworker-today/">ServiceWorker</a>, mais pour le moment, on se débrouille avec <a href="http://appcache.offline.technology/">Application Cache</a>.</p>
+
+            <p>Exaspère les devs front car… ils n’ont pas lu la doc&nbsp;! ;-)</p>
+
+            <p>Composant essentiel du <em>offline first</em>, néanmoins.</p>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>explication de l'offline et du format du fichier</li>
+<li>chrome://appcache-internals/</li>
+<li>brunch-config.coffee plugin appcache =&gt; génère l'appcache</li>
+<li>assets/index.html : on enlève x-manifest. Montrer les events dans la console</li>
+<li>on passe offline wifi, offline dans les tools, on peut même couper le serveur</li>
+<li>montre le problème en changeant dans layout.jade le titre : double reload. Et encore parce qu'on a un manifeste recompilé à chaque modification</li>
+</ul>
+</aside>
+
+          </section>
+
+          <section id="spa-appcache-updateready" class="future" style="top: -20px; display: none;">
+            <h1>Mise à jour</h1>
+
+            <p>On détecte l’événement <code>updateready</code> de l’appcache, et on propose un rechargement immédiat à l’utilisateur (sinon, il aura la nouvelle version au prochain chargement manuel).</p>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="lib/appcache.js"><span class="keyword">if</span> (window.applicationCache) {
+  window.applicationCache.addEventListener(<span class="string">'updateready'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    $(<span class="string">'#reloadPrompt'</span>).modal({ show: <span class="literal">true</span> });
+  });
+}</code></pre>
+
+            <pre><code data-trim="" data-noescape="" class="javascript" data-file="application.js">require(<span class="string">'lib/appcache'</span>);</code></pre>
+            <aside class="notes" data-markdown="" data-markdown-parsed="true"><ul>
+<li>montrer dans le DOM qu'on a une popin toute prête pour ça : require('jquery')('#reloadPrompt').modal({show:true});</li>
+<li>éditer application.js : require('lib/appcache')</li>
+<li>créer lib/appcache, montrer les events console et la popin qui se met en avant</li>
+<li>bonus : setInterval sur applicationCache.update</li>
+</ul>
+</aside>
+          </section>
+        </section>
+
+        <section id="next-friday" hidden="" class="future" style="top: -267px; display: block;">
+          <h1>À suivre…</h1>
+
+          <h3>Développer, optimiser, packager</h3>
+
+          <ul>
+            <li>Les tests&nbsp;!</li>
+            <li>La doc&nbsp;!</li>
+            <li>Les perfs&nbsp;!</li>
+            <li>Du web mobile&nbsp;!</li>
+          </ul>
+
+          <h3>À <span data-marker="next-day-name">demain</span>&nbsp;!</h3>
+        </section>
+      </div>
+    <div class="backgrounds"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"><div class="slide-background present"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div><div class="slide-background future"></div></div><div class="slide-background future"></div></div><div class="progress" style="display: block;"><span style="width: 0px;"></span></div><aside class="controls" style="display: block;"><div class="navigate-left"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="state-background"></div><div class="pause-overlay"></div></div>
+
+    <script src="./JS Total • 3ème partie, 10_12_2015_files/head.min.js"></script>
+    <script src="./JS Total • 3ème partie, 10_12_2015_files/reveal.min.js"></script>
+
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script><script type="text/javascript" src="./JS Total • 3ème partie, 10_12_2015_files/marked.js"></script><script type="text/javascript" src="./JS Total • 3ème partie, 10_12_2015_files/markdown.js"></script>
+  
+
+<script type="text/javascript" src="./JS Total • 3ème partie, 10_12_2015_files/highlight.js"></script><script type="text/javascript" src="./JS Total • 3ème partie, 10_12_2015_files/notes.js"></script></body></html>

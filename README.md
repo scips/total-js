@@ -629,5 +629,24 @@ Poussé par les evangelists Google, pas fair-play (pas de contrib externe, pas d
 
 ### CommonJS compilé en 1! fichier
 
+## Make
+
+### Brunch.io
+
+* sass -> css -> css minified + move
+* coffee -> JS -> minified + move
+
+Très rapide, peu de config si l'on suit les conventions.
+
+Bcp de plugins. Même phylosophie que gulp.
+**template**, **image**, **minify**, **syntax check**, ...
+
+#### Template support
+
+**handlebarsjs**: templating avec du text
+**jade**
+
+
+
 # DAY #3
 # DAY #4
