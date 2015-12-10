@@ -2,8 +2,12 @@
 
 var View = require('./view');
 var store = require('lib/persistence');
+var Backbone = require('backbone');
 
 module.exports = View.extend({
+    events: {
+        'click li[data-id]': 'showCheckInDetails'
+    },
     // Le template principal
     template: require('./templates/history'),
     templateItem: require('./templates/check_ins'),
@@ -28,5 +32,15 @@ module.exports = View.extend({
         setTimeout(function() {
             this.$el.find('li.new').removeClass('new');
         }.bind(this), 1);
+    },
+    showCheckInDetails: function showCheckInDetails(e) {
+        var id = this.$(e.currentTarget).data('id');
+        if (!id) {
+            return;
+        }
+
+        Backbone.history.navigate('check-in/' + id, {
+            trigger: true
+        });
     }
 });

@@ -6,13 +6,15 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var application = require('application');
+var CheckInDetailsView = require('views/check_in_details_view');
 
 module.exports = Backbone.Router.extend({
   // Déclaration
   // -----------
   routes: {
     // La route racine, pour la page principale
-    '': 'home'
+    '': 'home',
+    'check-in/:id': 'showCheckIn'
   },
 
   // Gestionnaires
@@ -27,5 +29,10 @@ module.exports = Backbone.Router.extend({
 
     $('body').html(application.homeView.render().el);
     this.homeRendered = true;
+  },
+  showCheckIn: function(id) {
+    this.home(true);
+    CheckInDetailsView.display(id);
+    console.log('SHOW CHECK-IN:', id);
   }
 });

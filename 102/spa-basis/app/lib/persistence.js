@@ -52,6 +52,7 @@ var syncPending = function syncPending() {
 };
 
 var addCheckIn = function addCheckIn(checkIn) {
+  console.log('add checkin received ', checkIn);
   checkIn.key = checkIn.key || Date.now();
   // add va créé un objet d'après le Model par défaut de la collection
   collection[('id' in checkIn) ? 'add' : 'create'](checkIn);
@@ -59,6 +60,10 @@ var addCheckIn = function addCheckIn(checkIn) {
 
 var getCheckIns = function getCheckIns() {
   return collection.toJSON();
+};
+
+var getCheckIn = function getCheckIn(id) {
+  return collection.get(id);
 };
 
 initialLoad();
@@ -73,6 +78,13 @@ collection.on('add', function(model) {
   localStore.save(model.toJSON());
   Backbone.Mediator.publish('checkins:add', model.toJSON());
 });
+collection.on('sync', function(model) {
+  if (!(model instanceof collection.model)) {
+    return;
+  }
+  localStore.save(model.toJSON());
+});
+
 
 // exports.addCheckIn = addCheckIn;
 
@@ -80,5 +92,6 @@ module.exports = {
   addCheckIn: addCheckIn,
   getCheckIns: getCheckIns,
   syncPending: syncPending,
-  accountForSync: accountForSync
+  accountForSync: accountForSync,
+  getCheckIn: getCheckIn
 };

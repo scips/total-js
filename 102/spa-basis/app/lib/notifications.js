@@ -2,6 +2,12 @@
 
 var $ = require('jquery');
 var _ = require('underscore');
+var io = require('socket.io');
+var store = require('lib/persistence');
+
+var socket = io.connect();
+
+socket.on('checkin', store.addCheckIn);
 
 var userName = sessionStorage.getItem('userName');
 if (userName === null) {

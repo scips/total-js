@@ -68,6 +68,7 @@ exports.startServer = (port, path, brunchReady) ->
     # avec son modèle existant.
     response.status(201).json { id: checkIn.id }
     # On notifie tout le monde du nouveau check-in, par *broadcast* websockets.
+    console.log 'emiting checkin', checkIn
     io.emit 'checkin', checkIn
 
   # GET entité -> obtention des données d'un check-in précis.

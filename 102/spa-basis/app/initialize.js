@@ -31,7 +31,9 @@ var moment = require('moment');
 var application = require('application');
 
 $(function() {
-  moment.lang('fr');
-  application.initialize();
-  Backbone.history.start();
+    moment.lang('fr');
+    application.initialize();
+    Backbone.history.start({
+        pushState: true
+    });
 });
