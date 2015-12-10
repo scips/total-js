@@ -646,7 +646,33 @@ Bcp de plugins. Même phylosophie que gulp.
 **handlebarsjs**: templating avec du text
 **jade**
 
+#### Config
 
+exports.config =
+
+  files:
+    javascripts: # --> all plugins that reports to handle javscript
 
 # DAY #3
+
+## Backbone Collection
+
+Dans une collection backbone on peut l'associer à un Model par défaut, il créera automatiquement un objet d'après le Model avec les arguments de l'appel comme propriétés
+
+## REST + JSON
+
+*Verbs*: GET, POST, PUT, DELETE
+*Code*: 200, 3xx, ..., 4xx, ...
+
+Par défaut supporté par Backbone
+
+## setTimeout 0
+
+Execute qqch la prochaine fois que tu es libre
+setTimeout empile des functions a éxécuter dès que le navigateur rend la main.
+
+1. Navigateur execute le javascript et bloque le rendering
+2. Le Navigateur modifie le rendu
+3. Le Navigateur check la pile de function a éxécuter (déposer via setTiemout par exemple et les exécute)
+
 # DAY #4

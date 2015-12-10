@@ -13,5 +13,13 @@ module.exports = Backbone.Collection.extend({
   // Définition du modèle à exploiter lors d'ajouts, fetches, etc.
   // Du coup, on peut passer juste des hashes d'attributs, ça
   // convertit tout seul.
-  model: require('./check_in')
+  model: require('./check_in'),
+  url: '/api/v1/checkins',
+  intialize: function initialize() {
+    var collectionOnSync = function collectionOnSync() {};
+    this.on('sync', collectionOnSync);
+  },
+  comparator: function comparator(a, b) {
+    return a.get('key') < b.get('key');
+  }
 });

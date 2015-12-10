@@ -5,6 +5,7 @@
 
 var Backbone = require('backbone');
 var _ = require('underscore');
+var connectivity = require('lib/connectivity');
 
 module.exports = Backbone.Model.extend({
   defaults: {
@@ -13,7 +14,8 @@ module.exports = Backbone.Model.extend({
     places: [],
     placeId: null,
     comment: '',
-    checkInDisabled: true
+    checkInDisabled: true,
+    fetchPlacesDisabled: false
   },
   initialize: function initialize() {
     var modelOnChangePlaceId = function modelOnChangePlaceId() {
@@ -21,6 +23,10 @@ module.exports = Backbone.Model.extend({
       this.set('checkInDisabled', checkInDisabled);
     }.bind(this);
     this.on('change:placeId', modelOnChangePlaceId);
+    var modelOnfetchPlacesDisabled = function modelOnfetchPlacesDisabled() {
+      this.set('fetchPlacesDisabled', !connectivity.isOnline());
+    }.bind(this);
+    Backbone.Mediator.subscribe('connectivity:change', modelOnfetchPlacesDisabled);
   },
   getPlace: function modelGetPlace() {
     return _.findWhere(

@@ -9,8 +9,12 @@ var locSvc = require('lib/location');
 var poiSvc = require('lib/places');
 var CheckInUX = require('models/check_in_ux');
 var userName = require('lib/notifications').userName;
+var store = require('lib/persistence');
 
 module.exports = View.extend({
+  subscriptions: {
+    'connectivity:online': 'fetchPlaces'
+  },
   bindings: {
     '#comment': 'comment',
     '#geoloc': {
@@ -32,6 +36,12 @@ module.exports = View.extend({
     'button[type=submit]': {
       attributes: [{
         observe: 'checkInDisabled',
+        name: 'disabled'
+      }]
+    },
+    'header button': {
+      attributes: [{
+        observe: 'fetchPlacesDisabled',
         name: 'disabled'
       }]
     }
@@ -85,7 +95,6 @@ module.exports = View.extend({
     if (this.model.get('checkInForbidden'))
       return;
     var place = this.model.getPlace();
-    console.log(place);
     var checkIn = {
       placeId: place.id,
       vicinity: place.vicinity,
@@ -95,6 +104,6 @@ module.exports = View.extend({
       userName: userName
     };
     this.model.resetOnSubmit();
-    console.log(checkIn);
+    store.addCheckIn(checkIn);
   }
 });
