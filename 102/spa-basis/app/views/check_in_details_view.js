@@ -33,13 +33,14 @@ function cancelCheckInDetails() {
 }
 
 function displayCheckInDetails(id) {
-  var model = store.getCheckIn(id);
-  // console.log(model); return;
-  singleton.model = model;
-  singleton.render();
-  // singleton.el est un pointeur DOM : meme si on l'init
-  $('body').append(singleton.el);
-  singleton.$el.modal('show');
+  store.getCheckIn(id, function getCheckInCallback(error, model) {
+    console.log('from callback', model);
+    singleton.model = model;
+    singleton.render();
+    // singleton.el est un pointeur DOM : meme si on l'init
+    $('body').append(singleton.el);
+    singleton.$el.modal('show');
+  });
 }
 
 module.exports = {

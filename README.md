@@ -676,3 +676,62 @@ setTimeout empile des functions a éxécuter dès que le navigateur rend la main
 3. Le Navigateur check la pile de function a éxécuter (déposer via setTiemout par exemple et les exécute)
 
 # DAY #4
+
+## Convention sans promise
+
+Async: ordre des params: callback(**error**, **data**)
+
+### DEFER
+
+Comme chaque execution javascript est bloquante et synchrone, lors d'appel à des méthode asynchrone, si l'on réutilise les données en retour, il est important de laisser le temps au moteur JS de terminer d'éxécuter la pile de code courante.
+
+On utilise donc setTimeout(function(){},0); pour mettre sur une autre pile qui sera éxécutée plus tard.
+
+_.defer() rend tout ça plus élégant.
+
+## Cache Manifest
+
+A rajouter dans 
+    <html manifest='appcache.appcache'>
+
+File: ***appcache/appcache***
+
+    CACHE MANIFEST
+
+    CACHE:
+    /offline/fallback
+
+    FALLBACK:
+    / /offline/fallback
+
+    NETWORK:
+    *
+
+Le cache est très agressif, il faut changer le fichier manifest pour qu'il remette à jour. En cas de remise à jour (c'est fait en asynchrone) un event est envoyé au navigateur.
+
+Il faut donc le prévoir au sein de l'application.
+
+### CACHE
+
+Liste des fichiers à cacher
+
+### FALLBACK
+
+Liste des urls et de leur fallback (qui doivent être caché)
+
+### NETWORK
+
+Liste les requêtes pour lesquelles le réseau est toujours appelé.
+
+## Service Worker
+
+Proxy Javascript, ne fonctionnant qu'en HTTPS. Nécessite une autorisation du client.
+Cache les requêtes et permet de les modifier et de modifier le contenu.
+Capable de recevoir du push du serveur. (Même si le tab est fermé).
+
+## Gérer la cache
+
+addEventListener sur **'updateready'**
+
+pour checker la validité de la cache: appeler window.applicationCache.update(window)
+

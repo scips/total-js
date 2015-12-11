@@ -24,6 +24,12 @@ var initialLoad = function initialLoad() {
   });
 };
 
+var modelWithCid = function modelWithCid(model) {
+  return _.extend(model.toJSON(), {
+    cid: model.cid
+  });
+};
+
 var accountForSync = function accountForSync(model) {
   pendings = _.without(pendings, model);
   if (pendings.length) return;
@@ -52,7 +58,6 @@ var syncPending = function syncPending() {
 };
 
 var addCheckIn = function addCheckIn(checkIn) {
-  console.log('add checkin received ', checkIn);
   checkIn.key = checkIn.key || Date.now();
   // add va créé un objet d'après le Model par défaut de la collection
   collection[('id' in checkIn) ? 'add' : 'create'](checkIn);
@@ -62,8 +67,27 @@ var getCheckIns = function getCheckIns() {
   return collection.toJSON();
 };
 
-var getCheckIn = function getCheckIn(id) {
-  return collection.get(id);
+var getCheckIn = function getCheckIn(id, callback) {
+  var checkIn = collection.get(id);
+  if (checkIn) return _.defer(callback, null, checkIn.toJSON());
+
+  checkIn = new collection.model({
+    id: id
+  });
+  checkIn.urlRoot = collection.url;
+  checkIn.fetch({
+    success: setupCheckIn,
+    error: reportError
+  });
+
+  function setupCheckIn() {
+    collection.add(checkIn);
+    callback(null, checkIn.toJSON());
+  }
+
+  function reportError() {
+    callback(0xDEAD);
+  }
 };
 
 initialLoad();
@@ -76,13 +100,14 @@ collection.on('reset', function() {
 });
 collection.on('add', function(model) {
   localStore.save(model.toJSON());
-  Backbone.Mediator.publish('checkins:add', model.toJSON());
+  Backbone.Mediator.publish('checkins:add', modelWithCid(model));
 });
 collection.on('sync', function(model) {
   if (!(model instanceof collection.model)) {
     return;
   }
   localStore.save(model.toJSON());
+  Backbone.Mediator.publish('checkins:saved', modelWithCid(model));
 });
 
 

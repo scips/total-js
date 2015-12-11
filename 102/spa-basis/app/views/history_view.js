@@ -21,7 +21,8 @@ module.exports = View.extend({
     afterRender: function afterHomeRender() {},
     subscriptions: {
         'checkins:reset': 'render',
-        'checkins:add': 'insertCheckIn'
+        'checkins:add': 'insertCheckIn',
+        'checkins:saved': 'updateId'
     },
     insertCheckIn: function insertCheckIn(model) {
         model.extra_class = 'new';
@@ -42,5 +43,9 @@ module.exports = View.extend({
         Backbone.history.navigate('check-in/' + id, {
             trigger: true
         });
+    },
+    updateId: function updateId(checkIn) {
+        this.$('li[data-cid="' + checkIn.cid + '"]').
+        attr('data-id', checkIn.id).removeAttr('data-cid');
     }
 });
