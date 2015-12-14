@@ -1,0 +1,1 @@
+module.exports = require('../app/externals/moment-2.2.1-fr');

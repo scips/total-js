@@ -735,3 +735,152 @@ addEventListener sur **'updateready'**
 
 pour checker la validité de la cache: appeler window.applicationCache.update(window)
 
+## TESTS
+
+Pourquoi faire des tests: pour la tranquilité du développeur!
+
+### Mocha
+
+**assertion**: micro test
+
+**BDD**: Behavior Driven Development
+
+Mocha permet de faire des **assertion** en **BDD**.
+
+Les tests sont organisé en suite de test via **describe**.
+
+Chaque test écrit en **BDD** commence par **it** ....
+
+Ex.:
+
+    describe('testgroup1', function (){
+        it('should accept character with accent', function(){
+            assert.equals(true,myFunction());
+        });
+    });
+
+Mocha est capable d'éxécuter les tests pour node et aussi sur une page web.
+
+#### Supporte l'asynchrone.
+
+Ex.:
+
+    describe('testgroup1', function (){
+        it('should accept character with accent', function(done){
+            assert.equals(true,myFunction());
+            // execute le callback
+            done();
+        });
+    });
+
+#### Reporting
+
+* TAP --> Pour Jenkins par exemple
+* JSON --> apps
+* HTML --> en ligne
+
+### Chai
+
+Couche qui étend tous les objects avec 3 type de syntaxes: **assert**, **expect**, **should** au choix.
+
+### Sinon
+
+Permet de mocker et d'espionner
+
+#### Spy
+
+Permet de vérifier si les calls/params on bien été utilisées.
+
+#### Stubs
+
+Permet de mocker le retour d'une fonction
+
+#### Fake XMLHttpRequest
+
+Permet de mocker complètement les requête utilisant xmlHTTPRequest
+
+#### Fake Server
+
+Mock un server complet (avec XMLHttpRequet entre autre)
+
+#### Fake time
+
+Permet de tester des événements lié au temps (throttling, timeouts ...)
+
+## Browser testing
+
+### Selenium
+
+Lance de vrai navigateur
+
+### PhantomJS / SlimerJS / TrifleJS
+
+Navigateur head less avec webkit, gecko et IE9
+
+### CasperJS / Polterfeist (ruby)
+
+Pilote PhantomJS/SlimerJS ... avec une API plus haut niveau
+
+### Cloud testing
+
+* Browserstack: Access real devices in the cloud
+* Saucelab: Infrastructure selenium dans le cloud
+
+## Documentation
+
+### JSDOC 3
+
+Ressemble à javadoc, format tradiotionnel
+
+### Docco / Gorc
+
+Basé sur le fait que le code est documenté en format markdown (MD)
+
+Possible d'avoir un watcher.
+
+## Performance
+
+[introduction à la webperf|http://www.slideshare.net/jpvincent/introduction-a-la-webperf]
+
+Le taux de conversion chute en dessous de 3 secondes de chargement.
+
+C'est particulièrement vrai pour les sites qui ont une concurence haute (voyage, vidéo, ...).
+
+Pour la perf: tu test! C'est empirique mais ça marche!
+
+### Loading
+
+#### webpagetest
+
+Navigateurs ouvre plusieurs canaux http [tester sur webpagetest|http://www.webpagetest.org]
+
+Possibilité de scripting (à la selenium): click.
+
+Pour les SPOF: utiliser des dns qui timeout: blackhole.webpagetest.org ou block domain.
+
+On peut voir les petites bar oranges: inital connection socket tcp, 
+
+Attention bcp de nom de domaine ==> Saturation de l'OS.
+
+#### dom monster
+
+Tool qui montre de manière simple 
+
+### Recos
+
+* Charger les variantes de graisse (bold, italique) des fonts en asynchrones
+* Repasser sur 1! domaine pour les statics (voir tout sur www.rtbF.be)
+* Les CSS sont probablement trop compliquée (130 ms pour recalculer le style)
+* Le HTML est trop compliqué : 240 ms pour l'évaluer
+* Utiliser la Font API à la place du polyfill fontfaceobserver
+* Au delà de 14Kb (header compris) tout vient dans la première requête.
+* Image plus petites en mobile (le total des images téléchargées sur le mobile est supérieur au desktop)
+* fasterize.com: CDN + automated 
+* Concatenate + Uglify (Brunch, Browserify, r.js)
+* CSS inline en head
+* JS critique en bas du body
+* prefetch on mouseover
+* Spriting avec Glue, Font Awesome + app Icomoon
+* Uglification (UglifyJS, Clean-CSS, ImageOptim)
+* Compression image: MozJpeg via cjpeg-dssim degrade l'image de manière automatique voir adept jpeg compressor
+
