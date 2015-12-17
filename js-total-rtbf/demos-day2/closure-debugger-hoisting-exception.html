@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Debugger, closure, Break on Error, hoisting</title>
+</head>
+<body>
+
+
+<h1>Debugger, closure, Break on Error, hoisting</h1>
+<button id="closure">Exécuter publicFx</button>
+<button id="boom">Toi aussi teste le hoisting</button>
+<ol>
+	<li>Allumer la console</li>
+	<li>cliquer sur le bouton publicFx : ah oui <code>debugger;</code> déclenche le pas à pas. Mate la Closure</li>
+	<li>allumer "Pause on Exceptions"</li>
+	<li>Cliquer sur le bouton hoisting</li>
+</ol>
+
+
+<script>
+
+function publicFx() {
+  var stamp = Date.now();
+  var onSenFout = 'vraiment';
+  return function() {
+    debugger;
+    console.log(stamp);
+  };
+}
+
+document.getElementById('closure').addEventListener('click', function closure () {
+	publicFx()();
+});
+
+document.getElementById('boom').addEventListener('click', function boom () {
+	console.log("Jusqu'ici tout va bien…");
+	var x = 42;
+
+	function x() {
+		console.log(x);
+	}
+
+	x();
+});
+
+</script>
+
+
+</body>
+</html>

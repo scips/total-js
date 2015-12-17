@@ -1,0 +1,18 @@
+<div>Hey</div>
+<script>
+function soyonsLaxiste() {
+  globalDirect = 'le piege est tendu';
+  console.log(globalDirect)
+}
+
+function soyonsNormaux() {
+  'use strict';
+  globalDirect2 = 'should not see me';
+}
+
+// tout se passe bien, sauf qu'on a créé une variable peut être à l'insu de notre plein gré
+soyonsLaxiste();
+// là le navigateur nous envoie une vraie erreur JS, on n'a pas à attendre qu'une erreur fonctionnelle nous soit signalée
+soyonsNormaux();
+
+</script>

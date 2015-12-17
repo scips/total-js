@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>jst-server</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="jst-server"><meta name="groc-project-path" content="jst-server.coffee"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">jst-server.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="mini-serveur-applicatif-pour-l39appli">Mini-serveur applicatif pour l&#39;appli</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper">bodyParser   = <span class="hljs-built_in">require</span>(<span class="hljs-string">'body-parser'</span>)
+errorHandler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'errorhandler'</span>)
+express      = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)
+fs           = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
+http         = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>)
+logger       = <span class="hljs-built_in">require</span>(<span class="hljs-string">'morgan'</span>)
+socketio     = <span class="hljs-built_in">require</span>(<span class="hljs-string">'socket.io'</span>)
+low          = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lowdb'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chargement-de-la--base-">Chargement de la « base »</h2>
+<p>Tentative de chargement d&#39;un <code>db.json</code> existant
+(aucun problème s&#39;il n&#39;est pas là, mais permet
+de persister les check-ins au travers des lancements
+du serveur de dev)</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">try</span>
+  low.load(<span class="hljs-string">'db.json'</span>)
+<span class="hljs-keyword">catch</span>
+  <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Cannot load db.json (but that's alright!)"</span>
+DB = low(<span class="hljs-string">'checkins'</span>).sortBy(<span class="hljs-string">'key'</span>).value().reverse()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="serveur-de-dev-brunch">Serveur de dev Brunch</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Quand on spécifie un fichier de serveur de dev
+à Brunch, il attend un module CommonJS qui exporte
+une fonction <code>startServer</code>.  Depuis la 1.7.10 environ,
+celle-ci reçoit en 3ème argument un <em>callback</em> qu&#39;il est
+impératif d&#39;appeler quand on est prêt, sinon le <em>watcher</em>
+ne se déclenche jamais.</p></div></div><div class="code"><div class="wrapper">exports.startServer = <span class="hljs-function"><span class="hljs-params">(port, path, brunchReady)</span> -&gt;</span>
+  app = express()
+  server = http.createServer(app)
+  io = socketio(server)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Les middlewares : fichiers statiques, logs, analyse
+des corps de requêtes JSON.</p></div></div><div class="code"><div class="wrapper">  app.use express.static <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/public"</span>
+  app.use errorHandler()
+  app.use logger(<span class="hljs-string">':method :url'</span>)
+  app.use bodyParser.json()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="api-ajax">API Ajax</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  api = <span class="hljs-keyword">new</span> express.Router()
+  app.use <span class="hljs-string">'/api/v1/checkins'</span>, api</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>GET racine -&gt; liste des 10 plus récents check-ins</p></div></div><div class="code"><div class="wrapper">  api.get <span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-params">(request, response)</span> -&gt;</span>
+    response.json DB[<span class="hljs-number">0.</span>.<span class="hljs-number">.10</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>POST racine -&gt; création de check-in.</p></div></div><div class="code"><div class="wrapper">  api.post <span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-params">(request, response)</span> -&gt;</span>
+    checkIn = request.body
+    checkIn.id = DB.length + <span class="hljs-number">1</span>
+    DB.unshift checkIn</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On persiste sur disque dans le <code>db.json</code></p></div></div><div class="code"><div class="wrapper">    low(<span class="hljs-string">'checkins'</span>).insert(checkIn);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On renvoie une 201 (<em>Created</em>) avec un corps de réponse
+contenant le delta (ici l&#39;ID), que la couche client fusionnera
+avec son modèle existant.</p></div></div><div class="code"><div class="wrapper">    response.status(<span class="hljs-number">201</span>).json { <span class="hljs-attribute">id</span>: checkIn.id }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On notifie tout le monde du nouveau check-in, par <em>broadcast</em> websockets.</p></div></div><div class="code"><div class="wrapper">    io.emit <span class="hljs-string">'checkin'</span>, checkIn</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>GET entité -&gt; obtention des données d&#39;un check-in précis.
+Utilisé par la route secondaire si l&#39;URL référence un check-in
+trop ancien pour figurer d&#39;entrée de jeu dans la collection côté
+client.</p></div></div><div class="code"><div class="wrapper">  api.get <span class="hljs-string">'/:id'</span>, <span class="hljs-function"><span class="hljs-params">(request, response)</span> -&gt;</span>
+    id = +request.params.id
+    result = (ci <span class="hljs-keyword">for</span> ci <span class="hljs-keyword">in</span> DB <span class="hljs-keyword">when</span> ci.id <span class="hljs-keyword">is</span> id)
+    <span class="hljs-keyword">if</span> result[<span class="hljs-number">0</span>]
+      response.json result[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">else</span>
+      response.status(<span class="hljs-number">404</span>).json {}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Toute URL hors API : on sert l&#39;appli cliente.
+Ainsi on prend en charge les URLs profondes en mode
+<em>pushState</em> si besoin.</p></div></div><div class="code"><div class="wrapper">  app.get <span class="hljs-string">'*'</span>, <span class="hljs-function"><span class="hljs-params">(request, response)</span> -&gt;</span>
+    response.sendfile <span class="hljs-string">'public/index.html'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="lancement-du-serveur">Lancement du serveur</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  server.listen port, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Listening on port <span class="hljs-subst">#{port}</span>… WebSockets enabled."</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ne pas oublier d&#39;appeler le callback de complétion pour que
+Brunch démarre le watcher !</p></div></div><div class="code"><div class="wrapper">    brunchReady()</div></div></div></div></body></html>

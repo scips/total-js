@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>test-phantomjs/persistence_spec</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="test-phantomjs/persistence_spec"><meta name="groc-project-path" content="test-phantomjs/persistence_spec.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">test-phantomjs/persistence_spec.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global describe, it, before, beforeEach, afterEach, sinon </p></div></div><div class="code"><div class="wrapper">describe(<span class="hljs-string">"The persistence layer"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> xhr;
+  <span class="hljs-keyword">var</span> _, store;
+
+  before(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">envSetup</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Env setup</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> Backbone = <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>);
+    Backbone.$ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>);
+    <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone-mediator'</span>);
+    _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'underscore'</span>);
+  });
+
+  beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testSetup</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Mocks &amp; Isolation</p></div></div><div class="code"><div class="wrapper">    xhr = sinon.fakeServer.create();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Test subjects</p></div></div><div class="code"><div class="wrapper">    localStorage.clear();
+    store = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lib/persistence'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>All fetch requests get cleared (empty replies)</p></div></div><div class="code"><div class="wrapper">    _.chain(xhr.requests).where({ method: <span class="hljs-string">'GET'</span> }).each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req</span>) </span>{
+      req.respond(<span class="hljs-number">200</span>, { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span> }, <span class="hljs-string">'[]'</span>);
+    });
+  });
+
+  afterEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testTearDown</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Mocks &amp; Isolation teardown</p></div></div><div class="code"><div class="wrapper">    xhr.restore();
+  });
+
+  it(<span class="hljs-string">"should properly merge sync-based data in the local cache"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>) </span>{
+    <span class="hljs-keyword">var</span> subject = { name: <span class="hljs-string">'L’Amphitryon'</span> };
+    store.addCheckIn(subject);
+    <span class="hljs-keyword">var</span> req = _(xhr.requests).findWhere({ method: <span class="hljs-string">'POST'</span> });
+
+    req.respond(<span class="hljs-number">201</span>, { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span> }, <span class="hljs-string">'{"id":42}'</span>);
+    store.test.getLocalStore(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">checkIns</span>) </span>{
+      checkIns.should.have.length(<span class="hljs-number">1</span>, <span class="hljs-string">'The check-in was not added!'</span>);
+      checkIns[<span class="hljs-number">0</span>].should.have.property(<span class="hljs-string">'id'</span>, <span class="hljs-number">42</span>);
+      done();
+    });
+  });
+});</div></div></div></div></body></html>

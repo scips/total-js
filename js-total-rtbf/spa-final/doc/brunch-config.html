@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><title>brunch-config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="brunch-config"><meta name="groc-project-path" content="brunch-config.coffee"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">brunch-config.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="configuration-brunch">Configuration Brunch</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Brunch attend un module CommonJS qui exporte une propriété <code>config</code>.</p>
+<p>Voyez <a href="https://github.com/brunch/brunch/blob/stable/docs/config.md">https://github.com/brunch/brunch/blob/stable/docs/config.md</a>
+pour une documentation exhaustive des options possibles.</p></div></div><div class="code"><div class="wrapper">exports.config =</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="concatnations">Concaténations</h2>
+<p>On a ici seulement deux fichiers cibles :</p>
+<ul>
+<li><code>app.js</code> pour le JS (d&#39;origine + précompilations des <em>templates</em>)</li>
+<li><code>app.css</code> pour les CSS (le LESS de Bootstrap, le Stylus de l&#39;appli…)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">files</span>:
+    <span class="hljs-attribute">javascripts</span>:
+      <span class="hljs-attribute">joinTo</span>: <span class="hljs-string">'app.js'</span>
+    <span class="hljs-attribute">stylesheets</span>:
+      <span class="hljs-attribute">joinTo</span>: <span class="hljs-string">'app.css'</span>
+    <span class="hljs-attribute">templates</span>:
+      <span class="hljs-attribute">joinTo</span>: <span class="hljs-string">'app.js'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="nomenclature-des-modules">Nomenclature des modules</h2>
+<p>La nomenclature normale de Brunch marcherait bien si nous n&#39;avions pas
+choisi de placer nos libs &quot;externes&quot; (jQuery, etc.) dans <code>app/externals</code>
+et, surtout, avec des noms détaillés (versionnés, avec la langue, etc.).</p>
+<p>Du coup, pour autoriser par exemple <code>require(&#39;jquery&#39;)</code>, qui n&#39;aura pas
+à évoluer quand on changera la version de la lib, au lieu du moins pérenne
+<code>require(&#39;externals/jquery-1.10.2&#39;)</code>, on prend la main sur la transformation
+des chemins en noms.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">modules</span>:
+    <span class="hljs-attribute">nameCleaner</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+      path</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On vire les préfixes <code>app/</code> (classique) et <code>app/externals/</code></p></div></div><div class="code"><div class="wrapper">        .replace <span class="hljs-regexp">/^app\/(?:externals\/)?/</span>, <span class="hljs-string">''</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On retire les suffixes <code>-x.y[.z…]</code> des mantisses</p></div></div><div class="code"><div class="wrapper">        .replace <span class="hljs-regexp">/-\d+(?:\.\d+)+/</span>, <span class="hljs-string">''</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>On retire les suffixes de langue <code>-fr</code> des mantisses</p></div></div><div class="code"><div class="wrapper">        .replace <span class="hljs-string">'-fr.'</span>, <span class="hljs-string">'.'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="plugins">Plugins</h2>
+<p>La majorité des plugins Brunch n&#39;ont pas besoin de configuration pour
+être opérationnels : leur simple présence dans <code>node_modules</code> suffit.
+Toutefois, il peut arriver qu&#39;on ait besoin d&#39;en personnaliser le
+comportement.  C&#39;est ce qui se passe ici, où on ajoute certaines URLs
+externes au manifeste de cache applicatif maintenu par <code>appcache-brunch</code>.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">plugins</span>:
+    <span class="hljs-attribute">appcache</span>:
+      <span class="hljs-attribute">externalCacheEntries</span>: [
+        <span class="hljs-string">'http://maps.gstatic.com/mapfiles/place_api/icons/bar-71.png'</span>
+        <span class="hljs-string">'http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png'</span>
+        <span class="hljs-string">'http://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png'</span>
+        <span class="hljs-string">'http://maps.gstatic.com/mapfiles/place_api/icons/wine-71.png'</span>
+      ]
+      <span class="hljs-attribute">network</span>: [<span class="hljs-string">'*'</span>, <span class="hljs-string">'http://*'</span>, <span class="hljs-string">'https://*'</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="serveur-de-dev">Serveur de dev</h2>
+<p>On fournit notre propre serveur de dev à la place de celui intégré dans
+Brunch, car on ne se contente pas de servir des fichiers statiques :
+on fournit aussi une mini-API Ajax et un point d&#39;accès WebSockets.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">server</span>:
+    <span class="hljs-attribute">path</span>: <span class="hljs-string">'jst-server.coffee'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="watcher">Watcher</h2>
+<p>Brunch a deux modes de surveillance des fichiers : le classique, et le
+<em>polling</em>.  Le second est un poil moins réactif, mais a moins de problèmes
+que le premier, quel que soit l&#39;OS.  On le préfère donc dans cette démo.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">watcher</span>:
+    <span class="hljs-attribute">usePolling</span>: <span class="hljs-literal">true</span></div></div></div></div></body></html>
